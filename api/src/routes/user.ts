@@ -4,6 +4,12 @@ import { PrismaClient } from "../../generated/prisma-client";
 import Jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { validate } from "uuid";
+import {
+  validateEmail,
+  validateName,
+  validateNIF,
+  validatePassword,
+} from "./formGenerics";
 
 const prisma = new PrismaClient();
 
@@ -12,13 +18,12 @@ const router = express.Router();
 // ========= User ACTIONS =========
 router.post("/register", async (req: Request, res: Response) => {
   const { email, password, nif, name, role } = req.body;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!email || !password || !nif || !name || !role) {
     return res.status(400).json({ error: "Preencha todos os campos" });
   }
 
-  if (name.length < 3) {
+  if (!validateName(name)) {
     return res
       .status(400)
       .json({ error: "O nome deve ter pelo menos 3 caracteres" });
@@ -28,17 +33,17 @@ router.post("/register", async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Tipo de conta inválida" });
   }
 
-  if (password.length < 8) {
+  if (!validatePassword(password)) {
     return res
       .status(400)
       .json({ error: "A senha deve ter pelo menos 8 caracteres" });
   }
 
-  if (!emailRegex.test(email)) {
+  if (!validateEmail(email)) {
     return res.status(400).json({ error: "Email inválido" });
   }
 
-  if (nif.length !== 14) {
+  if (!validateNIF(nif)) {
     return res.status(400).json({ error: "NIF inválido" });
   }
 
@@ -87,14 +92,6 @@ router.post("/login", async (req: Request, res: Response) => {
 
   res.json({ message: "Login feitoc com sucesso", token });
 });
-// ========= User ACTIONS =========
-
-// ========= Admin ACTIONS =========
-router.get("/users", async (req: Request, res: Response) => {
-  const users = await prisma.users.findMany();
-  res.json(users);
-});
-// ========= Admin ACTIONS =========
 
 router.get("/profile/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -110,5 +107,53 @@ router.get("/profile/:id", async (req: Request, res: Response) => {
 
   res.json(user);
 });
+
+router.put("/profile/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { email, nif, name } = req.body;
+
+  if (!validate(id))
+    return res.status(404).json({ error: "Usuário não encontrado" });
+
+  if (!validateName(name)) {
+    return res
+      .status(400)
+      .json({ error: "O nome deve ter pelo menos 3 caracteres" });
+  }
+  if (!validateEmail(email)) {
+    return res.status(400).json({ error: "Email inválido" });
+  }
+
+  if (!validateNIF(nif)) {
+    return res.status(400).json({ error: "NIF inválido" });
+  }
+
+  const updatedUser = await prisma.users.update({
+    where: { id: id },
+    data: { email, nif, name },
+  });
+
+  res.json({ message: "Perfil atualizado com sucesso", user: updatedUser });
+});
+
+router.delete("/profile/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!validate(id))
+    return res.status(404).json({ error: "Usuário não encontrado" });
+
+  await prisma.users.delete({ where: { id: id } });
+
+  res.json({ message: "Usuário deletado com sucesso" });
+});
+
+// ========= User ACTIONS =========
+
+// ========= Admin ACTIONS =========
+router.get("/users", async (req: Request, res: Response) => {
+  const users = await prisma.users.findMany();
+  res.json(users);
+});
+// ========= Admin ACTIONS =========
 
 export default router;

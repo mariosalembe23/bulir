@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
+  output = "../generated/prisma-client"
 }
 
 datasource db {
@@ -9,7 +10,7 @@ datasource db {
 
 enum Role {
   CLIENT
-  SERVICER
+  PROVIDER
 }
 
 enum BookingStatus {

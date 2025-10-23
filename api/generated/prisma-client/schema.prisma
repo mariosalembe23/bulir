@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  PROVIDER
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  CANCELLED
+}
+
+model Users {
+  id        String     @id @unique @default(uuid())
+  name      String
+  email     String     @unique
+  password  String
+  nif       String     @unique
+  role      Role       @default(CLIENT)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  services  Services[]
+  bookings  Bookings[]
+
+  @@map("users")
+}
+
+model Services {
+  id          String     @id @unique @default(uuid())
+  userId      String?    @map("user_id")
+  title       String
+  description String
+  price       Float
+  balance     Float      @default(0)
+  user        Users?     @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Bookings    Bookings[]
+
+  @@map("services")
+}
+
+model Bookings {
+  id        String            @id @unique @default(uuid())
+  serviceId String            @map("service_id")
+  clientId  String            @map("client_id")
+  status    BookingStatus     @default(PENDING)
+  service   Services          @relation(fields: [serviceId], references: [id])
+  client    Users             @relation(fields: [clientId], references: [id])
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  history   BookingsHistory[]
+
+  @@map("bookings")
+}
+
+model BookingsHistory {
+  id        String   @id @unique @default(uuid())
+  bookingId String   @map("booking_id")
+  status    String
+  changedAt DateTime @default(now())
+  booking   Bookings @relation(fields: [bookingId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("bookings_history")
+}

@@ -64,7 +64,7 @@ h6 {
 }
 
 body {
-  background: var(--foreground);
+  background: var(--background);
   font-family: "Clash", Arial, Helvetica, sans-serif;
   font-weight: 450;
 }
@@ -151,3 +151,8 @@ button {
   box-shadow: none !important;
   cursor: pointer;
 }
+
+input {
+  box-shadow: none !important;
+}
+

@@ -1166,13 +1166,13 @@ export namespace Prisma {
    */
 
   export type UsersCountOutputType = {
-    services: number
     bookings: number
+    services: number
   }
 
   export type UsersCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    services?: boolean | UsersCountOutputTypeCountServicesArgs
     bookings?: boolean | UsersCountOutputTypeCountBookingsArgs
+    services?: boolean | UsersCountOutputTypeCountServicesArgs
   }
 
   // Custom InputTypes
@@ -1189,15 +1189,15 @@ export namespace Prisma {
   /**
    * UsersCountOutputType without action
    */
-  export type UsersCountOutputTypeCountServicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ServicesWhereInput
+  export type UsersCountOutputTypeCountBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BookingsWhereInput
   }
 
   /**
    * UsersCountOutputType without action
    */
-  export type UsersCountOutputTypeCountBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BookingsWhereInput
+  export type UsersCountOutputTypeCountServicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ServicesWhereInput
   }
 
 
@@ -1293,10 +1293,10 @@ export namespace Prisma {
     email: string | null
     password: string | null
     nif: string | null
-    balance: number | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
+    balance: number | null
   }
 
   export type UsersMaxAggregateOutputType = {
@@ -1305,10 +1305,10 @@ export namespace Prisma {
     email: string | null
     password: string | null
     nif: string | null
-    balance: number | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
+    balance: number | null
   }
 
   export type UsersCountAggregateOutputType = {
@@ -1317,10 +1317,10 @@ export namespace Prisma {
     email: number
     password: number
     nif: number
-    balance: number
     role: number
     createdAt: number
     updatedAt: number
+    balance: number
     _all: number
   }
 
@@ -1339,10 +1339,10 @@ export namespace Prisma {
     email?: true
     password?: true
     nif?: true
-    balance?: true
     role?: true
     createdAt?: true
     updatedAt?: true
+    balance?: true
   }
 
   export type UsersMaxAggregateInputType = {
@@ -1351,10 +1351,10 @@ export namespace Prisma {
     email?: true
     password?: true
     nif?: true
-    balance?: true
     role?: true
     createdAt?: true
     updatedAt?: true
+    balance?: true
   }
 
   export type UsersCountAggregateInputType = {
@@ -1363,10 +1363,10 @@ export namespace Prisma {
     email?: true
     password?: true
     nif?: true
-    balance?: true
     role?: true
     createdAt?: true
     updatedAt?: true
+    balance?: true
     _all?: true
   }
 
@@ -1462,10 +1462,10 @@ export namespace Prisma {
     email: string
     password: string
     nif: string
-    balance: number
     role: $Enums.Role
     createdAt: Date
     updatedAt: Date
+    balance: number
     _count: UsersCountAggregateOutputType | null
     _avg: UsersAvgAggregateOutputType | null
     _sum: UsersSumAggregateOutputType | null
@@ -1493,12 +1493,12 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     nif?: boolean
-    balance?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    services?: boolean | Users$servicesArgs<ExtArgs>
+    balance?: boolean
     bookings?: boolean | Users$bookingsArgs<ExtArgs>
+    services?: boolean | Users$servicesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
@@ -1508,10 +1508,10 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     nif?: boolean
-    balance?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    balance?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type UsersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1520,10 +1520,10 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     nif?: boolean
-    balance?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    balance?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type UsersSelectScalar = {
@@ -1532,16 +1532,16 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     nif?: boolean
-    balance?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    balance?: boolean
   }
 
-  export type UsersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "nif" | "balance" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
+  export type UsersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "nif" | "role" | "createdAt" | "updatedAt" | "balance", ExtArgs["result"]["users"]>
   export type UsersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    services?: boolean | Users$servicesArgs<ExtArgs>
     bookings?: boolean | Users$bookingsArgs<ExtArgs>
+    services?: boolean | Users$servicesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UsersIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1550,8 +1550,8 @@ export namespace Prisma {
   export type $UsersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Users"
     objects: {
-      services: Prisma.$ServicesPayload<ExtArgs>[]
       bookings: Prisma.$BookingsPayload<ExtArgs>[]
+      services: Prisma.$ServicesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1559,10 +1559,10 @@ export namespace Prisma {
       email: string
       password: string
       nif: string
-      balance: number
       role: $Enums.Role
       createdAt: Date
       updatedAt: Date
+      balance: number
     }, ExtArgs["result"]["users"]>
     composites: {}
   }
@@ -1957,8 +1957,8 @@ export namespace Prisma {
    */
   export interface Prisma__UsersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    services<T extends Users$servicesArgs<ExtArgs> = {}>(args?: Subset<T, Users$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServicesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bookings<T extends Users$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, Users$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    services<T extends Users$servicesArgs<ExtArgs> = {}>(args?: Subset<T, Users$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServicesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1993,10 +1993,10 @@ export namespace Prisma {
     readonly email: FieldRef<"Users", 'String'>
     readonly password: FieldRef<"Users", 'String'>
     readonly nif: FieldRef<"Users", 'String'>
-    readonly balance: FieldRef<"Users", 'Float'>
     readonly role: FieldRef<"Users", 'Role'>
     readonly createdAt: FieldRef<"Users", 'DateTime'>
     readonly updatedAt: FieldRef<"Users", 'DateTime'>
+    readonly balance: FieldRef<"Users", 'Float'>
   }
     
 
@@ -2385,30 +2385,6 @@ export namespace Prisma {
   }
 
   /**
-   * Users.services
-   */
-  export type Users$servicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Services
-     */
-    select?: ServicesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Services
-     */
-    omit?: ServicesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ServicesInclude<ExtArgs> | null
-    where?: ServicesWhereInput
-    orderBy?: ServicesOrderByWithRelationInput | ServicesOrderByWithRelationInput[]
-    cursor?: ServicesWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ServicesScalarFieldEnum | ServicesScalarFieldEnum[]
-  }
-
-  /**
    * Users.bookings
    */
   export type Users$bookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2430,6 +2406,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BookingsScalarFieldEnum | BookingsScalarFieldEnum[]
+  }
+
+  /**
+   * Users.services
+   */
+  export type Users$servicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Services
+     */
+    select?: ServicesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Services
+     */
+    omit?: ServicesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicesInclude<ExtArgs> | null
+    where?: ServicesWhereInput
+    orderBy?: ServicesOrderByWithRelationInput | ServicesOrderByWithRelationInput[]
+    cursor?: ServicesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ServicesScalarFieldEnum | ServicesScalarFieldEnum[]
   }
 
   /**
@@ -2677,8 +2677,8 @@ export namespace Prisma {
     balance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | Services$userArgs<ExtArgs>
     Bookings?: boolean | Services$BookingsArgs<ExtArgs>
+    user?: boolean | Services$userArgs<ExtArgs>
     _count?: boolean | ServicesCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["services"]>
 
@@ -2719,8 +2719,8 @@ export namespace Prisma {
 
   export type ServicesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "price" | "balance" | "createdAt" | "updatedAt", ExtArgs["result"]["services"]>
   export type ServicesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Services$userArgs<ExtArgs>
     Bookings?: boolean | Services$BookingsArgs<ExtArgs>
+    user?: boolean | Services$userArgs<ExtArgs>
     _count?: boolean | ServicesCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ServicesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2733,8 +2733,8 @@ export namespace Prisma {
   export type $ServicesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Services"
     objects: {
-      user: Prisma.$UsersPayload<ExtArgs> | null
       Bookings: Prisma.$BookingsPayload<ExtArgs>[]
+      user: Prisma.$UsersPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3139,8 +3139,8 @@ export namespace Prisma {
    */
   export interface Prisma__ServicesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Services$userArgs<ExtArgs> = {}>(args?: Subset<T, Services$userArgs<ExtArgs>>): Prisma__UsersClient<$Result.GetResult<Prisma.$UsersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     Bookings<T extends Services$BookingsArgs<ExtArgs> = {}>(args?: Subset<T, Services$BookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends Services$userArgs<ExtArgs> = {}>(args?: Subset<T, Services$userArgs<ExtArgs>>): Prisma__UsersClient<$Result.GetResult<Prisma.$UsersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3574,25 +3574,6 @@ export namespace Prisma {
   }
 
   /**
-   * Services.user
-   */
-  export type Services$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Users
-     */
-    select?: UsersSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Users
-     */
-    omit?: UsersOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UsersInclude<ExtArgs> | null
-    where?: UsersWhereInput
-  }
-
-  /**
    * Services.Bookings
    */
   export type Services$BookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3614,6 +3595,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BookingsScalarFieldEnum | BookingsScalarFieldEnum[]
+  }
+
+  /**
+   * Services.user
+   */
+  export type Services$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Users
+     */
+    select?: UsersSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Users
+     */
+    omit?: UsersOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsersInclude<ExtArgs> | null
+    where?: UsersWhereInput
   }
 
   /**
@@ -3652,6 +3652,7 @@ export namespace Prisma {
     status: $Enums.BookingStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    date: Date | null
   }
 
   export type BookingsMaxAggregateOutputType = {
@@ -3661,6 +3662,7 @@ export namespace Prisma {
     status: $Enums.BookingStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    date: Date | null
   }
 
   export type BookingsCountAggregateOutputType = {
@@ -3670,6 +3672,7 @@ export namespace Prisma {
     status: number
     createdAt: number
     updatedAt: number
+    date: number
     _all: number
   }
 
@@ -3681,6 +3684,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    date?: true
   }
 
   export type BookingsMaxAggregateInputType = {
@@ -3690,6 +3694,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    date?: true
   }
 
   export type BookingsCountAggregateInputType = {
@@ -3699,6 +3704,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    date?: true
     _all?: true
   }
 
@@ -3781,6 +3787,7 @@ export namespace Prisma {
     status: $Enums.BookingStatus
     createdAt: Date
     updatedAt: Date
+    date: Date
     _count: BookingsCountAggregateOutputType | null
     _min: BookingsMinAggregateOutputType | null
     _max: BookingsMaxAggregateOutputType | null
@@ -3807,8 +3814,9 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    service?: boolean | ServicesDefaultArgs<ExtArgs>
+    date?: boolean
     client?: boolean | UsersDefaultArgs<ExtArgs>
+    service?: boolean | ServicesDefaultArgs<ExtArgs>
     history?: boolean | Bookings$historyArgs<ExtArgs>
     _count?: boolean | BookingsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookings"]>
@@ -3820,8 +3828,9 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    service?: boolean | ServicesDefaultArgs<ExtArgs>
+    date?: boolean
     client?: boolean | UsersDefaultArgs<ExtArgs>
+    service?: boolean | ServicesDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookings"]>
 
   export type BookingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3831,8 +3840,9 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    service?: boolean | ServicesDefaultArgs<ExtArgs>
+    date?: boolean
     client?: boolean | UsersDefaultArgs<ExtArgs>
+    service?: boolean | ServicesDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookings"]>
 
   export type BookingsSelectScalar = {
@@ -3842,29 +3852,30 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    date?: boolean
   }
 
-  export type BookingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serviceId" | "clientId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["bookings"]>
+  export type BookingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serviceId" | "clientId" | "status" | "createdAt" | "updatedAt" | "date", ExtArgs["result"]["bookings"]>
   export type BookingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    service?: boolean | ServicesDefaultArgs<ExtArgs>
     client?: boolean | UsersDefaultArgs<ExtArgs>
+    service?: boolean | ServicesDefaultArgs<ExtArgs>
     history?: boolean | Bookings$historyArgs<ExtArgs>
     _count?: boolean | BookingsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BookingsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    service?: boolean | ServicesDefaultArgs<ExtArgs>
     client?: boolean | UsersDefaultArgs<ExtArgs>
+    service?: boolean | ServicesDefaultArgs<ExtArgs>
   }
   export type BookingsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    service?: boolean | ServicesDefaultArgs<ExtArgs>
     client?: boolean | UsersDefaultArgs<ExtArgs>
+    service?: boolean | ServicesDefaultArgs<ExtArgs>
   }
 
   export type $BookingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Bookings"
     objects: {
-      service: Prisma.$ServicesPayload<ExtArgs>
       client: Prisma.$UsersPayload<ExtArgs>
+      service: Prisma.$ServicesPayload<ExtArgs>
       history: Prisma.$BookingsHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3874,6 +3885,7 @@ export namespace Prisma {
       status: $Enums.BookingStatus
       createdAt: Date
       updatedAt: Date
+      date: Date
     }, ExtArgs["result"]["bookings"]>
     composites: {}
   }
@@ -4268,8 +4280,8 @@ export namespace Prisma {
    */
   export interface Prisma__BookingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    service<T extends ServicesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ServicesDefaultArgs<ExtArgs>>): Prisma__ServicesClient<$Result.GetResult<Prisma.$ServicesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     client<T extends UsersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsersDefaultArgs<ExtArgs>>): Prisma__UsersClient<$Result.GetResult<Prisma.$UsersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    service<T extends ServicesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ServicesDefaultArgs<ExtArgs>>): Prisma__ServicesClient<$Result.GetResult<Prisma.$ServicesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     history<T extends Bookings$historyArgs<ExtArgs> = {}>(args?: Subset<T, Bookings$historyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingsHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4306,6 +4318,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Bookings", 'BookingStatus'>
     readonly createdAt: FieldRef<"Bookings", 'DateTime'>
     readonly updatedAt: FieldRef<"Bookings", 'DateTime'>
+    readonly date: FieldRef<"Bookings", 'DateTime'>
   }
     
 
@@ -5835,10 +5848,10 @@ export namespace Prisma {
     email: 'email',
     password: 'password',
     nif: 'nif',
-    balance: 'balance',
     role: 'role',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    balance: 'balance'
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -5864,7 +5877,8 @@ export namespace Prisma {
     clientId: 'clientId',
     status: 'status',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    date: 'date'
   };
 
   export type BookingsScalarFieldEnum = (typeof BookingsScalarFieldEnum)[keyof typeof BookingsScalarFieldEnum]
@@ -5926,20 +5940,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Role'
    */
   export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -5964,6 +5964,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -6007,12 +6021,12 @@ export namespace Prisma {
     email?: StringFilter<"Users"> | string
     password?: StringFilter<"Users"> | string
     nif?: StringFilter<"Users"> | string
-    balance?: FloatFilter<"Users"> | number
     role?: EnumRoleFilter<"Users"> | $Enums.Role
     createdAt?: DateTimeFilter<"Users"> | Date | string
     updatedAt?: DateTimeFilter<"Users"> | Date | string
-    services?: ServicesListRelationFilter
+    balance?: FloatFilter<"Users"> | number
     bookings?: BookingsListRelationFilter
+    services?: ServicesListRelationFilter
   }
 
   export type UsersOrderByWithRelationInput = {
@@ -6021,12 +6035,12 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     nif?: SortOrder
-    balance?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    services?: ServicesOrderByRelationAggregateInput
+    balance?: SortOrder
     bookings?: BookingsOrderByRelationAggregateInput
+    services?: ServicesOrderByRelationAggregateInput
   }
 
   export type UsersWhereUniqueInput = Prisma.AtLeast<{
@@ -6038,12 +6052,12 @@ export namespace Prisma {
     NOT?: UsersWhereInput | UsersWhereInput[]
     name?: StringFilter<"Users"> | string
     password?: StringFilter<"Users"> | string
-    balance?: FloatFilter<"Users"> | number
     role?: EnumRoleFilter<"Users"> | $Enums.Role
     createdAt?: DateTimeFilter<"Users"> | Date | string
     updatedAt?: DateTimeFilter<"Users"> | Date | string
-    services?: ServicesListRelationFilter
+    balance?: FloatFilter<"Users"> | number
     bookings?: BookingsListRelationFilter
+    services?: ServicesListRelationFilter
   }, "id" | "id" | "email" | "nif">
 
   export type UsersOrderByWithAggregationInput = {
@@ -6052,10 +6066,10 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     nif?: SortOrder
-    balance?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    balance?: SortOrder
     _count?: UsersCountOrderByAggregateInput
     _avg?: UsersAvgOrderByAggregateInput
     _max?: UsersMaxOrderByAggregateInput
@@ -6072,10 +6086,10 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Users"> | string
     password?: StringWithAggregatesFilter<"Users"> | string
     nif?: StringWithAggregatesFilter<"Users"> | string
-    balance?: FloatWithAggregatesFilter<"Users"> | number
     role?: EnumRoleWithAggregatesFilter<"Users"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"Users"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Users"> | Date | string
+    balance?: FloatWithAggregatesFilter<"Users"> | number
   }
 
   export type ServicesWhereInput = {
@@ -6090,8 +6104,8 @@ export namespace Prisma {
     balance?: FloatFilter<"Services"> | number
     createdAt?: DateTimeFilter<"Services"> | Date | string
     updatedAt?: DateTimeFilter<"Services"> | Date | string
-    user?: XOR<UsersNullableScalarRelationFilter, UsersWhereInput> | null
     Bookings?: BookingsListRelationFilter
+    user?: XOR<UsersNullableScalarRelationFilter, UsersWhereInput> | null
   }
 
   export type ServicesOrderByWithRelationInput = {
@@ -6103,8 +6117,8 @@ export namespace Prisma {
     balance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UsersOrderByWithRelationInput
     Bookings?: BookingsOrderByRelationAggregateInput
+    user?: UsersOrderByWithRelationInput
   }
 
   export type ServicesWhereUniqueInput = Prisma.AtLeast<{
@@ -6119,8 +6133,8 @@ export namespace Prisma {
     balance?: FloatFilter<"Services"> | number
     createdAt?: DateTimeFilter<"Services"> | Date | string
     updatedAt?: DateTimeFilter<"Services"> | Date | string
-    user?: XOR<UsersNullableScalarRelationFilter, UsersWhereInput> | null
     Bookings?: BookingsListRelationFilter
+    user?: XOR<UsersNullableScalarRelationFilter, UsersWhereInput> | null
   }, "id" | "id">
 
   export type ServicesOrderByWithAggregationInput = {
@@ -6163,8 +6177,9 @@ export namespace Prisma {
     status?: EnumBookingStatusFilter<"Bookings"> | $Enums.BookingStatus
     createdAt?: DateTimeFilter<"Bookings"> | Date | string
     updatedAt?: DateTimeFilter<"Bookings"> | Date | string
-    service?: XOR<ServicesScalarRelationFilter, ServicesWhereInput>
+    date?: DateTimeFilter<"Bookings"> | Date | string
     client?: XOR<UsersScalarRelationFilter, UsersWhereInput>
+    service?: XOR<ServicesScalarRelationFilter, ServicesWhereInput>
     history?: BookingsHistoryListRelationFilter
   }
 
@@ -6175,8 +6190,9 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    service?: ServicesOrderByWithRelationInput
+    date?: SortOrder
     client?: UsersOrderByWithRelationInput
+    service?: ServicesOrderByWithRelationInput
     history?: BookingsHistoryOrderByRelationAggregateInput
   }
 
@@ -6190,8 +6206,9 @@ export namespace Prisma {
     status?: EnumBookingStatusFilter<"Bookings"> | $Enums.BookingStatus
     createdAt?: DateTimeFilter<"Bookings"> | Date | string
     updatedAt?: DateTimeFilter<"Bookings"> | Date | string
-    service?: XOR<ServicesScalarRelationFilter, ServicesWhereInput>
+    date?: DateTimeFilter<"Bookings"> | Date | string
     client?: XOR<UsersScalarRelationFilter, UsersWhereInput>
+    service?: XOR<ServicesScalarRelationFilter, ServicesWhereInput>
     history?: BookingsHistoryListRelationFilter
   }, "id" | "id">
 
@@ -6202,6 +6219,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    date?: SortOrder
     _count?: BookingsCountOrderByAggregateInput
     _max?: BookingsMaxOrderByAggregateInput
     _min?: BookingsMinOrderByAggregateInput
@@ -6217,6 +6235,7 @@ export namespace Prisma {
     status?: EnumBookingStatusWithAggregatesFilter<"Bookings"> | $Enums.BookingStatus
     createdAt?: DateTimeWithAggregatesFilter<"Bookings"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Bookings"> | Date | string
+    date?: DateTimeWithAggregatesFilter<"Bookings"> | Date | string
   }
 
   export type BookingsHistoryWhereInput = {
@@ -6285,12 +6304,12 @@ export namespace Prisma {
     email: string
     password: string
     nif: string
-    balance?: number
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    services?: ServicesCreateNestedManyWithoutUserInput
+    balance?: number
     bookings?: BookingsCreateNestedManyWithoutClientInput
+    services?: ServicesCreateNestedManyWithoutUserInput
   }
 
   export type UsersUncheckedCreateInput = {
@@ -6299,12 +6318,12 @@ export namespace Prisma {
     email: string
     password: string
     nif: string
-    balance?: number
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    services?: ServicesUncheckedCreateNestedManyWithoutUserInput
+    balance?: number
     bookings?: BookingsUncheckedCreateNestedManyWithoutClientInput
+    services?: ServicesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UsersUpdateInput = {
@@ -6313,12 +6332,12 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    services?: ServicesUpdateManyWithoutUserNestedInput
+    balance?: FloatFieldUpdateOperationsInput | number
     bookings?: BookingsUpdateManyWithoutClientNestedInput
+    services?: ServicesUpdateManyWithoutUserNestedInput
   }
 
   export type UsersUncheckedUpdateInput = {
@@ -6327,12 +6346,12 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    services?: ServicesUncheckedUpdateManyWithoutUserNestedInput
+    balance?: FloatFieldUpdateOperationsInput | number
     bookings?: BookingsUncheckedUpdateManyWithoutClientNestedInput
+    services?: ServicesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UsersCreateManyInput = {
@@ -6341,10 +6360,10 @@ export namespace Prisma {
     email: string
     password: string
     nif: string
-    balance?: number
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    balance?: number
   }
 
   export type UsersUpdateManyMutationInput = {
@@ -6353,10 +6372,10 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    balance?: FloatFieldUpdateOperationsInput | number
   }
 
   export type UsersUncheckedUpdateManyInput = {
@@ -6365,10 +6384,10 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    balance?: FloatFieldUpdateOperationsInput | number
   }
 
   export type ServicesCreateInput = {
@@ -6379,8 +6398,8 @@ export namespace Prisma {
     balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UsersCreateNestedOneWithoutServicesInput
     Bookings?: BookingsCreateNestedManyWithoutServiceInput
+    user?: UsersCreateNestedOneWithoutServicesInput
   }
 
   export type ServicesUncheckedCreateInput = {
@@ -6403,8 +6422,8 @@ export namespace Prisma {
     balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UsersUpdateOneWithoutServicesNestedInput
     Bookings?: BookingsUpdateManyWithoutServiceNestedInput
+    user?: UsersUpdateOneWithoutServicesNestedInput
   }
 
   export type ServicesUncheckedUpdateInput = {
@@ -6456,8 +6475,9 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    service: ServicesCreateNestedOneWithoutBookingsInput
+    date: Date | string
     client: UsersCreateNestedOneWithoutBookingsInput
+    service: ServicesCreateNestedOneWithoutBookingsInput
     history?: BookingsHistoryCreateNestedManyWithoutBookingInput
   }
 
@@ -6468,6 +6488,7 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    date: Date | string
     history?: BookingsHistoryUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -6476,8 +6497,9 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    service?: ServicesUpdateOneRequiredWithoutBookingsNestedInput
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: UsersUpdateOneRequiredWithoutBookingsNestedInput
+    service?: ServicesUpdateOneRequiredWithoutBookingsNestedInput
     history?: BookingsHistoryUpdateManyWithoutBookingNestedInput
   }
 
@@ -6488,6 +6510,7 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     history?: BookingsHistoryUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -6498,6 +6521,7 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    date: Date | string
   }
 
   export type BookingsUpdateManyMutationInput = {
@@ -6505,6 +6529,7 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookingsUncheckedUpdateManyInput = {
@@ -6514,6 +6539,7 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookingsHistoryCreateInput = {
@@ -6593,17 +6619,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type EnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -6622,10 +6637,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type ServicesListRelationFilter = {
-    every?: ServicesWhereInput
-    some?: ServicesWhereInput
-    none?: ServicesWhereInput
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type BookingsListRelationFilter = {
@@ -6634,11 +6654,17 @@ export namespace Prisma {
     none?: BookingsWhereInput
   }
 
-  export type ServicesOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type ServicesListRelationFilter = {
+    every?: ServicesWhereInput
+    some?: ServicesWhereInput
+    none?: ServicesWhereInput
   }
 
   export type BookingsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ServicesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6648,10 +6674,10 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     nif?: SortOrder
-    balance?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    balance?: SortOrder
   }
 
   export type UsersAvgOrderByAggregateInput = {
@@ -6664,10 +6690,10 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     nif?: SortOrder
-    balance?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    balance?: SortOrder
   }
 
   export type UsersMinOrderByAggregateInput = {
@@ -6676,10 +6702,10 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     nif?: SortOrder
-    balance?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    balance?: SortOrder
   }
 
   export type UsersSumOrderByAggregateInput = {
@@ -6704,22 +6730,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
-  }
-
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -6742,6 +6752,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -6837,14 +6863,14 @@ export namespace Prisma {
     not?: NestedEnumBookingStatusFilter<$PrismaModel> | $Enums.BookingStatus
   }
 
-  export type ServicesScalarRelationFilter = {
-    is?: ServicesWhereInput
-    isNot?: ServicesWhereInput
-  }
-
   export type UsersScalarRelationFilter = {
     is?: UsersWhereInput
     isNot?: UsersWhereInput
+  }
+
+  export type ServicesScalarRelationFilter = {
+    is?: ServicesWhereInput
+    isNot?: ServicesWhereInput
   }
 
   export type BookingsHistoryListRelationFilter = {
@@ -6864,6 +6890,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    date?: SortOrder
   }
 
   export type BookingsMaxOrderByAggregateInput = {
@@ -6873,6 +6900,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    date?: SortOrder
   }
 
   export type BookingsMinOrderByAggregateInput = {
@@ -6882,6 +6910,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    date?: SortOrder
   }
 
   export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -6926,13 +6955,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type ServicesCreateNestedManyWithoutUserInput = {
-    create?: XOR<ServicesCreateWithoutUserInput, ServicesUncheckedCreateWithoutUserInput> | ServicesCreateWithoutUserInput[] | ServicesUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ServicesCreateOrConnectWithoutUserInput | ServicesCreateOrConnectWithoutUserInput[]
-    createMany?: ServicesCreateManyUserInputEnvelope
-    connect?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
-  }
-
   export type BookingsCreateNestedManyWithoutClientInput = {
     create?: XOR<BookingsCreateWithoutClientInput, BookingsUncheckedCreateWithoutClientInput> | BookingsCreateWithoutClientInput[] | BookingsUncheckedCreateWithoutClientInput[]
     connectOrCreate?: BookingsCreateOrConnectWithoutClientInput | BookingsCreateOrConnectWithoutClientInput[]
@@ -6940,7 +6962,7 @@ export namespace Prisma {
     connect?: BookingsWhereUniqueInput | BookingsWhereUniqueInput[]
   }
 
-  export type ServicesUncheckedCreateNestedManyWithoutUserInput = {
+  export type ServicesCreateNestedManyWithoutUserInput = {
     create?: XOR<ServicesCreateWithoutUserInput, ServicesUncheckedCreateWithoutUserInput> | ServicesCreateWithoutUserInput[] | ServicesUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ServicesCreateOrConnectWithoutUserInput | ServicesCreateOrConnectWithoutUserInput[]
     createMany?: ServicesCreateManyUserInputEnvelope
@@ -6954,16 +6976,15 @@ export namespace Prisma {
     connect?: BookingsWhereUniqueInput | BookingsWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
+  export type ServicesUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ServicesCreateWithoutUserInput, ServicesUncheckedCreateWithoutUserInput> | ServicesCreateWithoutUserInput[] | ServicesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ServicesCreateOrConnectWithoutUserInput | ServicesCreateOrConnectWithoutUserInput[]
+    createMany?: ServicesCreateManyUserInputEnvelope
+    connect?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -6974,18 +6995,12 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type ServicesUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ServicesCreateWithoutUserInput, ServicesUncheckedCreateWithoutUserInput> | ServicesCreateWithoutUserInput[] | ServicesUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ServicesCreateOrConnectWithoutUserInput | ServicesCreateOrConnectWithoutUserInput[]
-    upsert?: ServicesUpsertWithWhereUniqueWithoutUserInput | ServicesUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ServicesCreateManyUserInputEnvelope
-    set?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
-    disconnect?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
-    delete?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
-    connect?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
-    update?: ServicesUpdateWithWhereUniqueWithoutUserInput | ServicesUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ServicesUpdateManyWithWhereWithoutUserInput | ServicesUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ServicesScalarWhereInput | ServicesScalarWhereInput[]
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type BookingsUpdateManyWithoutClientNestedInput = {
@@ -7002,7 +7017,7 @@ export namespace Prisma {
     deleteMany?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
   }
 
-  export type ServicesUncheckedUpdateManyWithoutUserNestedInput = {
+  export type ServicesUpdateManyWithoutUserNestedInput = {
     create?: XOR<ServicesCreateWithoutUserInput, ServicesUncheckedCreateWithoutUserInput> | ServicesCreateWithoutUserInput[] | ServicesUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ServicesCreateOrConnectWithoutUserInput | ServicesCreateOrConnectWithoutUserInput[]
     upsert?: ServicesUpsertWithWhereUniqueWithoutUserInput | ServicesUpsertWithWhereUniqueWithoutUserInput[]
@@ -7030,10 +7045,18 @@ export namespace Prisma {
     deleteMany?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
   }
 
-  export type UsersCreateNestedOneWithoutServicesInput = {
-    create?: XOR<UsersCreateWithoutServicesInput, UsersUncheckedCreateWithoutServicesInput>
-    connectOrCreate?: UsersCreateOrConnectWithoutServicesInput
-    connect?: UsersWhereUniqueInput
+  export type ServicesUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ServicesCreateWithoutUserInput, ServicesUncheckedCreateWithoutUserInput> | ServicesCreateWithoutUserInput[] | ServicesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ServicesCreateOrConnectWithoutUserInput | ServicesCreateOrConnectWithoutUserInput[]
+    upsert?: ServicesUpsertWithWhereUniqueWithoutUserInput | ServicesUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ServicesCreateManyUserInputEnvelope
+    set?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
+    disconnect?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
+    delete?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
+    connect?: ServicesWhereUniqueInput | ServicesWhereUniqueInput[]
+    update?: ServicesUpdateWithWhereUniqueWithoutUserInput | ServicesUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ServicesUpdateManyWithWhereWithoutUserInput | ServicesUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ServicesScalarWhereInput | ServicesScalarWhereInput[]
   }
 
   export type BookingsCreateNestedManyWithoutServiceInput = {
@@ -7043,21 +7066,17 @@ export namespace Prisma {
     connect?: BookingsWhereUniqueInput | BookingsWhereUniqueInput[]
   }
 
+  export type UsersCreateNestedOneWithoutServicesInput = {
+    create?: XOR<UsersCreateWithoutServicesInput, UsersUncheckedCreateWithoutServicesInput>
+    connectOrCreate?: UsersCreateOrConnectWithoutServicesInput
+    connect?: UsersWhereUniqueInput
+  }
+
   export type BookingsUncheckedCreateNestedManyWithoutServiceInput = {
     create?: XOR<BookingsCreateWithoutServiceInput, BookingsUncheckedCreateWithoutServiceInput> | BookingsCreateWithoutServiceInput[] | BookingsUncheckedCreateWithoutServiceInput[]
     connectOrCreate?: BookingsCreateOrConnectWithoutServiceInput | BookingsCreateOrConnectWithoutServiceInput[]
     createMany?: BookingsCreateManyServiceInputEnvelope
     connect?: BookingsWhereUniqueInput | BookingsWhereUniqueInput[]
-  }
-
-  export type UsersUpdateOneWithoutServicesNestedInput = {
-    create?: XOR<UsersCreateWithoutServicesInput, UsersUncheckedCreateWithoutServicesInput>
-    connectOrCreate?: UsersCreateOrConnectWithoutServicesInput
-    upsert?: UsersUpsertWithoutServicesInput
-    disconnect?: UsersWhereInput | boolean
-    delete?: UsersWhereInput | boolean
-    connect?: UsersWhereUniqueInput
-    update?: XOR<XOR<UsersUpdateToOneWithWhereWithoutServicesInput, UsersUpdateWithoutServicesInput>, UsersUncheckedUpdateWithoutServicesInput>
   }
 
   export type BookingsUpdateManyWithoutServiceNestedInput = {
@@ -7072,6 +7091,16 @@ export namespace Prisma {
     update?: BookingsUpdateWithWhereUniqueWithoutServiceInput | BookingsUpdateWithWhereUniqueWithoutServiceInput[]
     updateMany?: BookingsUpdateManyWithWhereWithoutServiceInput | BookingsUpdateManyWithWhereWithoutServiceInput[]
     deleteMany?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
+  }
+
+  export type UsersUpdateOneWithoutServicesNestedInput = {
+    create?: XOR<UsersCreateWithoutServicesInput, UsersUncheckedCreateWithoutServicesInput>
+    connectOrCreate?: UsersCreateOrConnectWithoutServicesInput
+    upsert?: UsersUpsertWithoutServicesInput
+    disconnect?: UsersWhereInput | boolean
+    delete?: UsersWhereInput | boolean
+    connect?: UsersWhereUniqueInput
+    update?: XOR<XOR<UsersUpdateToOneWithWhereWithoutServicesInput, UsersUpdateWithoutServicesInput>, UsersUncheckedUpdateWithoutServicesInput>
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -7092,16 +7121,16 @@ export namespace Prisma {
     deleteMany?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
   }
 
-  export type ServicesCreateNestedOneWithoutBookingsInput = {
-    create?: XOR<ServicesCreateWithoutBookingsInput, ServicesUncheckedCreateWithoutBookingsInput>
-    connectOrCreate?: ServicesCreateOrConnectWithoutBookingsInput
-    connect?: ServicesWhereUniqueInput
-  }
-
   export type UsersCreateNestedOneWithoutBookingsInput = {
     create?: XOR<UsersCreateWithoutBookingsInput, UsersUncheckedCreateWithoutBookingsInput>
     connectOrCreate?: UsersCreateOrConnectWithoutBookingsInput
     connect?: UsersWhereUniqueInput
+  }
+
+  export type ServicesCreateNestedOneWithoutBookingsInput = {
+    create?: XOR<ServicesCreateWithoutBookingsInput, ServicesUncheckedCreateWithoutBookingsInput>
+    connectOrCreate?: ServicesCreateOrConnectWithoutBookingsInput
+    connect?: ServicesWhereUniqueInput
   }
 
   export type BookingsHistoryCreateNestedManyWithoutBookingInput = {
@@ -7122,20 +7151,20 @@ export namespace Prisma {
     set?: $Enums.BookingStatus
   }
 
-  export type ServicesUpdateOneRequiredWithoutBookingsNestedInput = {
-    create?: XOR<ServicesCreateWithoutBookingsInput, ServicesUncheckedCreateWithoutBookingsInput>
-    connectOrCreate?: ServicesCreateOrConnectWithoutBookingsInput
-    upsert?: ServicesUpsertWithoutBookingsInput
-    connect?: ServicesWhereUniqueInput
-    update?: XOR<XOR<ServicesUpdateToOneWithWhereWithoutBookingsInput, ServicesUpdateWithoutBookingsInput>, ServicesUncheckedUpdateWithoutBookingsInput>
-  }
-
   export type UsersUpdateOneRequiredWithoutBookingsNestedInput = {
     create?: XOR<UsersCreateWithoutBookingsInput, UsersUncheckedCreateWithoutBookingsInput>
     connectOrCreate?: UsersCreateOrConnectWithoutBookingsInput
     upsert?: UsersUpsertWithoutBookingsInput
     connect?: UsersWhereUniqueInput
     update?: XOR<XOR<UsersUpdateToOneWithWhereWithoutBookingsInput, UsersUpdateWithoutBookingsInput>, UsersUncheckedUpdateWithoutBookingsInput>
+  }
+
+  export type ServicesUpdateOneRequiredWithoutBookingsNestedInput = {
+    create?: XOR<ServicesCreateWithoutBookingsInput, ServicesUncheckedCreateWithoutBookingsInput>
+    connectOrCreate?: ServicesCreateOrConnectWithoutBookingsInput
+    upsert?: ServicesUpsertWithoutBookingsInput
+    connect?: ServicesWhereUniqueInput
+    update?: XOR<XOR<ServicesUpdateToOneWithWhereWithoutBookingsInput, ServicesUpdateWithoutBookingsInput>, ServicesUncheckedUpdateWithoutBookingsInput>
   }
 
   export type BookingsHistoryUpdateManyWithoutBookingNestedInput = {
@@ -7194,17 +7223,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -7221,6 +7239,17 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -7251,22 +7280,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
-  }
-
   export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -7289,6 +7302,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -7350,6 +7379,36 @@ export namespace Prisma {
     _max?: NestedEnumBookingStatusFilter<$PrismaModel>
   }
 
+  export type BookingsCreateWithoutClientInput = {
+    id?: string
+    status?: $Enums.BookingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    date: Date | string
+    service: ServicesCreateNestedOneWithoutBookingsInput
+    history?: BookingsHistoryCreateNestedManyWithoutBookingInput
+  }
+
+  export type BookingsUncheckedCreateWithoutClientInput = {
+    id?: string
+    serviceId: string
+    status?: $Enums.BookingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    date: Date | string
+    history?: BookingsHistoryUncheckedCreateNestedManyWithoutBookingInput
+  }
+
+  export type BookingsCreateOrConnectWithoutClientInput = {
+    where: BookingsWhereUniqueInput
+    create: XOR<BookingsCreateWithoutClientInput, BookingsUncheckedCreateWithoutClientInput>
+  }
+
+  export type BookingsCreateManyClientInputEnvelope = {
+    data: BookingsCreateManyClientInput | BookingsCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ServicesCreateWithoutUserInput = {
     id?: string
     title: string
@@ -7382,32 +7441,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BookingsCreateWithoutClientInput = {
-    id?: string
-    status?: $Enums.BookingStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    service: ServicesCreateNestedOneWithoutBookingsInput
-    history?: BookingsHistoryCreateNestedManyWithoutBookingInput
-  }
-
-  export type BookingsUncheckedCreateWithoutClientInput = {
-    id?: string
-    serviceId: string
-    status?: $Enums.BookingStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    history?: BookingsHistoryUncheckedCreateNestedManyWithoutBookingInput
-  }
-
-  export type BookingsCreateOrConnectWithoutClientInput = {
+  export type BookingsUpsertWithWhereUniqueWithoutClientInput = {
     where: BookingsWhereUniqueInput
+    update: XOR<BookingsUpdateWithoutClientInput, BookingsUncheckedUpdateWithoutClientInput>
     create: XOR<BookingsCreateWithoutClientInput, BookingsUncheckedCreateWithoutClientInput>
   }
 
-  export type BookingsCreateManyClientInputEnvelope = {
-    data: BookingsCreateManyClientInput | BookingsCreateManyClientInput[]
-    skipDuplicates?: boolean
+  export type BookingsUpdateWithWhereUniqueWithoutClientInput = {
+    where: BookingsWhereUniqueInput
+    data: XOR<BookingsUpdateWithoutClientInput, BookingsUncheckedUpdateWithoutClientInput>
+  }
+
+  export type BookingsUpdateManyWithWhereWithoutClientInput = {
+    where: BookingsScalarWhereInput
+    data: XOR<BookingsUpdateManyMutationInput, BookingsUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type BookingsScalarWhereInput = {
+    AND?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
+    OR?: BookingsScalarWhereInput[]
+    NOT?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
+    id?: StringFilter<"Bookings"> | string
+    serviceId?: StringFilter<"Bookings"> | string
+    clientId?: StringFilter<"Bookings"> | string
+    status?: EnumBookingStatusFilter<"Bookings"> | $Enums.BookingStatus
+    createdAt?: DateTimeFilter<"Bookings"> | Date | string
+    updatedAt?: DateTimeFilter<"Bookings"> | Date | string
+    date?: DateTimeFilter<"Bookings"> | Date | string
   }
 
   export type ServicesUpsertWithWhereUniqueWithoutUserInput = {
@@ -7440,70 +7500,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Services"> | Date | string
   }
 
-  export type BookingsUpsertWithWhereUniqueWithoutClientInput = {
-    where: BookingsWhereUniqueInput
-    update: XOR<BookingsUpdateWithoutClientInput, BookingsUncheckedUpdateWithoutClientInput>
-    create: XOR<BookingsCreateWithoutClientInput, BookingsUncheckedCreateWithoutClientInput>
-  }
-
-  export type BookingsUpdateWithWhereUniqueWithoutClientInput = {
-    where: BookingsWhereUniqueInput
-    data: XOR<BookingsUpdateWithoutClientInput, BookingsUncheckedUpdateWithoutClientInput>
-  }
-
-  export type BookingsUpdateManyWithWhereWithoutClientInput = {
-    where: BookingsScalarWhereInput
-    data: XOR<BookingsUpdateManyMutationInput, BookingsUncheckedUpdateManyWithoutClientInput>
-  }
-
-  export type BookingsScalarWhereInput = {
-    AND?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
-    OR?: BookingsScalarWhereInput[]
-    NOT?: BookingsScalarWhereInput | BookingsScalarWhereInput[]
-    id?: StringFilter<"Bookings"> | string
-    serviceId?: StringFilter<"Bookings"> | string
-    clientId?: StringFilter<"Bookings"> | string
-    status?: EnumBookingStatusFilter<"Bookings"> | $Enums.BookingStatus
-    createdAt?: DateTimeFilter<"Bookings"> | Date | string
-    updatedAt?: DateTimeFilter<"Bookings"> | Date | string
-  }
-
-  export type UsersCreateWithoutServicesInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    nif: string
-    balance?: number
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    bookings?: BookingsCreateNestedManyWithoutClientInput
-  }
-
-  export type UsersUncheckedCreateWithoutServicesInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    nif: string
-    balance?: number
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    bookings?: BookingsUncheckedCreateNestedManyWithoutClientInput
-  }
-
-  export type UsersCreateOrConnectWithoutServicesInput = {
-    where: UsersWhereUniqueInput
-    create: XOR<UsersCreateWithoutServicesInput, UsersUncheckedCreateWithoutServicesInput>
-  }
-
   export type BookingsCreateWithoutServiceInput = {
     id?: string
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    date: Date | string
     client: UsersCreateNestedOneWithoutBookingsInput
     history?: BookingsHistoryCreateNestedManyWithoutBookingInput
   }
@@ -7514,6 +7516,7 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    date: Date | string
     history?: BookingsHistoryUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -7525,6 +7528,53 @@ export namespace Prisma {
   export type BookingsCreateManyServiceInputEnvelope = {
     data: BookingsCreateManyServiceInput | BookingsCreateManyServiceInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UsersCreateWithoutServicesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    nif: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    balance?: number
+    bookings?: BookingsCreateNestedManyWithoutClientInput
+  }
+
+  export type UsersUncheckedCreateWithoutServicesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    nif: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    balance?: number
+    bookings?: BookingsUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type UsersCreateOrConnectWithoutServicesInput = {
+    where: UsersWhereUniqueInput
+    create: XOR<UsersCreateWithoutServicesInput, UsersUncheckedCreateWithoutServicesInput>
+  }
+
+  export type BookingsUpsertWithWhereUniqueWithoutServiceInput = {
+    where: BookingsWhereUniqueInput
+    update: XOR<BookingsUpdateWithoutServiceInput, BookingsUncheckedUpdateWithoutServiceInput>
+    create: XOR<BookingsCreateWithoutServiceInput, BookingsUncheckedCreateWithoutServiceInput>
+  }
+
+  export type BookingsUpdateWithWhereUniqueWithoutServiceInput = {
+    where: BookingsWhereUniqueInput
+    data: XOR<BookingsUpdateWithoutServiceInput, BookingsUncheckedUpdateWithoutServiceInput>
+  }
+
+  export type BookingsUpdateManyWithWhereWithoutServiceInput = {
+    where: BookingsScalarWhereInput
+    data: XOR<BookingsUpdateManyMutationInput, BookingsUncheckedUpdateManyWithoutServiceInput>
   }
 
   export type UsersUpsertWithoutServicesInput = {
@@ -7544,10 +7594,10 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    balance?: FloatFieldUpdateOperationsInput | number
     bookings?: BookingsUpdateManyWithoutClientNestedInput
   }
 
@@ -7557,27 +7607,42 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    balance?: FloatFieldUpdateOperationsInput | number
     bookings?: BookingsUncheckedUpdateManyWithoutClientNestedInput
   }
 
-  export type BookingsUpsertWithWhereUniqueWithoutServiceInput = {
-    where: BookingsWhereUniqueInput
-    update: XOR<BookingsUpdateWithoutServiceInput, BookingsUncheckedUpdateWithoutServiceInput>
-    create: XOR<BookingsCreateWithoutServiceInput, BookingsUncheckedCreateWithoutServiceInput>
+  export type UsersCreateWithoutBookingsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    nif: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    balance?: number
+    services?: ServicesCreateNestedManyWithoutUserInput
   }
 
-  export type BookingsUpdateWithWhereUniqueWithoutServiceInput = {
-    where: BookingsWhereUniqueInput
-    data: XOR<BookingsUpdateWithoutServiceInput, BookingsUncheckedUpdateWithoutServiceInput>
+  export type UsersUncheckedCreateWithoutBookingsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    nif: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    balance?: number
+    services?: ServicesUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type BookingsUpdateManyWithWhereWithoutServiceInput = {
-    where: BookingsScalarWhereInput
-    data: XOR<BookingsUpdateManyMutationInput, BookingsUncheckedUpdateManyWithoutServiceInput>
+  export type UsersCreateOrConnectWithoutBookingsInput = {
+    where: UsersWhereUniqueInput
+    create: XOR<UsersCreateWithoutBookingsInput, UsersUncheckedCreateWithoutBookingsInput>
   }
 
   export type ServicesCreateWithoutBookingsInput = {
@@ -7607,37 +7672,6 @@ export namespace Prisma {
     create: XOR<ServicesCreateWithoutBookingsInput, ServicesUncheckedCreateWithoutBookingsInput>
   }
 
-  export type UsersCreateWithoutBookingsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    nif: string
-    balance?: number
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    services?: ServicesCreateNestedManyWithoutUserInput
-  }
-
-  export type UsersUncheckedCreateWithoutBookingsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    nif: string
-    balance?: number
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    services?: ServicesUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UsersCreateOrConnectWithoutBookingsInput = {
-    where: UsersWhereUniqueInput
-    create: XOR<UsersCreateWithoutBookingsInput, UsersUncheckedCreateWithoutBookingsInput>
-  }
-
   export type BookingsHistoryCreateWithoutBookingInput = {
     id?: string
     status: string
@@ -7662,6 +7696,43 @@ export namespace Prisma {
   export type BookingsHistoryCreateManyBookingInputEnvelope = {
     data: BookingsHistoryCreateManyBookingInput | BookingsHistoryCreateManyBookingInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UsersUpsertWithoutBookingsInput = {
+    update: XOR<UsersUpdateWithoutBookingsInput, UsersUncheckedUpdateWithoutBookingsInput>
+    create: XOR<UsersCreateWithoutBookingsInput, UsersUncheckedCreateWithoutBookingsInput>
+    where?: UsersWhereInput
+  }
+
+  export type UsersUpdateToOneWithWhereWithoutBookingsInput = {
+    where?: UsersWhereInput
+    data: XOR<UsersUpdateWithoutBookingsInput, UsersUncheckedUpdateWithoutBookingsInput>
+  }
+
+  export type UsersUpdateWithoutBookingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    nif?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    balance?: FloatFieldUpdateOperationsInput | number
+    services?: ServicesUpdateManyWithoutUserNestedInput
+  }
+
+  export type UsersUncheckedUpdateWithoutBookingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    nif?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    balance?: FloatFieldUpdateOperationsInput | number
+    services?: ServicesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ServicesUpsertWithoutBookingsInput = {
@@ -7697,43 +7768,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UsersUpsertWithoutBookingsInput = {
-    update: XOR<UsersUpdateWithoutBookingsInput, UsersUncheckedUpdateWithoutBookingsInput>
-    create: XOR<UsersCreateWithoutBookingsInput, UsersUncheckedCreateWithoutBookingsInput>
-    where?: UsersWhereInput
-  }
-
-  export type UsersUpdateToOneWithWhereWithoutBookingsInput = {
-    where?: UsersWhereInput
-    data: XOR<UsersUpdateWithoutBookingsInput, UsersUncheckedUpdateWithoutBookingsInput>
-  }
-
-  export type UsersUpdateWithoutBookingsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    services?: ServicesUpdateManyWithoutUserNestedInput
-  }
-
-  export type UsersUncheckedUpdateWithoutBookingsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    nif?: StringFieldUpdateOperationsInput | string
-    balance?: FloatFieldUpdateOperationsInput | number
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    services?: ServicesUncheckedUpdateManyWithoutUserNestedInput
-  }
-
   export type BookingsHistoryUpsertWithWhereUniqueWithoutBookingInput = {
     where: BookingsHistoryWhereUniqueInput
     update: XOR<BookingsHistoryUpdateWithoutBookingInput, BookingsHistoryUncheckedUpdateWithoutBookingInput>
@@ -7767,8 +7801,9 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    service: ServicesCreateNestedOneWithoutBookingsInput
+    date: Date | string
     client: UsersCreateNestedOneWithoutBookingsInput
+    service: ServicesCreateNestedOneWithoutBookingsInput
   }
 
   export type BookingsUncheckedCreateWithoutHistoryInput = {
@@ -7778,6 +7813,7 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    date: Date | string
   }
 
   export type BookingsCreateOrConnectWithoutHistoryInput = {
@@ -7801,8 +7837,9 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    service?: ServicesUpdateOneRequiredWithoutBookingsNestedInput
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: UsersUpdateOneRequiredWithoutBookingsNestedInput
+    service?: ServicesUpdateOneRequiredWithoutBookingsNestedInput
   }
 
   export type BookingsUncheckedUpdateWithoutHistoryInput = {
@@ -7812,6 +7849,16 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BookingsCreateManyClientInput = {
+    id?: string
+    serviceId: string
+    status?: $Enums.BookingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    date: Date | string
   }
 
   export type ServicesCreateManyUserInput = {
@@ -7824,12 +7871,33 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type BookingsCreateManyClientInput = {
-    id?: string
-    serviceId: string
-    status?: $Enums.BookingStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type BookingsUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    service?: ServicesUpdateOneRequiredWithoutBookingsNestedInput
+    history?: BookingsHistoryUpdateManyWithoutBookingNestedInput
+  }
+
+  export type BookingsUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    history?: BookingsHistoryUncheckedUpdateManyWithoutBookingNestedInput
+  }
+
+  export type BookingsUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ServicesUpdateWithoutUserInput = {
@@ -7864,38 +7932,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BookingsUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    service?: ServicesUpdateOneRequiredWithoutBookingsNestedInput
-    history?: BookingsHistoryUpdateManyWithoutBookingNestedInput
-  }
-
-  export type BookingsUncheckedUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    history?: BookingsHistoryUncheckedUpdateManyWithoutBookingNestedInput
-  }
-
-  export type BookingsUncheckedUpdateManyWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type BookingsCreateManyServiceInput = {
     id?: string
     clientId: string
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    date: Date | string
   }
 
   export type BookingsUpdateWithoutServiceInput = {
@@ -7903,6 +7946,7 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: UsersUpdateOneRequiredWithoutBookingsNestedInput
     history?: BookingsHistoryUpdateManyWithoutBookingNestedInput
   }
@@ -7913,6 +7957,7 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
     history?: BookingsHistoryUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -7922,6 +7967,7 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookingsHistoryCreateManyBookingInput = {

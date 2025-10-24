@@ -30,7 +30,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const payload = { id: user.id, email: user.email, role: user.role };
-    const token = Jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: "1h" });
+    const token = Jwt.sign(payload, process.env.JWT_SECRET!);
 
     res.json({ message: "Login feito com sucesso", token });
 };

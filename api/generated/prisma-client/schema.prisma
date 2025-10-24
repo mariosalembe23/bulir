@@ -8,31 +8,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  CLIENT
-  PROVIDER
-}
-
-enum BookingStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-  COMPLETED
-  CANCELLED
-}
-
 model Users {
   id        String     @id @unique @default(uuid())
   name      String
   email     String     @unique
   password  String
   nif       String     @unique
-  balance   Float      @default(0)
   role      Role       @default(CLIENT)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  services  Services[]
+  balance   Float      @default(0)
   bookings  Bookings[]
+  services  Services[]
 
   @@map("users")
 }
@@ -44,10 +31,10 @@ model Services {
   description String
   price       Float
   balance     Float      @default(0)
-  user        Users?     @relation(fields: [userId], references: [id])
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   Bookings    Bookings[]
+  user        Users?     @relation(fields: [userId], references: [id])
 
   @@map("services")
 }
@@ -57,10 +44,11 @@ model Bookings {
   serviceId String            @map("service_id")
   clientId  String            @map("client_id")
   status    BookingStatus     @default(PENDING)
-  service   Services          @relation(fields: [serviceId], references: [id])
-  client    Users             @relation(fields: [clientId], references: [id])
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
+  date      DateTime
+  client    Users             @relation(fields: [clientId], references: [id])
+  service   Services          @relation(fields: [serviceId], references: [id])
   history   BookingsHistory[]
 
   @@map("bookings")
@@ -71,9 +59,22 @@ model BookingsHistory {
   bookingId String   @map("booking_id")
   status    String
   changedAt DateTime @default(now())
-  booking   Bookings @relation(fields: [bookingId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  booking   Bookings @relation(fields: [bookingId], references: [id])
 
   @@map("bookings_history")
+}
+
+enum Role {
+  CLIENT
+  PROVIDER
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  CANCELLED
 }

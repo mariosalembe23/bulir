@@ -15,7 +15,15 @@ export const createService = async (
   const userId = req.userId;
   const { title, description, price, balance } = req.body;
   if (!title || !description || !price || !balance) {
-    return res.status(400).json({ error: "All fields are required" });
+    return res.status(400).json({ error: "Todos os campos são obrigatórios" });
+  }
+
+  const existingService = await prisma.services.findFirst({
+    where: { title, userId },
+  });
+  
+  if (existingService) {
+    return res.status(400).json({ error: "Este serviço já existe" });
   }
 
   const newService = await prisma.services.create({
@@ -39,7 +47,7 @@ export const getServiceById = async (req: Request, res: Response) => {
   const { serviceId } = req.params;
 
   if (!validate(serviceId)) {
-    return res.status(400).json({ error: "Invalid service ID" });
+    return res.status(400).json({ error: "Id Inválido" });
   }
 
   const service = await prisma.services.findUnique({
@@ -47,7 +55,7 @@ export const getServiceById = async (req: Request, res: Response) => {
   });
 
   if (!service) {
-    return res.status(404).json({ error: "Service not found" });
+    return res.status(404).json({ error: "Serviço não encontrado" });
   }
 
   res.json(service);
@@ -58,7 +66,7 @@ export const updateService = async (req: Request, res: Response) => {
   const { title, description, price, balance } = req.body;
 
   if (!validate(serviceId)) {
-    return res.status(400).json({ error: "Invalid service ID" });
+    return res.status(400).json({ error: "Id Inválido" });
   }
 
   const updatedService = await prisma.services.update({
@@ -73,19 +81,19 @@ export const deleteService = async (req: Request, res: Response) => {
   const { serviceId } = req.params;
 
   if (!validate(serviceId)) {
-    return res.status(400).json({ error: "Invalid service ID" });
+    return res.status(400).json({ error: "Id Inválido" });
   }
 
   await prisma.services.delete({ where: { id: serviceId } });
 
-  res.json({ message: "Service deleted successfully" });
+  res.json({ message: "Serviço foi deletado com sucesso" });
 };
 
 export const getUserServices = async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   if (!validate(userId)) {
-    return res.status(400).json({ error: "Invalid user ID" });
+    return res.status(400).json({ error: "Id Inválido" });
   }
 
   const services = await prisma.services.findMany({

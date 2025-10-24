@@ -126,10 +126,10 @@ exports.Prisma.UsersScalarFieldEnum = {
   email: 'email',
   password: 'password',
   nif: 'nif',
-  balance: 'balance',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  balance: 'balance'
 };
 
 exports.Prisma.ServicesScalarFieldEnum = {
@@ -149,7 +149,8 @@ exports.Prisma.BookingsScalarFieldEnum = {
   clientId: 'clientId',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  date: 'date'
 };
 
 exports.Prisma.BookingsHistoryScalarFieldEnum = {

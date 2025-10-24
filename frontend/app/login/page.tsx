@@ -12,6 +12,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { setCookie } from "cookies-next";
 import { LoaderCircleIcon } from "lucide-react";
+import InvisibleLoad from "@/components/Partials/InvisibleLoad";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -38,7 +39,6 @@ export default function Login() {
       setLoading(true);
       toast.loading("A processar o seu login...", { id: "login_loading" });
       const response = await axios.post(`${BASE_URL}/login`, data);
-      console.log(response.data);
       setCookie("token", response.data.token, {
         maxAge: 60 * 60 * 24 * 3,
       });
@@ -65,9 +65,7 @@ export default function Login() {
 
   return (
     <div className="grid grid-cols-[40%_60%] h-dvh">
-      {loading && (
-        <div className="fixed z-20 top-0 left-0 right-0 w-full h-dvh bg-transparent"></div>
-      )}
+      {loading && <InvisibleLoad />}
       <div
         style={{
           backgroundImage: 'url("/images/back.jpg")',

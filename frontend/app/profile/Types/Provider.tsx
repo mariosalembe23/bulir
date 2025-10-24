@@ -2,14 +2,106 @@ import PendentService from "@/app/services/components/PendentService";
 import ServiceCard from "@/app/services/components/ServiceCard";
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Bolt } from "lucide-react";
+import { Bolt, LoaderCircleIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { User } from "../[id]/page";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { toast } from "sonner";
+import timeSince from "@/components/Partials/TimeSince";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  balance: number;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const ProviderSlice: React.FC<{
   user: User | null;
 }> = ({ user }) => {
+  const [services, setServices] = React.useState<Service[]>([]);
+  const [loadingServices, setLoadingServices] = React.useState<boolean>(true);
+  const [loadingBookings, setLoadingBookings] = React.useState<boolean>(true);
+
+  useEffect(() => {
+    const getAllServices = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/services/all/` + user?.id,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("bulir_token")}`,
+            },
+          }
+        );
+        setServices(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (
+            error.response &&
+            error.response?.status >= 400 &&
+            error.response?.status < 500
+          ) {
+            toast.error(
+              error.response.data.error ||
+                "Erro de autenticação. Verifique suas credenciais."
+            );
+          }
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
+        }
+      } finally {
+        setLoadingServices(false);
+      }
+    };
+
+    const getAllBookings = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/bookings/all/` + user?.id,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("bulir_token")}`,
+            },
+          }
+        );
+        console.log("Bookings:", response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (
+            error.response &&
+            error.response?.status >= 400 &&
+            error.response?.status < 500
+          ) {
+            toast.error(
+              error.response.data.error ||
+                "Erro de autenticação. Verifique suas credenciais."
+            );
+          }
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
+        }
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
+
+    getAllBookings();
+    getAllServices();
+  }, [user?.id]);
+
   return (
     <div
       style={{
@@ -78,26 +170,30 @@ const ProviderSlice: React.FC<{
                 clientes.
               </p>
             </header>
-            <div className="grid grid-cols-1 gap-4 mt-5">
-              <PendentService
-                title="Desenvolvimento de Website"
-                description="Criação de um website responsivo para uma pequena empresa."
-                price={50000}
-                requestsCount={3}
-              />
-              <PendentService
-                title="Lavagem de Tapetes"
-                description="Serviço de lavagem profunda para tapetes residenciais."
-                price={2500}
-                requestsCount={1}
-              />
-              <PendentService
-                title="Reparação de Ar Condicionado"
-                description="Manutenção e reparo de sistemas de ar condicionado residenciais e comerciais."
-                price={15000}
-                requestsCount={2}
-              />
-            </div>
+            {loadingBookings ? (
+              <div className="mt-5 flex items-center justify-start w-full">
+                <p className="flex animate-pulse items-center border gap-2 px-3 py-1 rounded-full bg-gray-50 text-primary">
+                  <LoaderCircleIcon
+                    className="-ms-1 animate-spin"
+                    size={16}
+                    aria-hidden="true"
+                  />
+                  Carregando...
+                </p>
+              </div>
+            ) : (
+              <div className="mt-5 grid grid-cols-1 gap-4">
+                {services.map((service) => (
+                  <ServiceCard
+                    key={service.id}
+                    title={service.title}
+                    description={service.description}
+                    price={service.price}
+                    isOwner={true}
+                  />
+                ))}
+              </div>
+            )}
           </div>
           <section className="border-x">
             <header className="flex flex-col items-center gap-5">
@@ -128,7 +224,9 @@ const ProviderSlice: React.FC<{
                 </div>
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Tempo</p>
-                  <p className="text-xl font-semibold font-mono">190d</p>
+                  <p className="text-xl font-semibold font-mono">
+                    {timeSince(user?.createdAt || "")}
+                  </p>
                 </div>
               </div>
 
@@ -169,22 +267,30 @@ const ProviderSlice: React.FC<{
                 </h3>
                 <Button variant={"outline"}>Adicionar Serviço</Button>
               </div>
-              <div className="mt-5 grid grid-cols-1 gap-4">
-                <ServiceCard
-                  title="Concerto de Aparelhos domésticos"
-                  description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-                  price={23000}
-                  requestsCount={120}
-                  isOwner={true}
-                />
-                <ServiceCard
-                  title="Concerto de Aparelhos domésticos"
-                  description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-                  price={23000}
-                  requestsCount={120}
-                  isOwner={true}
-                />
-              </div>
+              {loadingServices ? (
+                <div className="mt-5 flex items-center justify-start w-full">
+                  <p className="flex animate-pulse items-center border gap-2 px-3 py-1 rounded-full bg-gray-50 text-primary">
+                    <LoaderCircleIcon
+                      className="-ms-1 animate-spin"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                    Carregando...
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-5 grid grid-cols-1 gap-4">
+                  {services.map((service) => (
+                    <ServiceCard
+                      key={service.id}
+                      title={service.title}
+                      description={service.description}
+                      price={service.price}
+                      isOwner={true}
+                    />
+                  ))}
+                </div>
+              )}
             </header>
           </div>
         </section>

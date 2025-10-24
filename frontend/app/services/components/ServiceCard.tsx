@@ -11,6 +11,7 @@ export interface ServiceCardProps {
   price: number;
   requestsCount?: number;
   isOwner?: boolean;
+  userId?: string;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -19,6 +20,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   price,
   requestsCount,
   isOwner,
+  userId,
 }) => {
   return (
     <div className="border flex flex-col justify-between p-5 rounded-2xl">
@@ -78,16 +80,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           )}
         </div>
         {isOwner ? (
-          <div className="grid grid-cols-2 gap-2">
-            <Button className="w-full mt-3 text-base py-5">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button className="w-full text-base py-5">
               <Settings className="size-4 " />
               Editar Serviço
             </Button>
 
-            <Button
-              variant={"destructive"}
-              className="w-full mt-3 text-base py-5"
-            >
+            <Button variant={"destructive"} className="w-full text-base py-5">
               <Trash className="size-4 " />
               Remover Serviço
             </Button>

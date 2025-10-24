@@ -1,9 +1,42 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import ServiceCard from "./components/ServiceCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { Service } from "../profile/Types/Provider";
+import LoadingComponent from "@/components/Partials/LoadingComponent";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const getAllServices = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/services/all`, {
+          headers: {
+            Authorization: `Bearer ${getCookie("bulir_token")}`,
+          },
+        });
+        setServices(response.data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getAllServices();
+  }, []);
+
+  if (loading) return <LoadingComponent />;
+
   return (
     <div
       style={{
@@ -62,78 +95,17 @@ export default function Home() {
           </header>
 
           <div className="mt-10 grid grid-cols-5 gap-4">
-            <ServiceCard
-              title="Concerto de Aparelhos domésticos"
-              description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-              price={23000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Design de Logo"
-              description="Criação de logotipos personalizados para sua marca."
-              price={45000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Desenvolvimento Web"
-              description="Criação de sites modernos e responsivos."
-              price={150000}
-              requestsCount={85}
-            />
-            <ServiceCard
-              title="Concerto de Aparelhos domésticos"
-              description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-              price={23000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Design de Logo"
-              description="Criação de logotipos personalizados para sua marca."
-              price={45000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Desenvolvimento Web"
-              description="Criação de sites modernos e responsivos."
-              price={150000}
-              requestsCount={85}
-            />
-            <ServiceCard
-              title="Concerto de Aparelhos domésticos"
-              description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-              price={23000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Design de Logo"
-              description="Criação de logotipos personalizados para sua marca."
-              price={45000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Desenvolvimento Web"
-              description="Criação de sites modernos e responsivos."
-              price={150000}
-              requestsCount={85}
-            />
-            <ServiceCard
-              title="Concerto de Aparelhos domésticos"
-              description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-              price={23000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Design de Logo"
-              description="Criação de logotipos personalizados para sua marca."
-              price={45000}
-              requestsCount={120}
-            />
-            <ServiceCard
-              title="Desenvolvimento Web"
-              description="Criação de sites modernos e responsivos."
-              price={150000}
-              requestsCount={85}
-            />
+            {services.map((service) => (
+              <ServiceCard
+                key={service.id}
+                description={service.description}
+                price={service.price}
+                title={service.title}
+                id={service.id}
+                requestsCount={0}
+                userId={service.userId}
+              />
+            ))}
           </div>
         </section>
       </main>

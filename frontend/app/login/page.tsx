@@ -1,12 +1,73 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
+import { setCookie } from "cookies-next";
+import { LoaderCircleIcon } from "lucide-react";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{
+    email: string;
+    password: string;
+  }>({
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  const [seePassword, setSeePassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onSubmit = async (data: { email: string; password: string }) => {
+    try {
+      setLoading(true);
+      toast.loading("A processar o seu login...", { id: "login_loading" });
+      const response = await axios.post(`${BASE_URL}/login`, data);
+      console.log(response.data);
+      setCookie("token", response.data.token, {
+        maxAge: 60 * 60 * 24 * 3,
+      });
+      toast.success("Login realizado com sucesso!", { id: "login_loading" });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response?.status >= 400 &&
+          error.response?.status < 500
+        ) {
+          toast.error(
+            error.response.data.error ||
+              "Erro de autenticação. Verifique suas credenciais."
+          );
+        }
+      } else {
+        toast.error("Ocorreu um erro. Por favor, tente novamente mais tarde.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="grid grid-cols-[40%_60%] h-dvh">
+      {loading && (
+        <div className="fixed z-20 top-0 left-0 right-0 w-full h-dvh bg-transparent"></div>
+      )}
       <div
         style={{
           backgroundImage: 'url("/images/back.jpg")',
@@ -57,7 +118,7 @@ export default function Login() {
                 </svg>
               </Link>
               <Button variant={"outline"} className=" rounded-none">
-                <Link href={"/"}>Voltar</Link>
+                <Link href={"/"}>Início</Link>
               </Button>
             </div>
             <h1 className="text-primary text-2xl pt-5 font-semibold">
@@ -69,7 +130,7 @@ export default function Login() {
             </p>
           </header>
 
-          <form className="mt-7 space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-8">
             <div className="*:not-first:mt-2">
               <Label
                 htmlFor={"email"}
@@ -79,30 +140,73 @@ export default function Login() {
               </Label>
               <Input
                 id={"email"}
+                {...register("email", { required: "Este campo é obrigatório" })}
                 className="py-5 focus:ring-4! text-base text-secondary focus:ring-contrast-ground! focus:border-primary/70!"
                 placeholder="Email ou NIF"
-                type="email"
+                type="text"
               />
+              {errors.email && (
+                <p className="text-red-700 ps-3 mt-1 text-sm">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div className="*:not-first:mt-2">
               <Label
-                htmlFor={"email"}
+                htmlFor={"password"}
                 className="text-primary font-[450] text-[15px]"
               >
                 Palavra-chave
               </Label>
               <Input
-                id={"email"}
+                id={"password"}
+                {...register("password", {
+                  required: "Este campo é obrigatório",
+                })}
                 className="py-5 focus:ring-4! text-secondary text-base focus:ring-contrast-ground! focus:border-primary/70!"
                 placeholder="xxxxxxxxxxx"
-                type="email"
+                type={seePassword ? "text" : "password"}
               />
+              {errors.password && (
+                <p className="text-red-700 ps-3 mt-1 text-sm">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={seePassword}
+                onCheckedChange={(checked) => setSeePassword(!!checked)}
+                id={"see_pass"}
+              />
+              <Label
+                htmlFor={"see_pass"}
+                className="text-secondary text-[15px] font-[450] cursor-pointer"
+              >
+                Mostrar palavra-chave
+              </Label>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <Button variant={"outline"} className="py-5 rounded-none">
-                <Link href={"/register"}>Criar Conta</Link>
-              </Button>
-              <Button className="bg-primary py-5 text-white hover:bg-secondary rounded-none">
+              <Link href={"/register"} className="w-full">
+                <Button
+                  variant={"outline"}
+                  type="button"
+                  className="py-5 w-full rounded-none"
+                >
+                  Criar Conta
+                </Button>
+              </Link>
+              <Button
+                type="submit"
+                className="bg-primary py-5 text-white hover:bg-secondary rounded-none"
+              >
+                {loading && (
+                  <LoaderCircleIcon
+                    className="-ms-1 animate-spin"
+                    size={16}
+                    aria-hidden="true"
+                  />
+                )}
                 Iniciar Sessão
               </Button>
             </div>

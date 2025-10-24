@@ -46,7 +46,7 @@ export default function Register() {
                   </svg>
                 </Link>
                 <Button variant={"outline"} className=" rounded-none">
-                  <Link href={"/"}>Voltar</Link>
+                  <Link href={"/"}>Início</Link>
                 </Button>
               </div>
               <div className="max-w-md">

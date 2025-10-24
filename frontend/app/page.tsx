@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
+import Link from "next/link";
 
 const hireStep = [
   "Aceda a plataforma com milhares de prestadores qualificados.",
@@ -59,15 +60,19 @@ export default function Home() {
                   </svg>
                 </span>
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant={"outline"}
-                    className="rounded-none text-primary"
-                  >
-                    Iniciar Sessão
-                  </Button>
-                  <Button className="bg-primary text-white hover:bg-secondary rounded-none">
-                    Baixar App
-                  </Button>
+                  <Link href={"/login"}>
+                    <Button
+                      variant={"outline"}
+                      className="rounded-none text-primary"
+                    >
+                      Iniciar Sessão
+                    </Button>
+                  </Link>
+                  <Link href="/">
+                    <Button className="bg-primary text-white hover:bg-secondary rounded-none">
+                      Baixar App
+                    </Button>
+                  </Link>
                 </div>
               </div>
 
@@ -122,10 +127,12 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <Button className="bg-white mt-5 py-5 hover:bg-white/80 text-secondary rounded-none">
-                    Quero contratar um serviço
-                    <MoveRight className="ml-2" />
-                  </Button>
+                  <Link href={"/register"}>
+                    <Button className="bg-white mt-5 py-5 hover:bg-white/80 text-secondary rounded-none">
+                      Quero contratar um serviço
+                      <MoveRight className="ml-2" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -156,10 +163,12 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <Button className="bg-contrast mt-5 py-5 hover:bg-contrast/80 text-secondary rounded-none">
-                    Quero ser um prestador
-                    <MoveRight className="ml-2" />
-                  </Button>
+                  <Link href={"/register"}>
+                    <Button className="bg-contrast mt-5 py-5 hover:bg-contrast/80 text-secondary rounded-none">
+                      Quero ser um prestador
+                      <MoveRight className="ml-2" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

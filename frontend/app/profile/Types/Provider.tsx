@@ -190,6 +190,11 @@ const ProviderSlice: React.FC<{
                     description={service.description}
                     price={service.price}
                     isOwner={true}
+                    userBalance={user?.balance || 0}
+                    clientId={user?.id || ""}
+                    logedUserId={user?.id}
+                    userId={service.userId}
+                    id={service.id}
                   />
                 ))}
               </div>
@@ -287,6 +292,11 @@ const ProviderSlice: React.FC<{
                       description={service.description}
                       price={service.price}
                       isOwner={true}
+                      userBalance={user?.balance || 0}
+                      clientId={user?.id || ""}
+                      logedUserId={user?.id}
+                      userId={service.userId}
+                      id={service.id}
                     />
                   ))}
                 </div>

@@ -25,20 +25,31 @@ export default function CreateBooking({
   setOpen,
   clientId,
   serviceId,
+  price,
+  userBalance,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  clientId?: string;
-  serviceId?: string;
+  clientId: string;
+  serviceId: string;
+  price: number;
+  userBalance: number;
 }) {
   const [date, setDate] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const createBooking = async () => {
-    if (!clientId || !serviceId) return;
+    if (!clientId || !serviceId) {
+      return toast.error("Dados do cliente ou serviço ausentes.");
+    }
 
     if (clientId === serviceId) {
       toast.error("Você não pode solicitar um serviço para si mesmo.");
+      return;
+    }
+
+    if (userBalance && price && userBalance < price) {
+      toast.error("Saldo insuficiente. Carregue sua conta para continuar.");
       return;
     }
 
@@ -91,7 +102,7 @@ export default function CreateBooking({
             Insira a data desejada para o serviço e confirme sua solicitação.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form>
+        <div>
           <div>
             <Label htmlFor="date" className="ps-2 text-[15px]">
               Data do Serviço
@@ -105,14 +116,10 @@ export default function CreateBooking({
               type="date"
             />
           </div>
-        </form>
+        </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <Button
-            onClick={() => {
-              createBooking();
-            }}
-          >
+          <Button onClick={createBooking}>
             {loading && (
               <LoaderCircleIcon
                 className="-ms-1 animate-spin"

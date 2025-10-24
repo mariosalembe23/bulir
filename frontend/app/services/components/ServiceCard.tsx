@@ -13,9 +13,10 @@ export interface ServiceCardProps {
   price: number;
   requestsCount?: number;
   isOwner?: boolean;
-  userId?: string;
-  clientId?: string;
+  userId: string;
+  clientId: string;
   logedUserId?: string;
+  userBalance: number;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -26,6 +27,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   userId,
   clientId,
   logedUserId,
+  userBalance,
+  id
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
@@ -109,7 +112,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         ) : userId === logedUserId ? (
           <Button
             variant={"outline"}
-            onClick={() => setOpenConfirm(true)}
+            onClick={() => {
+              window.location.href = `/profile/${logedUserId}`;
+            }}
             className="w-full mt-3 text-base py-5"
           >
             <Bolt className="size-4 " />
@@ -128,8 +133,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       <CreateBooking
         open={openConfirm}
         clientId={clientId!}
-        serviceId={userId!}
+        serviceId={id!}
         setOpen={setOpenConfirm}
+        price={price}
+        userBalance={userBalance}
       />
     </div>
   );

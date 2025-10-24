@@ -1,28 +1,17 @@
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Settings, ShoppingCart, Trash } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { ServiceCardProps } from "./ServiceCard";
 
-export interface ServiceCardProps {
-  id?: string;
-  title: string;
-  description: string;
-  price: number;
-  requestsCount?: number;
-  isOwner?: boolean;
-}
-
-const ServiceCard: React.FC<ServiceCardProps> = ({
+const PendentService: React.FC<ServiceCardProps> = ({
   title,
   description,
   price,
-  requestsCount,
-  isOwner,
 }) => {
   return (
-    <div className="border flex flex-col justify-between p-5 rounded-2xl">
-      <header className="flex items-center justify-between ">
+    <div className="p-4 rounded-xl border border-gray-100">
+      <header className="flex items-center justify-between">
         <svg
           className="size-6"
           viewBox="0 0 38 38"
@@ -50,57 +39,40 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             fill="#0C2340"
           />
         </svg>
-        <p className="text-secondary">{ConvertMoneyFormat(price)}</p>
+        <p className="text-secondary font-semibold text-xl mt-2">
+          {ConvertMoneyFormat(price)}
+        </p>
       </header>
-
-      <footer className="mt-10">
-        <span className="text-lg font-medium text-primary">{title}</span>
-        <p className="mt-2 text-gray-600 text-[15px]">{description}</p>
-        <div className="flex flex-wrap items-center gap-4 my-2">
-          {!isOwner && (
-            <>
-              <p className="rounded-full bg-gray-50 px-2 py-2 border leading-none text-[14px] text-primary font-medium">
-                + {requestsCount} pedidos realizados
-              </p>
-              <div className="flex items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
-                <Image
-                  src={"https://avatar.iran.liara.run/public/1"}
-                  width={100}
-                  height={100}
-                  alt="Avatar"
-                  className="rounded-full border size-6"
-                />
-                <span className="pe-2 text-primary text-[15px] leading-none">
-                  Perfil
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-        {isOwner ? (
-          <div className="grid grid-cols-2 gap-2">
-            <Button className="w-full mt-3 text-base py-5">
-              <Settings className="size-4 " />
-              Editar Serviço
-            </Button>
-
-            <Button
-              variant={"destructive"}
-              className="w-full mt-3 text-base py-5"
-            >
-              <Trash className="size-4 " />
-              Remover Serviço
-            </Button>
+      <div className="mt-4">
+        <p className="font-medium text-primary text-lg">{title}</p>
+        <p className="text-gray-700 text-[15px]">{description}</p>
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="inline-flex mt-2 items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
+            <Image
+              src={"https://avatar.iran.liara.run/public/1"}
+              width={100}
+              height={100}
+              alt="Avatar"
+              className="rounded-full border size-6"
+            />
+            <span className="pe-2 text-primary text-[15px] leading-none">
+              Perfil do Cliente
+            </span>
           </div>
-        ) : (
-          <Button className="w-full mt-3 text-base py-5">
-            <ShoppingCart className="size-4 " />
-            Solicitar Serviço
-          </Button>
-        )}
-      </footer>
+          <div className="inline-flex mt-2 items-center gap-2 bg-gray-50 rounded-full px-3 py-2 border">
+            <span className=" text-primary text-[15px] leading-none">
+              Há 12h
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 mt-4">
+          <Button className="w-full">Aceitar Pedido</Button>
+          <Button variant={"outline"}>Rejeitar Pedido</Button>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default ServiceCard;
+export default PendentService;

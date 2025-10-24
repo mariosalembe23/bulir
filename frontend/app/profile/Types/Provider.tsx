@@ -1,11 +1,15 @@
+import PendentService from "@/app/services/components/PendentService";
+import ServiceCard from "@/app/services/components/ServiceCard";
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
 import { Bolt } from "lucide-react";
 import Link from "next/link";
-import PendentCard from "../services/components/PendentCard";
-import ServiceCard from "../services/components/ServiceCard";
+import React from "react";
+import { User } from "../[id]/page";
 
-export default function ProfilePage() {
+const ProviderSlice: React.FC<{
+  user: User | null;
+}> = ({ user }) => {
   return (
     <div
       style={{
@@ -15,7 +19,7 @@ export default function ProfilePage() {
     >
       <main className="bg-white flex flex-col justify-between p-5 w-full ring-8 ring-white/50 h-full rounded-3xl shadow-2xl">
         <header className="px-3 pb-3 border-gray-100 border-b flex items-center justify-between">
-          <div>
+          <div className="flex items-center gap-3">
             <Link href={"/"}>
               <svg
                 className="size-9"
@@ -45,34 +49,49 @@ export default function ProfilePage() {
                 />
               </svg>
             </Link>
+            <Link href={"/"}>
+              <Button variant={"link"}>Página Inicial</Button>
+            </Link>
+
+            <Link href={"/services"}>
+              <Button variant={"link"}>Serviços</Button>
+            </Link>
           </div>
-          <div></div>
+          <div className="flex items-center gap-3">
+            <div
+              style={{
+                backgroundImage: 'url("/images/profile.jpeg")',
+              }}
+              className="rounded-full bg-cover size-8"
+            />
+            <Button variant={"outline"}>Sair</Button>
+          </div>
         </header>
-        <section className="h-full p-10 grid grid-cols-3 overflow-y-auto">
+        <section className="h-full p-10 grid grid-cols-[30%_40%_30%] overflow-y-auto">
           <div className="p-5">
             <header>
               <h3 className="text-2xl font-semibold text-primary ">
-                Serviços Pendentes
+                Serviços Solicitados
               </h3>
               <p className="text-gray-600">
-                Aqui estão os serviços que você solicitou e que ainda estão
-                pendentes de conclusão.
+                Serviços que você ofereceu e estão aguardando aprovação dos
+                clientes.
               </p>
             </header>
             <div className="grid grid-cols-1 gap-4 mt-5">
-              <PendentCard
+              <PendentService
                 title="Desenvolvimento de Website"
                 description="Criação de um website responsivo para uma pequena empresa."
                 price={50000}
                 requestsCount={3}
               />
-              <PendentCard
+              <PendentService
                 title="Lavagem de Tapetes"
                 description="Serviço de lavagem profunda para tapetes residenciais."
                 price={2500}
                 requestsCount={1}
               />
-              <PendentCard
+              <PendentService
                 title="Reparação de Ar Condicionado"
                 description="Manutenção e reparo de sistemas de ar condicionado residenciais e comerciais."
                 price={15000}
@@ -89,8 +108,11 @@ export default function ProfilePage() {
                 className="rounded-full bg-cover size-24"
               ></div>
               <div className="text-center">
-                <p className="text-3xl">Mário Lino Salembe</p>
-                <p className="text-zinc-600">linomario199010@gmail.com</p>
+                <p className="text-3xl">{user?.name}</p>
+                <p className="text-zinc-600">{user?.email}</p>
+                <p className="px-3 rounded-full py-1 bg-contrast mt-2 font-medium text-primary">
+                  Prestador de Serviços
+                </p>
               </div>
 
               <div className="grid grid-cols-3 items-center mt-5 gap-5 flex-wrap">
@@ -101,7 +123,7 @@ export default function ProfilePage() {
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Saldo</p>
                   <p className="text-xl font-semibold font-mono">
-                    {ConvertMoneyFormat(15000)}
+                    {ConvertMoneyFormat(user?.balance || 0)}
                   </p>
                 </div>
                 <div className="text-center px-4">
@@ -113,15 +135,21 @@ export default function ProfilePage() {
               <footer className="w-full flex flex-col gap-8 px-10 mt-10">
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-600">NIF</p>
-                  <p className="font-mono font-semibold">123456789</p>
+                  <p className="font-mono font-semibold">{user?.nif}</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-600">Registrado em</p>
-                  <p className="font-mono font-semibold">10/05/2022</p>
+                  <p className="font-mono font-semibold">
+                    {new Date(user?.createdAt || "").toLocaleDateString()}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-600">Tipo de Conta</p>
-                  <p className=" font-medium">CLIENT(Cliente)</p>
+                  <p className=" font-medium text-[15px]">
+                    {user?.role === "PROVIDER"
+                      ? "PROVIDER(Prestador de Serviços)"
+                      : "CLIENT(Cliente)"}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <Button variant={"outline"} className="">
@@ -135,21 +163,26 @@ export default function ProfilePage() {
           </section>
           <div className="p-8">
             <header>
-              <h3 className="text-2xl font-semibold text-primary ">
-                Serviços Recentes
-              </h3>
+              <div className="flex items-center justify-between flex-wrap">
+                <h3 className="text-2xl font-semibold text-primary ">
+                  Meus Serviços
+                </h3>
+                <Button variant={"outline"}>Adicionar Serviço</Button>
+              </div>
               <div className="mt-5 grid grid-cols-1 gap-4">
                 <ServiceCard
                   title="Concerto de Aparelhos domésticos"
                   description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
                   price={23000}
                   requestsCount={120}
+                  isOwner={true}
                 />
                 <ServiceCard
                   title="Concerto de Aparelhos domésticos"
                   description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
                   price={23000}
                   requestsCount={120}
+                  isOwner={true}
                 />
               </div>
             </header>
@@ -158,4 +191,6 @@ export default function ProfilePage() {
       </main>
     </div>
   );
-}
+};
+
+export default ProviderSlice;

@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { setCookie } from "cookies-next";
 import { LoaderCircleIcon } from "lucide-react";
 import InvisibleLoad from "@/components/Partials/InvisibleLoad";
+import { decodeToken } from "@/components/Partials/decodeToken";
+import { useRouter } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -33,15 +35,25 @@ export default function Login() {
   });
   const [seePassword, setSeePassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
       setLoading(true);
       toast.loading("A processar o seu login...", { id: "login_loading" });
       const response = await axios.post(`${BASE_URL}/login`, data);
-      setCookie("token", response.data.token, {
+      setCookie("bulir_token", response.data.token, {
         maxAge: 60 * 60 * 24 * 3,
       });
+      const decoded = decodeToken(response.data.token);
+
+      if (!decoded) {
+        toast.error("Token inválido recebido do servidor.");
+        return;
+      }
+
+      router.push("/profile/" + decoded.id);
+
       toast.success("Login realizado com sucesso!", { id: "login_loading" });
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -60,6 +72,7 @@ export default function Login() {
       }
     } finally {
       setLoading(false);
+      toast.dismiss("login_loading");
     }
   };
 

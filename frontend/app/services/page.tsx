@@ -9,14 +9,65 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { Service } from "../profile/Types/Provider";
 import LoadingComponent from "@/components/Partials/LoadingComponent";
+import { decodeToken } from "@/components/Partials/decodeToken";
+import { User } from "../profile/[id]/page";
+import { toast } from "sonner";
+import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingUser, setLoadingUser] = useState<boolean>(true);
+  const [id, setId] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [img, setImg] = useState<string>("/images/profile.jpeg");
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return;
+
+      try {
+        setLoading(true);
+        const response = await axios.get(`${BASE_URL}/profile/${id}`);
+        setImg(
+          response.data.role === "CLIENT"
+            ? "/images/user.jpeg"
+            : "/images/profile.jpeg"
+        );
+        setUser(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (
+            error.response &&
+            error.response?.status >= 400 &&
+            error.response?.status < 500
+          ) {
+            toast.error(
+              error.response.data.error ||
+                "Erro de autenticação. Verifique suas credenciais."
+            );
+          }
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
+        }
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    const decoded = decodeToken(getCookie("bulir_token") as string);
+    if (decoded && typeof decoded === "object" && "id" in decoded) {
+      setId(decoded.id as string);
+    }
+
     const getAllServices = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/services/all`, {
@@ -35,7 +86,7 @@ export default function Home() {
     getAllServices();
   }, []);
 
-  if (loading) return <LoadingComponent />;
+  if (loading || loadingUser) return <LoadingComponent />;
 
   return (
     <div
@@ -77,10 +128,27 @@ export default function Home() {
               </svg>
             </Link>
           </div>
-          <div>
+          <div className="flex items-center gap-4">
             <Button variant={"outline"} className=" rounded-full" size={"icon"}>
               <Search className="" />
             </Button>
+            {user && (
+              <>
+                <Link
+                  href={`/profile/${id}`}
+                  className="flex items-center gap-2 px-1 py-1 text-primary rounded-full bg-gray-100 border"
+                >
+                  <div
+                    style={{
+                      backgroundImage: `url(${img})`,
+                    }}
+                    className="rounded-full bg-cover size-7"
+                  />
+                  <p className="pe-2">Perfil</p>
+                </Link>
+                <p>{ConvertMoneyFormat(user.balance ? user.balance : 0)}</p>
+              </>
+            )}
           </div>
         </header>
         <section className="h-full p-10 overflow-y-auto">
@@ -94,19 +162,28 @@ export default function Home() {
             </div>
           </header>
 
-          <div className="mt-10 grid grid-cols-5 gap-4">
-            {services.map((service) => (
-              <ServiceCard
-                key={service.id}
-                description={service.description}
-                price={service.price}
-                title={service.title}
-                id={service.id}
-                requestsCount={0}
-                userId={service.userId}
-              />
-            ))}
-          </div>
+          {services.length === 0 ? (
+            <div>
+              <p className="mt-10 text-gray-600">
+                Nenhum serviço disponível no momento. Por favor, volte mais
+                tarde.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-10 grid grid-cols-5 gap-4">
+              {services.map((service) => (
+                <ServiceCard
+                  key={service.id}
+                  description={service.description}
+                  price={service.price}
+                  title={service.title}
+                  id={service.id}
+                  requestsCount={0}
+                  userId={service.userId}
+                />
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>

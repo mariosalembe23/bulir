@@ -180,6 +180,8 @@ export default function Home() {
                   id={service.id}
                   requestsCount={0}
                   userId={service.userId}
+                  clientId={id!}
+                  logedUserId={id!}
                 />
               ))}
             </div>

@@ -1,8 +1,10 @@
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Settings, ShoppingCart, Trash } from "lucide-react";
+import { Bolt, Settings, ShoppingCart, Trash, ZapIcon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import CreateBooking from "./CreateBooking";
+import { Badge } from "@/components/ui/badge";
 
 export interface ServiceCardProps {
   id?: string;
@@ -12,16 +14,21 @@ export interface ServiceCardProps {
   requestsCount?: number;
   isOwner?: boolean;
   userId?: string;
+  clientId?: string;
+  logedUserId?: string;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
   description,
   price,
-  requestsCount,
   isOwner,
   userId,
+  clientId,
+  logedUserId,
 }) => {
+  const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+
   return (
     <div className="border flex flex-col justify-between p-5 rounded-2xl">
       <header className="flex items-center justify-between ">
@@ -58,12 +65,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       <footer className="mt-10">
         <span className="text-lg font-medium text-primary">{title}</span>
         <p className="mt-2 text-gray-600 text-[15px]">{description}</p>
+
         <div className="flex flex-wrap items-center gap-4 my-2">
           {!isOwner && (
             <>
-              <p className="rounded-full bg-gray-50 px-2 py-2 border leading-none text-[14px] text-primary font-medium">
-                + {requestsCount} pedidos realizados
-              </p>
               <div className="flex items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
                 <Image
                   src={"https://avatar.iran.liara.run/public/1"}
@@ -78,6 +83,16 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
               </div>
             </>
           )}
+          {userId === logedUserId && (
+            <Badge>
+              <ZapIcon
+                className="-ms-0.5 opacity-60"
+                size={12}
+                aria-hidden="true"
+              />
+              Este é o seu serviço
+            </Badge>
+          )}
         </div>
         {isOwner ? (
           <div className="flex items-center gap-2 flex-wrap">
@@ -91,13 +106,31 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
               Remover Serviço
             </Button>
           </div>
+        ) : userId === logedUserId ? (
+          <Button
+            variant={"outline"}
+            onClick={() => setOpenConfirm(true)}
+            className="w-full mt-3 text-base py-5"
+          >
+            <Bolt className="size-4 " />
+            Editar Serviço
+          </Button>
         ) : (
-          <Button className="w-full mt-3 text-base py-5">
+          <Button
+            onClick={() => setOpenConfirm(true)}
+            className="w-full mt-3 text-base py-5"
+          >
             <ShoppingCart className="size-4 " />
             Solicitar Serviço
           </Button>
         )}
       </footer>
+      <CreateBooking
+        open={openConfirm}
+        clientId={clientId!}
+        serviceId={userId!}
+        setOpen={setOpenConfirm}
+      />
     </div>
   );
 };

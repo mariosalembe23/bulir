@@ -1,26 +1,17 @@
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { ServiceCardProps } from "./ServiceCard";
 
-export interface ServiceCardProps {
-  id?: string;
-  title: string;
-  description: string;
-  price: number;
-  requestsCount?: number;
-}
-
-const ServiceCard: React.FC<ServiceCardProps> = ({
+const PendentCard: React.FC<ServiceCardProps> = ({
   title,
   description,
   price,
-  requestsCount,
 }) => {
   return (
-    <div className="border flex flex-col justify-between p-5 rounded-2xl">
-      <header className="flex items-center justify-between ">
+    <div className="p-4 rounded-xl border border-gray-100">
+      <header className="flex items-center justify-between">
         <svg
           className="size-6"
           viewBox="0 0 38 38"
@@ -48,36 +39,28 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             fill="#0C2340"
           />
         </svg>
-        <p className="text-secondary">{ConvertMoneyFormat(price)}</p>
+        <Button variant={"outline"}>Cancelar Pedido</Button>
       </header>
-
-      <footer className="mt-10">
-        <span className="text-lg font-medium text-primary">{title}</span>
-        <p className="mt-2 text-gray-600 text-[15px]">{description}</p>
-        <div className="flex flex-wrap items-center gap-4 my-2">
-          <p className="rounded-full bg-gray-50 px-2 py-2 border leading-none text-[14px] text-primary font-medium">
-            + {requestsCount} pedidos realizados
-          </p>
-          <div className="flex items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
-            <Image
-              src={"https://avatar.iran.liara.run/public/1"}
-              width={100}
-              height={100}
-              alt="Avatar"
-              className="rounded-full border size-6"
-            />
-            <span className="pe-2 text-primary text-[15px] leading-none">
-              Perfil
-            </span>
-          </div>
-        </div>
-        <Button className="w-full mt-3 text-base py-5">
-          <ShoppingCart className="size-4 " />
-          Solicitar Serviço
-        </Button>
-      </footer>
+      <div className="mt-4">
+        <p className="font-medium text-primary text-lg">{title}</p>
+        <p className="text-gray-700 text-[15px]">{description}</p>
+        <p className="text-secondary font-medium inline-flex py-1 rounded-full leading-none mt-1">
+          <Image
+            src={"https://flagcdn.com/ao.svg"}
+            alt="Angola Flag"
+            width={20}
+            height={15}
+            className="inline-block me-2"
+          />
+          938393388
+        </p>
+        <p className="text-secondary font-semibold text-xl mt-2">
+          {ConvertMoneyFormat(price)}
+        </p>
+        <p className="text-gray-600 text-sm mt-2">Solicitado a 13 horas</p>
+      </div>
     </div>
   );
 };
 
-export default ServiceCard;
+export default PendentCard;

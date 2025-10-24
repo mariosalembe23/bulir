@@ -1,8 +1,10 @@
 import express from "express";
-import { Request, Response } from "express";
 import dotenv from "dotenv";
-import router from "./routes/user";
+import userRoute from "./routes/user";
+import authRoute from "./routes/auth";
+import servicesRoute from "./routes/services";
 import cors from "cors";
+import bookingRoute from "./routes/booking";
 
 dotenv.config();
 
@@ -19,7 +21,10 @@ app.use(
 
 app.use(express.json());
 
-app.use("/api", router);
+app.use("/api", userRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/services", servicesRoute);
+app.use("/api/bookings", bookingRoute);
 
 const PORT = process.env.PORT || 3001;
 

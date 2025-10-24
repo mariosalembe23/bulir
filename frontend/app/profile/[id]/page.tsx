@@ -1,10 +1,9 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import ClientSlice from "../Types/Client";
 import ProviderSlice from "../Types/Provider";
-import { getCookie } from "cookies-next";
 import axios from "axios";
 import { toast } from "sonner";
 import LoadingComponent from "@/components/Partials/LoadingComponent";
@@ -25,7 +24,6 @@ export interface User {
 
 export default function ProfilePage() {
   const { id } = useParams();
-  const router = useRouter();
   const [type, setType] = React.useState<string | null>(null);
   const [user, setUser] = React.useState<User | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);

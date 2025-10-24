@@ -56,7 +56,7 @@ const ClientSlice = () => {
           <div className="flex items-center gap-3">
             <div
               style={{
-                backgroundImage: 'url("/images/profile.jpeg")',
+                backgroundImage: 'url("/images/user.jpeg")',
               }}
               className="rounded-full bg-cover size-8"
             />

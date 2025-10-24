@@ -1,9 +1,112 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import { LoaderCircleIcon } from "lucide-react";
+import InvisibleLoad from "@/components/Partials/InvisibleLoad";
+import openConfetti from "@/components/Partials/Confetti";
+import { decodeToken } from "@/components/Partials/decodeToken";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+
+interface RegisterFormData {
+  name: string;
+  email: string;
+  nif: string;
+  password: string;
+}
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Register() {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    trigger,
+  } = useForm<RegisterFormData>({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      nif: "",
+      password: "",
+    },
+  });
+  const [seePassword, setSeePassword] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [accountType, setAccountType] = useState<"CLIENT" | "PROVIDER" | null>(
+    "CLIENT"
+  );
+  const [loading, setLoading] = useState<boolean>(false);
+  const [created, setCreated] = useState<boolean>(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const decoded = decodeToken(getCookie("bulir_token") as string);
+
+    if (decoded) {
+      router.push("/profile/" + decoded.id);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (created) openConfetti();
+  }, [created]);
+
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      setLoading(true);
+      const dataToSend = {
+        name: data.name,
+        email: data.email,
+        nif: data.nif,
+        role: accountType,
+        password: data.password,
+      };
+      await axios.post(`${BASE_URL}/register`, dataToSend);
+      setValue("name", "");
+      setValue("email", "");
+      setValue("nif", "");
+      setValue("password", "");
+      setCreated(true);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response?.status >= 400 &&
+          error.response?.status < 500
+        ) {
+          toast.error(
+            error.response.data.error ||
+              "Erro de autenticação. Verifique suas credenciais."
+          );
+        }
+      } else {
+        toast.error("Ocorreu um erro. Por favor, tente novamente mais tarde.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div
       style={{
@@ -11,6 +114,7 @@ export default function Register() {
       }}
       className="bg-cover flex items-center justify-center bg-center h-dvh"
     >
+      {loading && <InvisibleLoad />}
       <div className="bg-white max-w-2xl w-full rounded-2xl ring-8 ring-white/50 p-8">
         <div className="h-full overflow-y-auto flex items-center justify-center">
           <div className="w-full">
@@ -59,7 +163,10 @@ export default function Register() {
               </div>
             </header>
 
-            <form className="mt-7 px-1 grid grid-cols-2 gap-2 space-y-8">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="mt-7 px-1 grid grid-cols-2 gap-2 space-y-8"
+            >
               <div className="*:not-first:mt-2">
                 <Label
                   htmlFor={"name"}
@@ -69,10 +176,26 @@ export default function Register() {
                 </Label>
                 <Input
                   id={"name"}
+                  {...register("name", {
+                    required: "O nome é obrigatório",
+                    minLength: {
+                      value: 2,
+                      message: "O nome deve ter pelo menos 2 caracteres",
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: "O nome deve ter no máximo 100 caracteres",
+                    },
+                  })}
                   className="py-5 focus:ring-4! text-base text-secondary focus:ring-contrast-ground! focus:border-primary/70!"
                   placeholder="Insira o seu nome completo"
                   type="text"
                 />
+                {errors.name && (
+                  <p className="text-red-700 ps-3 mt-1 text-sm">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
               <div className="*:not-first:mt-2">
                 <Label
@@ -83,10 +206,22 @@ export default function Register() {
                 </Label>
                 <Input
                   id={"email"}
+                  {...register("email", {
+                    required: "O e-mail é obrigatório",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Insira um e-mail válido",
+                    },
+                  })}
                   className="py-5 focus:ring-4! text-secondary text-base focus:ring-contrast-ground! focus:border-primary/70!"
                   placeholder="bulir@gmail.com"
                   type="email"
                 />
+                {errors.email && (
+                  <p className="text-red-700 ps-3 mt-1 text-sm">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
               <div className="*:not-first:mt-2">
                 <Label
@@ -97,10 +232,23 @@ export default function Register() {
                 </Label>
                 <Input
                   id={"nif"}
+                  {...register("nif", {
+                    required: "O NIF é obrigatório",
+                    pattern: {
+                      value: /^(?=[0-9LA]{14}$)(?:[0-9]*LA[0-9]*|[0-9]{14})$/,
+                      message:
+                        "Insira um NIF válido (14 caracteres, apenas números e 'LA')",
+                    },
+                  })}
                   className="py-5 focus:ring-4! text-secondary text-base focus:ring-contrast-ground! focus:border-primary/70!"
                   placeholder="0000000000000"
-                  type="email"
+                  type="text"
                 />
+                {errors.nif && (
+                  <p className="text-red-700 ps-3 mt-1 text-sm">
+                    {errors.nif.message}
+                  </p>
+                )}
               </div>
               <div className="*:not-first:mt-2">
                 <Label
@@ -111,22 +259,152 @@ export default function Register() {
                 </Label>
                 <Input
                   id={"nif"}
+                  {...register("password", {
+                    required: "A palavra-chave é obrigatória",
+                    minLength: {
+                      value: 8,
+                      message:
+                        "A palavra-chave deve ter pelo menos 6 caracteres",
+                    },
+                    maxLength: {
+                      value: 100,
+                      message:
+                        "A palavra-chave deve ter no máximo 100 caracteres",
+                    },
+                  })}
                   className="py-5 focus:ring-4! text-secondary text-base focus:ring-contrast-ground! focus:border-primary/70!"
                   placeholder="xxxxxxxxxxx"
-                  type="email"
+                  type={seePassword ? "text" : "password"}
                 />
+
+                {errors.password && (
+                  <p className="text-red-700 ps-3 mt-1 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
-              <div className="grid col-span-2 grid-cols-2 gap-2">
-                <Button className="bg-primary py-5 text-white hover:bg-secondary rounded-none">
-                  Criar Conta
+              <div className="flex -mt-3 items-center gap-2">
+                <Checkbox
+                  checked={seePassword}
+                  onCheckedChange={(checked) => setSeePassword(!!checked)}
+                  id={"see_pass"}
+                />
+                <Label
+                  htmlFor={"see_pass"}
+                  className="text-secondary text-[15px] font-[450] cursor-pointer"
+                >
+                  Mostrar palavra-chave
+                </Label>
+              </div>
+              <div className="grid col-span-2 -mt-4 grid-cols-2 gap-2">
+                <Button
+                  onClick={() =>
+                    trigger().then((isValid) => {
+                      if (isValid) {
+                        setOpenDialog(true);
+                      }
+                    })
+                  }
+                  type="button"
+                  className="bg-primary py-5 text-white hover:bg-secondary"
+                >
+                  Próximo
                 </Button>
-                <Button variant={"outline"} className="py-5 rounded-none">
-                  <Link href={"/register"}>Iniciar Sessão</Link>
-                </Button>
+                <Link href={"/register"} className="w-full">
+                  <Button
+                    type="button"
+                    variant={"outline"}
+                    className="py-5 w-full"
+                  >
+                    Iniciar Sessão
+                  </Button>
+                </Link>
               </div>
             </form>
           </div>
         </div>
+
+        <AlertDialog
+          open={openDialog}
+          onOpenChange={(isOpen) => setOpenDialog(isOpen)}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="font-semibold text-secondary">
+                {created
+                  ? "Conta Criada com Sucesso!"
+                  : "Selecione o Tipo de Conta"}
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-base text-zinc-700">
+                {created
+                  ? "Sua conta foi criada com sucesso. Agora você pode iniciar sessão e começar a usar nossos serviços."
+                  : "Por favor, selecione o tipo de conta que deseja criar."}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            {!created && (
+              <div className="grid gap-4 mt-2">
+                <div className="relative flex w-full items-start gap-2 rounded-md border border-input p-4 shadow-xs outline-none has-data-[state=checked]:border-primary/50">
+                  <Checkbox
+                    id={"id-1"}
+                    checked={accountType === "CLIENT"}
+                    onCheckedChange={() => setAccountType("CLIENT")}
+                    className="order-1 after:absolute after:inset-0"
+                    aria-describedby={`id-1-description`}
+                  />
+                  <div className="grid grow gap-1">
+                    <Label htmlFor={"client"} className="text-lg text-primary">
+                      Cliente
+                    </Label>
+                    <p className="text-[15px] text-muted-foreground">
+                      Solicite serviços de diversos prestadores de serviço
+                      confiáveis.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative flex w-full items-start gap-2 rounded-md border border-input p-4 shadow-xs outline-none has-data-[state=checked]:border-primary/50">
+                  <Checkbox
+                    id={"id-2"}
+                    checked={accountType === "PROVIDER"}
+                    onCheckedChange={() => setAccountType("PROVIDER")}
+                    className="order-2 after:absolute after:inset-0"
+                    aria-describedby={`id-2-description`}
+                  />
+                  <div className="grid grow gap-1">
+                    <Label htmlFor={"client"} className="text-lg text-primary">
+                      Prestador de Serviços
+                    </Label>
+                    <p className="text-[15px] text-muted-foreground">
+                      Ofereça seus serviços e conecte-se com clientes em busca
+                      de profissionais como você.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {created ? (
+              <AlertDialogFooter>
+                <AlertDialogCancel>Okay</AlertDialogCancel>
+                <Link href={"/login"}>
+                  <Button>Iniciar Sessão</Button>
+                </Link>
+              </AlertDialogFooter>
+            ) : (
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <Button onClick={handleSubmit(onSubmit)}>
+                  {loading && (
+                    <LoaderCircleIcon
+                      className="-ms-1 animate-spin"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                  )}
+                  Criar Conta
+                </Button>
+              </AlertDialogFooter>
+            )}
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

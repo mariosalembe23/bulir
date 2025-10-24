@@ -7,10 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { LoaderCircleIcon } from "lucide-react";
 import InvisibleLoad from "@/components/Partials/InvisibleLoad";
 import { decodeToken } from "@/components/Partials/decodeToken";
@@ -36,6 +36,14 @@ export default function Login() {
   const [seePassword, setSeePassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const decoded = decodeToken(getCookie("bulir_token") as string);
+
+    if (decoded) {
+      router.push("/profile/" + decoded.id);
+    }
+  }, [router]);
 
   const onSubmit = async (data: { email: string; password: string }) => {
     try {

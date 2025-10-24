@@ -1,7 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
+import React, { useEffect } from "react";
+import { decodeToken } from "@/components/Partials/decodeToken";
+import { getCookie } from "cookies-next";
 
 const hireStep = [
   "Aceda a plataforma com milhares de prestadores qualificados.",
@@ -18,6 +23,24 @@ const providerSteps = [
 ];
 
 export default function Home() {
+  const [id, setId] = React.useState<string | null>(null);
+  const [img, setImg] = React.useState<string | null>(null);
+
+  useEffect(() => {
+    const decoded = decodeToken(getCookie("bulir_token") as string);
+
+    if (!decoded) return;
+
+    const t = setTimeout(() => {
+      setId(decoded.id);
+      setImg(
+        decoded.role === "CLIENT" ? "/images/user.jpeg" : "/images/profile.jpeg"
+      );
+    }, 0);
+
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <div
       style={{
@@ -60,16 +83,29 @@ export default function Home() {
                   </svg>
                 </span>
                 <div className="flex items-center gap-2">
-                  <Link href={"/login"}>
-                    <Button
-                      variant={"outline"}
-                      className="rounded-none text-primary"
+                  {id && img ? (
+                    <Link
+                      href={`/profile/${id}`}
+                      className="flex items-center gap-2 px-1 py-1 text-primary rounded-full bg-gray-100 border"
                     >
-                      Iniciar Sessão
-                    </Button>
-                  </Link>
+                      <div
+                        style={{
+                          backgroundImage: `url(${img})`,
+                        }}
+                        className="rounded-full bg-cover size-7"
+                      />
+                      <p className="pe-2">Perfil</p>
+                    </Link>
+                  ) : (
+                    <Link href={"/login"}>
+                      <Button variant={"outline"} className=" text-primary">
+                        Iniciar Sessão
+                      </Button>
+                    </Link>
+                  )}
+
                   <Link href="/">
-                    <Button className="bg-primary text-white hover:bg-secondary rounded-none">
+                    <Button className="bg-primary text-white hover:bg-secondary ">
                       Baixar App
                     </Button>
                   </Link>
@@ -128,7 +164,7 @@ export default function Home() {
                     ))}
                   </div>
                   <Link href={"/register"}>
-                    <Button className="bg-white mt-5 py-5 hover:bg-white/80 text-secondary rounded-none">
+                    <Button className="bg-white mt-5 py-5 hover:bg-white/80 text-secondary ">
                       Quero contratar um serviço
                       <MoveRight className="ml-2" />
                     </Button>
@@ -164,7 +200,7 @@ export default function Home() {
                     ))}
                   </div>
                   <Link href={"/register"}>
-                    <Button className="bg-contrast mt-5 py-5 hover:bg-contrast/80 text-secondary rounded-none">
+                    <Button className="bg-contrast mt-5 py-5 hover:bg-contrast/80 text-secondary">
                       Quero ser um prestador
                       <MoveRight className="ml-2" />
                     </Button>

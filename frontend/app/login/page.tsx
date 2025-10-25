@@ -101,15 +101,15 @@ export default function Login() {
   };
 
   return (
-    <div className="grid grid-cols-[40%_60%] h-dvh">
+    <div className="grid pot:grid-cols-[40%_60%] h-dvh">
       {loading && <InvisibleLoad />}
       <div
         style={{
           backgroundImage: 'url("/images/back.jpg")',
         }}
-        className="bg-cover flex items-center justify-center bg-center h-full"
+        className="bg-cover hidden pot:flex items-center justify-center bg-center h-full"
       >
-        <div className=" flex items-center flex-col  mx-auto -bottom-40 mb-5 ">
+        <div className="hidden pot:flex items-center flex-col  mx-auto -bottom-40 mb-5 ">
           <Image
             src={"/images/bulirphone.svg"}
             width={500}
@@ -122,7 +122,7 @@ export default function Login() {
           />
         </div>
       </div>
-      <div className="h-full overflow-y-auto flex items-center justify-center">
+      <div className="h-full p-5 overflow-y-auto flex items-center justify-center">
         <div className="max-w-md w-full">
           <header>
             <div className="flex items-center justify-between">
@@ -159,7 +159,7 @@ export default function Login() {
                 <Link href={"/"}>Início</Link>
               </Button>
             </div>
-            <h1 className="text-primary text-2xl pt-5 font-semibold">
+            <h1 className="text-primary  pt-10 text-2xl pot:pt-5 font-semibold">
               Início de Sessão
             </h1>
             <p className="text-gray-600 mt-1">
@@ -224,8 +224,8 @@ export default function Login() {
                 Mostrar palavra-chave
               </Label>
             </div>
-            <div className="grid grid-cols-2 gap-2">
-              <Link href={"/register"} className="w-full">
+            <div className="grid grid-cols-1 ret:grid-cols-2 gap-2">
+              <Link href={"/register"} className="w-full ret:order-1 order-2">
                 <Button
                   variant={"outline"}
                   type="button"
@@ -236,7 +236,7 @@ export default function Login() {
               </Link>
               <Button
                 type="submit"
-                className="bg-primary py-5 text-white hover:bg-secondary"
+                className="bg-primary ret:order-2 order-1 py-5 text-white hover:bg-secondary"
               >
                 {loading && (
                   <LoaderCircleIcon

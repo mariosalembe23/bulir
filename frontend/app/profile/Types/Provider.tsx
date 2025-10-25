@@ -243,7 +243,9 @@ const ProviderSlice: React.FC<{
               <div className="flex justify-center items-center mt-5 gap-5 flex-wrap">
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Pedidos</p>
-                  <p className="text-xl font-semibold font-mono">15</p>
+                  <p className="text-xl font-semibold font-mono">
+                    {bookings.length}
+                  </p>
                 </div>
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Saldo</p>

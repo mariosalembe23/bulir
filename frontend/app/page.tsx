@@ -48,7 +48,7 @@ export default function Home() {
       }}
       className="pot:h-dvh bg-[#f5f5f5] bg-cover bg-center w-full p-2 pot:p-5"
     >
-      <main className="bg-white pot:p-5 grid grid-cols-1 w-full ring-8 ring-white/50 h-full pot:rounded-3xl shadow-2xl">
+      <main className="bg-white pot:p-5 grid grid-cols-1 w-full ring-8 ring-white/50 h-full rounded-3xl shadow-2xl">
         <section className="w-full overflow-hidden grid gap-2 grid-cols-1 pot:grid-cols-[35%_65%]">
           <div className=" p-8 flex flex-col justify-between pot:bg-linear-to-b from-40% from-white to-[#89D7CF]/50  relative overflow-hidden border-gray-100 pot:rounded-2xl">
             <header>

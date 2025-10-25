@@ -1,16 +1,13 @@
 import express from "express";
 import { Request, Response } from "express";
 import { PrismaClient } from "../../generated/prisma-client";
-import Jwt from "jsonwebtoken";
 import { registerUser } from "../controller/user";
 import { login } from "../controller/auth";
-import bcrypt from "bcrypt";
 import { validate } from "uuid";
 import {
   validateEmail,
   validateName,
   validateNIF,
-  validatePassword,
 } from "../utils/formGenerics";
 
 const prisma = new PrismaClient();

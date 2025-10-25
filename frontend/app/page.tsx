@@ -46,11 +46,11 @@ export default function Home() {
       style={{
         backgroundImage: 'url("/images/back.jpg")',
       }}
-      className="h-dvh bg-[#f5f5f5] bg-cover bg-center w-full p-5"
+      className="pot:h-dvh bg-[#f5f5f5] bg-cover bg-center w-full p-2 pot:p-5"
     >
-      <main className="bg-white p-5 grid grid-cols-1 w-full ring-8 ring-white/50 h-full rounded-3xl shadow-2xl">
-        <section className="w-full grid gap-2 grid-cols-[35%_65%]">
-          <div className="border overflow-hidden relative p-8 border-gray-100 rounded-2xl">
+      <main className="bg-white p-8 pot:p-5 grid grid-cols-1 w-full ring-8 ring-white/50 h-full pot:rounded-3xl shadow-2xl">
+        <section className="w-full overflow-hidden grid gap-2 grid-cols-1 pot:grid-cols-[35%_65%]">
+          <div className="pot:border flex flex-col justify-between bg-linear-to-b from-40% from-white to-[#89D7CF]/50  relative overflow-hidden pot:p-8 border-gray-100 pot:rounded-2xl">
             <header>
               <div className="flex items-center justify-between gap-3">
                 <span>
@@ -104,9 +104,9 @@ export default function Home() {
                     </Link>
                   )}
 
-                  <Link href="/">
+                  <Link href="/services" className="pot:inline-flex hidden">
                     <Button className="bg-primary text-white hover:bg-secondary ">
-                      Baixar App
+                      Serviços
                     </Button>
                   </Link>
                 </div>
@@ -124,14 +124,13 @@ export default function Home() {
                 </p>
               </div>
             </header>
-            <div className="absolute bottom-0 left-0 w-full right-0 bg-linear-to-b from-white to-[#89D7CF]/50 h-[60%]"></div>
-            <footer className="flex items-center justify-center">
+            <footer className="flex relative items-center justify-center">
               <Image
                 src={"/images/bulirphone.svg"}
                 width={400}
                 height={400}
                 alt="Bulir App on Phone"
-                className="absolute mx-auto -bottom-40 mb-5 mr-5"
+                className="mx-auto mt-24 lal:mt-24"
               />
             </footer>
           </div>

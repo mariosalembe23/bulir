@@ -112,7 +112,7 @@ export default function Register() {
       style={{
         backgroundImage: 'url("/images/back.jpg")',
       }}
-      className="bg-cover flex items-center justify-center bg-center h-dvh"
+      className="bg-cover flex items-center justify-center bg-center ret:h-dvh"
     >
       {loading && <InvisibleLoad />}
       <div className="bg-white max-w-2xl w-full rounded-2xl ring-8 ring-white/50 p-8">
@@ -165,7 +165,7 @@ export default function Register() {
 
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="mt-7 px-1 grid grid-cols-2 gap-2 space-y-8"
+              className="mt-7 px-1 grid grid-cols-1 ret:grid-cols-2 gap-2 space-y-8"
             >
               <div className="*:not-first:mt-2">
                 <Label
@@ -296,7 +296,7 @@ export default function Register() {
                   Mostrar palavra-chave
                 </Label>
               </div>
-              <div className="grid col-span-2 -mt-4 grid-cols-2 gap-2">
+              <div className="grid pot:col-span-2 -mt-4 grid-cols-1 ret:grid-cols-2 gap-2">
                 <Button
                   onClick={() =>
                     trigger().then((isValid) => {

@@ -51,6 +51,8 @@ const ProviderSlice: React.FC<{
   const [loadingServices, setLoadingServices] = React.useState<boolean>(true);
   const [loadingBookings, setLoadingBookings] = React.useState<boolean>(true);
   const [bookings, setBookings] = React.useState<Booking[]>([]);
+  const [openCreateService, setOpenCreateService] =
+    React.useState<boolean>(false);
 
   useEffect(() => {
     const getAllServices = async () => {
@@ -299,7 +301,12 @@ const ProviderSlice: React.FC<{
                 <h3 className="text-2xl font-semibold text-primary ">
                   Meus Serviços
                 </h3>
-                <Button variant={"outline"}>Adicionar Serviço</Button>
+                <Button
+                  onClick={() => setOpenCreateService(true)}
+                  variant={"outline"}
+                >
+                  Adicionar Serviço
+                </Button>
               </div>
               {loadingServices ? (
                 <div className="mt-5 flex items-center justify-start w-full">
@@ -333,7 +340,10 @@ const ProviderSlice: React.FC<{
             </header>
           </div>
         </section>
-        <CreateService open={true} setOpen={() => {}} />
+        <CreateService
+          open={openCreateService}
+          setOpen={setOpenCreateService}
+        />
       </main>
     </div>
   );

@@ -80,18 +80,21 @@ const ClientSlice = () => {
                 description="Criação de um website responsivo para uma pequena empresa."
                 price={50000}
                 requestsCount={3}
+                userBalance={60000}
               />
               <PendentCard
                 title="Lavagem de Tapetes"
                 description="Serviço de lavagem profunda para tapetes residenciais."
                 price={2500}
                 requestsCount={1}
+                userBalance={3000}
               />
               <PendentCard
                 title="Reparação de Ar Condicionado"
                 description="Manutenção e reparo de sistemas de ar condicionado residenciais e comerciais."
                 price={15000}
                 requestsCount={2}
+                userBalance={8000}
               />
             </div>
           </div>
@@ -159,12 +162,20 @@ const ClientSlice = () => {
                   description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
                   price={23000}
                   requestsCount={120}
+                  userBalance={50000}
+                  clientId="client123"
+                  userId="user456"
+                  logedUserId="client123"
                 />
                 <ServiceCard
                   title="Concerto de Aparelhos domésticos"
                   description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
                   price={23000}
                   requestsCount={120}
+                  userBalance={50000}
+                  clientId="client123"
+                  userId="user456"
+                  logedUserId="client123"
                 />
               </div>
             </header>

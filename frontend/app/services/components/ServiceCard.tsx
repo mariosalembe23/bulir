@@ -12,8 +12,8 @@ export interface ServiceCardProps {
   price: number;
   requestsCount?: number;
   isOwner?: boolean;
-  userId: string;
-  clientId: string;
+  userId?: string;
+  clientId?: string;
   logedUserId?: string;
   userBalance: number;
 }

@@ -11,6 +11,7 @@ import { getCookie } from "cookies-next";
 import { toast } from "sonner";
 import timeSince from "@/components/Partials/TimeSince";
 import makeLogout from "@/components/Partials/Logout";
+import CreateService from "@/app/services/components/CreateService";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -332,6 +333,7 @@ const ProviderSlice: React.FC<{
             </header>
           </div>
         </section>
+        <CreateService open={true} setOpen={() => {}} />
       </main>
     </div>
   );

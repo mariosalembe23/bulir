@@ -2465,12 +2465,10 @@ export namespace Prisma {
 
   export type ServicesAvgAggregateOutputType = {
     price: number | null
-    balance: number | null
   }
 
   export type ServicesSumAggregateOutputType = {
     price: number | null
-    balance: number | null
   }
 
   export type ServicesMinAggregateOutputType = {
@@ -2479,7 +2477,6 @@ export namespace Prisma {
     title: string | null
     description: string | null
     price: number | null
-    balance: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2490,7 +2487,6 @@ export namespace Prisma {
     title: string | null
     description: string | null
     price: number | null
-    balance: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2501,7 +2497,6 @@ export namespace Prisma {
     title: number
     description: number
     price: number
-    balance: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2510,12 +2505,10 @@ export namespace Prisma {
 
   export type ServicesAvgAggregateInputType = {
     price?: true
-    balance?: true
   }
 
   export type ServicesSumAggregateInputType = {
     price?: true
-    balance?: true
   }
 
   export type ServicesMinAggregateInputType = {
@@ -2524,7 +2517,6 @@ export namespace Prisma {
     title?: true
     description?: true
     price?: true
-    balance?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2535,7 +2527,6 @@ export namespace Prisma {
     title?: true
     description?: true
     price?: true
-    balance?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2546,7 +2537,6 @@ export namespace Prisma {
     title?: true
     description?: true
     price?: true
-    balance?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2644,7 +2634,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance: number
     createdAt: Date
     updatedAt: Date
     _count: ServicesCountAggregateOutputType | null
@@ -2674,7 +2663,6 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     price?: boolean
-    balance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     Bookings?: boolean | Services$BookingsArgs<ExtArgs>
@@ -2688,7 +2676,6 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     price?: boolean
-    balance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | Services$userArgs<ExtArgs>
@@ -2700,7 +2687,6 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     price?: boolean
-    balance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | Services$userArgs<ExtArgs>
@@ -2712,12 +2698,11 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     price?: boolean
-    balance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ServicesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "price" | "balance" | "createdAt" | "updatedAt", ExtArgs["result"]["services"]>
+  export type ServicesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "price" | "createdAt" | "updatedAt", ExtArgs["result"]["services"]>
   export type ServicesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Bookings?: boolean | Services$BookingsArgs<ExtArgs>
     user?: boolean | Services$userArgs<ExtArgs>
@@ -2742,7 +2727,6 @@ export namespace Prisma {
       title: string
       description: string
       price: number
-      balance: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["services"]>
@@ -3175,7 +3159,6 @@ export namespace Prisma {
     readonly title: FieldRef<"Services", 'String'>
     readonly description: FieldRef<"Services", 'String'>
     readonly price: FieldRef<"Services", 'Float'>
-    readonly balance: FieldRef<"Services", 'Float'>
     readonly createdAt: FieldRef<"Services", 'DateTime'>
     readonly updatedAt: FieldRef<"Services", 'DateTime'>
   }
@@ -5863,7 +5846,6 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     price: 'price',
-    balance: 'balance',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -6101,7 +6083,6 @@ export namespace Prisma {
     title?: StringFilter<"Services"> | string
     description?: StringFilter<"Services"> | string
     price?: FloatFilter<"Services"> | number
-    balance?: FloatFilter<"Services"> | number
     createdAt?: DateTimeFilter<"Services"> | Date | string
     updatedAt?: DateTimeFilter<"Services"> | Date | string
     Bookings?: BookingsListRelationFilter
@@ -6114,7 +6095,6 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     price?: SortOrder
-    balance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     Bookings?: BookingsOrderByRelationAggregateInput
@@ -6130,7 +6110,6 @@ export namespace Prisma {
     title?: StringFilter<"Services"> | string
     description?: StringFilter<"Services"> | string
     price?: FloatFilter<"Services"> | number
-    balance?: FloatFilter<"Services"> | number
     createdAt?: DateTimeFilter<"Services"> | Date | string
     updatedAt?: DateTimeFilter<"Services"> | Date | string
     Bookings?: BookingsListRelationFilter
@@ -6143,7 +6122,6 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     price?: SortOrder
-    balance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ServicesCountOrderByAggregateInput
@@ -6162,7 +6140,6 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Services"> | string
     description?: StringWithAggregatesFilter<"Services"> | string
     price?: FloatWithAggregatesFilter<"Services"> | number
-    balance?: FloatWithAggregatesFilter<"Services"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Services"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Services"> | Date | string
   }
@@ -6395,7 +6372,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Bookings?: BookingsCreateNestedManyWithoutServiceInput
@@ -6408,7 +6384,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Bookings?: BookingsUncheckedCreateNestedManyWithoutServiceInput
@@ -6419,7 +6394,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Bookings?: BookingsUpdateManyWithoutServiceNestedInput
@@ -6432,7 +6406,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Bookings?: BookingsUncheckedUpdateManyWithoutServiceNestedInput
@@ -6444,7 +6417,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -6454,7 +6426,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6465,7 +6436,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6801,14 +6771,12 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     price?: SortOrder
-    balance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type ServicesAvgOrderByAggregateInput = {
     price?: SortOrder
-    balance?: SortOrder
   }
 
   export type ServicesMaxOrderByAggregateInput = {
@@ -6817,7 +6785,6 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     price?: SortOrder
-    balance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -6828,14 +6795,12 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     price?: SortOrder
-    balance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type ServicesSumOrderByAggregateInput = {
     price?: SortOrder
-    balance?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7414,7 +7379,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Bookings?: BookingsCreateNestedManyWithoutServiceInput
@@ -7425,7 +7389,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Bookings?: BookingsUncheckedCreateNestedManyWithoutServiceInput
@@ -7495,7 +7458,6 @@ export namespace Prisma {
     title?: StringFilter<"Services"> | string
     description?: StringFilter<"Services"> | string
     price?: FloatFilter<"Services"> | number
-    balance?: FloatFilter<"Services"> | number
     createdAt?: DateTimeFilter<"Services"> | Date | string
     updatedAt?: DateTimeFilter<"Services"> | Date | string
   }
@@ -7650,7 +7612,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UsersCreateNestedOneWithoutServicesInput
@@ -7662,7 +7623,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7751,7 +7711,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UsersUpdateOneWithoutServicesNestedInput
@@ -7763,7 +7722,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7866,7 +7824,6 @@ export namespace Prisma {
     title: string
     description: string
     price: number
-    balance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7905,7 +7862,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Bookings?: BookingsUpdateManyWithoutServiceNestedInput
@@ -7916,7 +7872,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Bookings?: BookingsUncheckedUpdateManyWithoutServiceNestedInput
@@ -7927,7 +7882,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

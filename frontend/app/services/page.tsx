@@ -87,6 +87,7 @@ export default function Home() {
           },
         });
         setServices(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching services:", error);
       } finally {
@@ -171,6 +172,7 @@ export default function Home() {
                 necessidades.
               </p>
             </div>
+            <Button variant={"outline"}>Adicionar Serviço</Button>
           </header>
 
           {services.length === 0 ? (

@@ -21,7 +21,7 @@ export const createService = async (
   const existingService = await prisma.services.findFirst({
     where: { title, userId },
   });
-  
+
   if (existingService) {
     return res.status(400).json({ error: "Este serviço já existe" });
   }
@@ -31,7 +31,6 @@ export const createService = async (
       title,
       description,
       price,
-      balance,
       userId,
     },
   });
@@ -40,7 +39,18 @@ export const createService = async (
 
 export const getServices = async (req: Request, res: Response) => {
   const services = await prisma.services.findMany();
-  res.json(services);
+
+  const ownerService = await Promise.all(
+    services.map(async (service) => {
+      const user = await prisma.users.findUnique({
+        where: { id: service.userId || "" },
+        select: { name: true, email: true },
+      });
+      return { ...service, owner: user };
+    })
+  );
+
+  res.json(ownerService);
 };
 
 export const getServiceById = async (req: Request, res: Response) => {
@@ -63,7 +73,7 @@ export const getServiceById = async (req: Request, res: Response) => {
 
 export const updateService = async (req: Request, res: Response) => {
   const { serviceId } = req.params;
-  const { title, description, price, balance } = req.body;
+  const { title, description, price } = req.body;
 
   if (!validate(serviceId)) {
     return res.status(400).json({ error: "Id Inválido" });
@@ -71,7 +81,7 @@ export const updateService = async (req: Request, res: Response) => {
 
   const updatedService = await prisma.services.update({
     where: { id: serviceId },
-    data: { title, description, price, balance },
+    data: { title, description, price },
   });
 
   res.json(updatedService);

@@ -16,6 +16,22 @@ export const createBooking = async (req: Request, res: Response) => {
       .json({ message: "Todos os campos são obrigatórios" });
   }
 
+  const existingBooking = await prisma.bookings.findFirst({
+    where: {
+      clientId,
+      serviceId,
+      date: new Date(date),
+    },
+  });
+
+  if (existingBooking) {
+    return res
+      .status(400)
+      .json({
+        message: "Você já tem uma reserva para este serviço nesta data",
+      });
+  }
+
   const newBooking = await prisma.bookings.create({
     data: {
       clientId,
@@ -90,15 +106,17 @@ export const getBookingsByUserId = async (req: Request, res: Response) => {
     where: { clientId: userId },
   });
 
-  const fullData = await Promise.all(bookings.map(async (booking) => {
-    const service = await prisma.services.findUnique({
-      where: { id: booking.serviceId },
-    });
-    return {
-      ...booking,
-      service,
-    };
-  }))
+  const fullData = await Promise.all(
+    bookings.map(async (booking) => {
+      const service = await prisma.services.findUnique({
+        where: { id: booking.serviceId },
+      });
+      return {
+        ...booking,
+        service,
+      };
+    })
+  );
 
   res.json(fullData);
 };

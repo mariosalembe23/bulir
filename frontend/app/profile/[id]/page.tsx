@@ -1,12 +1,14 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import ClientSlice from "../Types/Client";
 import ProviderSlice from "../Types/Provider";
 import axios from "axios";
 import { toast } from "sonner";
 import LoadingComponent from "@/components/Partials/LoadingComponent";
+import { getCookie, setCookie } from "cookies-next";
+import { decodeToken } from "@/components/Partials/decodeToken";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -27,9 +29,18 @@ export default function ProfilePage() {
   const [type, setType] = React.useState<string | null>(null);
   const [user, setUser] = React.useState<User | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const router = useRouter();
 
   useEffect(() => {
-    // const token = getCookie("bulir_token") as string;
+    const decoded = decodeToken(getCookie("bulir_token") as string);
+
+    if (!decoded) {
+      router.push("/login");
+      setCookie("session_expired", "true");
+    }
+  }, [router]);
+
+  useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
 
@@ -45,6 +56,12 @@ export default function ProfilePage() {
             error.response?.status >= 400 &&
             error.response?.status < 500
           ) {
+            if (error.response.status === 401) {
+              setCookie("session_expired", "true");
+              window.location.href = "/login";
+              return;
+            }
+
             toast.error(
               error.response.data.error ||
                 "Erro de autenticação. Verifique suas credenciais."

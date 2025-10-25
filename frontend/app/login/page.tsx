@@ -50,6 +50,11 @@ export default function Login() {
       toast.error("Por favor, inicie sessão para continuar.");
       setCookie("not_logged_in", "", { maxAge: -1 });
     }
+
+    if (getCookie("session_expired")) {
+      toast.error("A sua sessão expirou. Por favor, inicie sessão novamente.");
+      setCookie("session_expired", "", { maxAge: -1 });
+    }
   }, []);
 
   const onSubmit = async (data: { email: string; password: string }) => {

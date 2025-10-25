@@ -90,5 +90,15 @@ export const getBookingsByUserId = async (req: Request, res: Response) => {
     where: { clientId: userId },
   });
 
-  res.json(bookings);
+  const fullData = await Promise.all(bookings.map(async (booking) => {
+    const service = await prisma.services.findUnique({
+      where: { id: booking.serviceId },
+    });
+    return {
+      ...booking,
+      service,
+    };
+  }))
+
+  res.json(fullData);
 };

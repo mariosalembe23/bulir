@@ -10,6 +10,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { toast } from "sonner";
 import timeSince from "@/components/Partials/TimeSince";
+import makeLogout from "@/components/Partials/Logout";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,12 +25,31 @@ export interface Service {
   updatedAt: string;
 }
 
+export type Status =
+  | "PENDING"
+  | "ACCEPTED"
+  | "REJECTED"
+  | "COMPLETED"
+  | "CANCELLED";
+
+export interface Booking {
+  id: string;
+  clientId: string;
+  serviceId: string;
+  status: Status;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  service: Service;
+}
+
 const ProviderSlice: React.FC<{
   user: User | null;
 }> = ({ user }) => {
   const [services, setServices] = React.useState<Service[]>([]);
   const [loadingServices, setLoadingServices] = React.useState<boolean>(true);
   const [loadingBookings, setLoadingBookings] = React.useState<boolean>(true);
+  const [bookings, setBookings] = React.useState<Booking[]>([]);
 
   useEffect(() => {
     const getAllServices = async () => {
@@ -76,6 +96,7 @@ const ProviderSlice: React.FC<{
           }
         );
         console.log("Bookings:", response.data);
+        setBookings(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (
@@ -107,9 +128,9 @@ const ProviderSlice: React.FC<{
       style={{
         backgroundImage: 'url("/images/back.jpg")',
       }}
-      className="h-dvh bg-[#f5f5f5] bg-cover bg-center w-full p-5"
+      className="h-dvh bg-[#f5f5f5] bg-cover bg-center w-full pot:p-5"
     >
-      <main className="bg-white flex flex-col justify-between p-5 w-full ring-8 ring-white/50 h-full rounded-3xl shadow-2xl">
+      <main className="bg-white flex flex-col justify-between p-5 w-full ring-8 ring-white/50 h-full pot:rounded-3xl shadow-2xl">
         <header className="px-3 pb-3 border-gray-100 border-b flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href={"/"}>
@@ -141,11 +162,11 @@ const ProviderSlice: React.FC<{
                 />
               </svg>
             </Link>
-            <Link href={"/"}>
+            <Link href={"/"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Página Inicial</Button>
             </Link>
 
-            <Link href={"/services"}>
+            <Link href={"/services"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Serviços</Button>
             </Link>
           </div>
@@ -156,11 +177,13 @@ const ProviderSlice: React.FC<{
               }}
               className="rounded-full bg-cover size-8"
             />
-            <Button variant={"outline"}>Sair</Button>
+            <Button variant={"outline"} onClick={makeLogout}>
+              Sair
+            </Button>
           </div>
         </header>
-        <section className="h-full p-10 grid grid-cols-[30%_40%_30%] overflow-y-auto">
-          <div className="p-5">
+        <section className="h-full lal:pt-0 pt-10 lal:p-10 grid grid-cols-1 pot:gap-0 gap-24 pot:grid-cols-3 lal:grid-cols-[30%_40%_30%] overflow-y-auto">
+          <div className="pot:p-5 p-1 pot:order-1 order-2">
             <header>
               <h3 className="text-2xl font-semibold text-primary ">
                 Serviços Solicitados
@@ -182,41 +205,42 @@ const ProviderSlice: React.FC<{
                 </p>
               </div>
             ) : (
-              <div className="mt-5 grid grid-cols-1 gap-4">
-                {services.map((service) => (
-                  <ServiceCard
-                    key={service.id}
-                    title={service.title}
-                    description={service.description}
-                    price={service.price}
-                    isOwner={true}
+              <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
+                {bookings.map((booking) => (
+                  <PendentService
+                    key={booking.id}
+                    id={booking.id}
+                    description={booking.service.description}
+                    price={booking.service.price}
+                    clientId={booking.clientId}
+                    title={booking.service.title}
                     userBalance={user?.balance || 0}
-                    clientId={user?.id || ""}
-                    logedUserId={user?.id}
-                    userId={service.userId}
-                    id={service.id}
+                    isOwner={true}
+                    userId={booking.service.userId}
+                    logedUserId={user?.id || ""}
+                    date={booking.date}
                   />
                 ))}
               </div>
             )}
           </div>
-          <section className="border-x">
+          <section className="pot:border-x pb-8 pot:order-2 order-1">
             <header className="flex flex-col items-center gap-5">
               <div
                 style={{
                   backgroundImage: 'url("/images/profile.jpeg")',
                 }}
-                className="rounded-full bg-cover size-24"
+                className="rounded-full bg-cover size-20 pot:size-24"
               ></div>
               <div className="text-center">
-                <p className="text-3xl">{user?.name}</p>
+                <p className="text-2xl pot:text-3xl">{user?.name}</p>
                 <p className="text-zinc-600">{user?.email}</p>
                 <p className="px-3 rounded-full py-1 bg-contrast mt-2 font-medium text-primary">
                   Prestador de Serviços
                 </p>
               </div>
 
-              <div className="grid grid-cols-3 items-center mt-5 gap-5 flex-wrap">
+              <div className="flex justify-center items-center mt-5 gap-5 flex-wrap">
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Pedidos</p>
                   <p className="text-xl font-semibold font-mono">15</p>
@@ -228,25 +252,27 @@ const ProviderSlice: React.FC<{
                   </p>
                 </div>
                 <div className="text-center px-4">
-                  <p className="text-gray-600 uppercase text-[15px]">Tempo</p>
+                  <p className="text-gray-600 uppercase text-[15px]">
+                    Registrado há
+                  </p>
                   <p className="text-xl font-semibold font-mono">
                     {timeSince(user?.createdAt || "")}
                   </p>
                 </div>
               </div>
 
-              <footer className="w-full flex flex-col gap-8 px-10 mt-10">
-                <div className="flex items-center justify-between">
+              <footer className="w-full flex flex-col gap-8 pot:px-10 px-4 mt-10">
+                <div className="flex items-center flex-wrap gap-3 justify-between">
                   <p className="text-zinc-600">NIF</p>
                   <p className="font-mono font-semibold">{user?.nif}</p>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center flex-wrap gap-3 justify-between">
                   <p className="text-zinc-600">Registrado em</p>
                   <p className="font-mono font-semibold">
                     {new Date(user?.createdAt || "").toLocaleDateString()}
                   </p>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center flex-wrap gap-3 justify-between">
                   <p className="text-zinc-600">Tipo de Conta</p>
                   <p className=" font-medium text-[15px]">
                     {user?.role === "PROVIDER"
@@ -254,7 +280,7 @@ const ProviderSlice: React.FC<{
                       : "CLIENT(Cliente)"}
                   </p>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center flex-wrap gap-3 justify-between">
                   <Button variant={"outline"} className="">
                     <Bolt className="size-4" />
                     Editar Perfil
@@ -264,9 +290,9 @@ const ProviderSlice: React.FC<{
               </footer>
             </header>
           </section>
-          <div className="p-8">
+          <div className="pot:p-8 p-1 pot:order-3 order-3">
             <header>
-              <div className="flex items-center justify-between flex-wrap">
+              <div className="flex items-center gap-4 justify-between flex-wrap">
                 <h3 className="text-2xl font-semibold text-primary ">
                   Meus Serviços
                 </h3>
@@ -284,7 +310,7 @@ const ProviderSlice: React.FC<{
                   </p>
                 </div>
               ) : (
-                <div className="mt-5 grid grid-cols-1 gap-4">
+                <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
                   {services.map((service) => (
                     <ServiceCard
                       key={service.id}

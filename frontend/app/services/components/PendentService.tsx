@@ -3,14 +3,16 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 import { ServiceCardProps } from "./ServiceCard";
+import timeSince from "@/components/Partials/TimeSince";
 
 const PendentService: React.FC<ServiceCardProps> = ({
   title,
   description,
   price,
+  date,
 }) => {
   return (
-    <div className="p-4 rounded-xl border border-gray-100">
+    <div className="p-4 rounded-xl border-contrast/60 border ">
       <header className="flex items-center justify-between">
         <svg
           className="size-6"
@@ -61,7 +63,11 @@ const PendentService: React.FC<ServiceCardProps> = ({
           </div>
           <div className="inline-flex mt-2 items-center gap-2 bg-gray-50 rounded-full px-3 py-2 border">
             <span className=" text-primary text-[15px] leading-none">
-              Há 12h
+              {new Date(date as string) > new Date()
+                ? `Data agendada: ${new Date(
+                    date as string
+                  ).toLocaleDateString()}`
+                : `Solicitado ${timeSince(new Date(date as string))} atrás`}
             </span>
           </div>
         </div>

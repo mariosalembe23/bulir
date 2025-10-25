@@ -16,6 +16,7 @@ export interface ServiceCardProps {
   clientId?: string;
   logedUserId?: string;
   userBalance: number;
+  date?: string;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -94,13 +95,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           )}
         </div>
         {isOwner ? (
-          <div className="flex items-center gap-2 flex-wrap">
-            <Button className="w-full text-base py-5">
+          <div className="flex  items-center gap-2 flex-wrap">
+            <Button className="w-full ret:w-auto text-base py-5">
               <Settings className="size-4 " />
               Editar Serviço
             </Button>
 
-            <Button variant={"destructive"} className="w-full text-base py-5">
+            <Button variant={"destructive"} className="w-full ret:w-auto text-base py-5">
               <Trash className="size-4 " />
               Remover Serviço
             </Button>

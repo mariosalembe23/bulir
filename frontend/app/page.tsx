@@ -48,9 +48,9 @@ export default function Home() {
       }}
       className="pot:h-dvh bg-[#f5f5f5] bg-cover bg-center w-full p-2 pot:p-5"
     >
-      <main className="bg-white p-8 pot:p-5 grid grid-cols-1 w-full ring-8 ring-white/50 h-full pot:rounded-3xl shadow-2xl">
+      <main className="bg-white pot:p-5 grid grid-cols-1 w-full ring-8 ring-white/50 h-full pot:rounded-3xl shadow-2xl">
         <section className="w-full overflow-hidden grid gap-2 grid-cols-1 pot:grid-cols-[35%_65%]">
-          <div className="pot:border flex flex-col justify-between bg-linear-to-b from-40% from-white to-[#89D7CF]/50  relative overflow-hidden pot:p-8 border-gray-100 pot:rounded-2xl">
+          <div className=" p-8 flex flex-col justify-between pot:bg-linear-to-b from-40% from-white to-[#89D7CF]/50  relative overflow-hidden border-gray-100 pot:rounded-2xl">
             <header>
               <div className="flex items-center justify-between gap-3">
                 <span>
@@ -113,7 +113,7 @@ export default function Home() {
               </div>
 
               <div className="mt-10 z-20 relative max-w-lg">
-                <h1 className="text-3xl font-semibold text-[#0C2340]">
+                <h1 className="text-2xl ret:text-3xl font-semibold text-[#0C2340]">
                   Conheça a nova forma de solicitar serviços que vai mudar a
                   vida de todos angolanos!
                 </h1>
@@ -122,6 +122,11 @@ export default function Home() {
                   Modernizamos o processo, ajudando pessoas a solicitar e
                   encontrar prestadores de serviço de forma prática e segura!
                 </p>
+                <Link href="/services" className="pot:hidden block">
+                  <Button className="bg-primary w-full py-5 mt-5 text-white hover:bg-secondary ">
+                    Serviços
+                  </Button>
+                </Link>
               </div>
             </header>
             <footer className="flex relative items-center justify-center">
@@ -130,18 +135,21 @@ export default function Home() {
                 width={400}
                 height={400}
                 alt="Bulir App on Phone"
-                className="mx-auto mt-24 lal:mt-24"
+                className="mx-auto
+                lal:w-[450px] 
+                pot:w-[300px]
+                mt-16 lal:mt-24"
               />
             </footer>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 pot:grid-cols-2 pot:px-0 px-2 gap-2">
             <div
               style={{
                 backgroundImage: 'url("/images/user_model.jpg")',
               }}
-              className="border bg-cover bg-center overflow-hidden relative  border-gray-100 rounded-2xl"
+              className="border bg-cover pot:h-auto h-[800px] bg-center overflow-hidden relative  border-gray-100 rounded-2xl"
             >
-              <div className="w-full h-full flex flex-col justify-end bg-linear-to-b from-transparent p-8 to-85% to-black">
+              <div className="w-full h-full flex flex-col justify-end bg-linear-to-b from-transparent p-5 pot:p-8 to-85% to-black">
                 <div className="max-w-md">
                   <h2 className="text-white text-3xl">É fácil contratar!</h2>
                   <p className="text-white/80 pt-1 font-normal text-md">
@@ -162,8 +170,8 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <Link href={"/register"}>
-                    <Button className="bg-white mt-5 py-5 hover:bg-white/80 text-secondary ">
+                  <Link href={"/services"} className="w-full">
+                    <Button className="bg-white mt-5 pot:w-auto w-full py-5 hover:bg-white/80 text-secondary ">
                       Quero contratar um serviço
                       <MoveRight className="ml-2" />
                     </Button>
@@ -175,7 +183,7 @@ export default function Home() {
               style={{
                 backgroundImage: 'url("/images/provider.jpg")',
               }}
-              className="border bg-cover bg-center overflow-hidden relative  border-gray-100 rounded-2xl"
+              className="border pot:h-auto pot:mb-0 mb-10 h-[800px] bg-cover bg-center overflow-hidden relative  border-gray-100 rounded-2xl"
             >
               <div className="w-full h-full flex flex-col justify-end bg-linear-to-b from-transparent p-8 to-85% to-black">
                 <div className="max-w-md">
@@ -198,8 +206,8 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <Link href={"/register"}>
-                    <Button className="bg-contrast mt-5 py-5 hover:bg-contrast/80 text-secondary">
+                  <Link href={"/register"} className="w-full">
+                    <Button className="bg-contrast pot:w-auto w-full mt-5 py-5 hover:bg-contrast/80 text-secondary">
                       Quero ser um prestador
                       <MoveRight className="ml-2" />
                     </Button>

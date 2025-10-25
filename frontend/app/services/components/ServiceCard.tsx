@@ -1,10 +1,9 @@
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Bolt, Settings, ShoppingCart, Trash, ZapIcon } from "lucide-react";
+import { Bolt, Fingerprint, Settings, ShoppingCart, Trash } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import CreateBooking from "./CreateBooking";
-import { Badge } from "@/components/ui/badge";
 
 export interface ServiceCardProps {
   id?: string;
@@ -28,7 +27,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   clientId,
   logedUserId,
   userBalance,
-  id
+  id,
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
@@ -62,7 +61,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             fill="#0C2340"
           />
         </svg>
-        <p className="text-secondary">{ConvertMoneyFormat(price)}</p>
+        <div className="flex items-center gap-2">
+          {userId === logedUserId && !isOwner && (
+            <p className="flex size-6 items-center justify-center rounded-full bg-primary text-white">
+              <Fingerprint className="inline size-4" />
+            </p>
+          )}
+          <p className="text-secondary">{ConvertMoneyFormat(price)}</p>
+        </div>
       </header>
 
       <footer className="mt-10">
@@ -85,16 +91,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                 </span>
               </div>
             </>
-          )}
-          {userId === logedUserId && (
-            <Badge>
-              <ZapIcon
-                className="-ms-0.5 opacity-60"
-                size={12}
-                aria-hidden="true"
-              />
-              Este é o seu serviço
-            </Badge>
           )}
         </div>
         {isOwner ? (

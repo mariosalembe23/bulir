@@ -1,7 +1,7 @@
 export default function LoadingComponent() {
   return (
     <div className="flex items-center justify-center h-dvh w-full fixed top-0 left-0 bg-white z-50">
-      <div>
+      <div className="animate-pulse">
         <svg
           className="size-12"
           viewBox="0 0 38 38"

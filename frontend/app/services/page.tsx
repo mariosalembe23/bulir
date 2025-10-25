@@ -6,13 +6,14 @@ import Link from "next/link";
 import ServiceCard from "./components/ServiceCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { Service } from "../profile/Types/Provider";
 import LoadingComponent from "@/components/Partials/LoadingComponent";
 import { decodeToken } from "@/components/Partials/decodeToken";
 import { User } from "../profile/[id]/page";
 import { toast } from "sonner";
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
+import { useRouter } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -23,6 +24,16 @@ export default function Home() {
   const [id, setId] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [img, setImg] = useState<string>("/images/profile.jpeg");
+  const router = useRouter();
+
+  useEffect(() => {
+    const decoded = decodeToken(getCookie("bulir_token") as string);
+
+    if (!decoded) {
+      router.push("/login");
+      setCookie("not_logged_in", "true");
+    }
+  }, [router]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,8 +162,8 @@ export default function Home() {
             )}
           </div>
         </header>
-        <section className="h-full p-10 overflow-y-auto">
-          <header>
+        <section className="h-full p-5 pot:p-10 overflow-y-auto">
+          <header className="pot:pt-3 pt-10">
             <div className="max-w-md">
               <h1 className="text-3xl font-semibold text-primary">Serviços</h1>
               <p className="text-gray-600 mt-1">
@@ -170,7 +181,7 @@ export default function Home() {
               </p>
             </div>
           ) : (
-            <div className="mt-10 grid grid-cols-5 gap-4">
+            <div className="mt-10 grid ret:grid-cols-2 pot:grid-cols-4  lal:grid-cols-5 gap-4">
               {services.map((service) => (
                 <ServiceCard
                   key={service.id}

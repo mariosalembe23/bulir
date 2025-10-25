@@ -45,6 +45,13 @@ export default function Login() {
     }
   }, [router]);
 
+  useEffect(() => {
+    if (getCookie("not_logged_in")) {
+      toast.error("Por favor, inicie sessão para continuar.");
+      setCookie("not_logged_in", "", { maxAge: -1 });
+    }
+  }, []);
+
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
       setLoading(true);
@@ -74,6 +81,10 @@ export default function Login() {
             error.response.data.error ||
               "Erro de autenticação. Verifique suas credenciais."
           );
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
         }
       } else {
         toast.error("Ocorreu um erro. Por favor, tente novamente mais tarde.");
@@ -99,7 +110,10 @@ export default function Login() {
             width={500}
             height={500}
             alt="Bulir App on Phone"
-            className=""
+            className="
+            lal:w-[550px]
+            w-[400px]
+            "
           />
         </div>
       </div>
@@ -210,14 +224,14 @@ export default function Login() {
                 <Button
                   variant={"outline"}
                   type="button"
-                  className="py-5 w-full rounded-none"
+                  className="py-5 w-full"
                 >
                   Criar Conta
                 </Button>
               </Link>
               <Button
                 type="submit"
-                className="bg-primary py-5 text-white hover:bg-secondary rounded-none"
+                className="bg-primary py-5 text-white hover:bg-secondary"
               >
                 {loading && (
                   <LoaderCircleIcon

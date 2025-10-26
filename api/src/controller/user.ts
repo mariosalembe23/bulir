@@ -1,8 +1,6 @@
 import { PrismaClient } from "../../generated/prisma-client";
 import { Request, Response } from "express";
-import Jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { validate } from "uuid";
 import {
   validateEmail,
   validateName,
@@ -12,9 +10,7 @@ import {
 
 const prisma = new PrismaClient();
 
-
-export const registerUser = async (req : Request, res: Response) => {
-
+export const registerUser = async (req: Request, res: Response) => {
   const { email, password, nif, name, role } = req.body;
 
   if (!email || !password || !nif || !name || !role) {
@@ -45,10 +41,16 @@ export const registerUser = async (req : Request, res: Response) => {
     return res.status(400).json({ error: "NIF inválido" });
   }
 
-  const existingUser = await prisma.users.findFirst({ where: { OR : [{ email }, { nif }] } });
+  const existingUser = await prisma.users.findFirst({
+    where: { OR: [{ email }, { nif }] },
+  });
 
   if (existingUser) {
-    return res.status(409).json({ error: "Esta conta já existe, por favor utilize outro email ou NIF" });
+    return res
+      .status(409)
+      .json({
+        error: "Esta conta já existe, por favor utilize outro email ou NIF",
+      });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -63,7 +65,12 @@ export const registerUser = async (req : Request, res: Response) => {
     },
   });
 
+  await prisma.users.update({
+    where: { id: newUser.id },
+    data: { balance: 15000 },
+  });
+
   res
     .status(201)
     .json({ message: "Usuário registrado com sucesso", user: newUser });
-}
+};

@@ -7,7 +7,7 @@ import ServiceCard from "./components/ServiceCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie, setCookie } from "cookies-next";
-import { Service } from "../profile/Types/Provider";
+import { Booking, Service } from "../profile/Types/Provider";
 import LoadingComponent from "@/components/Partials/LoadingComponent";
 import { decodeToken } from "@/components/Partials/decodeToken";
 import { User } from "../profile/[id]/page";
@@ -19,11 +19,13 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
   const [services, setServices] = useState<Service[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingUser, setLoadingUser] = useState<boolean>(true);
   const [id, setId] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [img, setImg] = useState<string>("/images/profile.jpeg");
+  const [loadingBookings, setLoadingBookings] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -87,7 +89,6 @@ export default function Home() {
           },
         });
         setServices(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching services:", error);
       } finally {
@@ -95,8 +96,47 @@ export default function Home() {
       }
     };
 
+
+    const getAllBookings = async () => {
+
+      if (!id) return;
+
+          try {
+            const response = await axios.get(
+              `${BASE_URL}/bookings/all/` + id,
+              {
+                headers: {
+                  Authorization: `Bearer ${getCookie("bulir_token")}`,
+                },
+              }
+            );
+            console.log("Bookings:", response.data);
+            setBookings(response.data);
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              if (
+                error.response &&
+                error.response?.status >= 400 &&
+                error.response?.status < 500
+              ) {
+                toast.error(
+                  error.response.data.error ||
+                    "Erro de autenticação. Verifique suas credenciais."
+                );
+              }
+            } else {
+              toast.error(
+                "Ocorreu um erro. Por favor, tente novamente mais tarde."
+              );
+            }
+          } finally {
+            setLoadingBookings(false);
+          }
+        };
+
     getAllServices();
-  }, []);
+    getAllBookings();
+  }, [id]);
 
   if (loading || loadingUser) return <LoadingComponent />;
 
@@ -164,7 +204,7 @@ export default function Home() {
           </div>
         </header>
         <section className="h-full p-5 pot:p-10 overflow-y-auto">
-          <header className="pot:pt-3 pt-10">
+          <header className="pot:pt-3 pt-10 flex items-center justify-between gap-4">
             <div className="max-w-md">
               <h1 className="text-3xl font-semibold text-primary">Serviços</h1>
               <p className="text-gray-600 mt-1">
@@ -172,7 +212,9 @@ export default function Home() {
                 necessidades.
               </p>
             </div>
-            <Button variant={"outline"}>Adicionar Serviço</Button>
+            {user && user.role === "PROVIDER" && (
+              <Button variant={"outline"}>Adicionar Serviço</Button>
+            )}
           </header>
 
           {services.length === 0 ? (

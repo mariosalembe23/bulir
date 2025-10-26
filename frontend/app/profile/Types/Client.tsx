@@ -8,8 +8,10 @@ import React, { useEffect, useState } from "react";
 import { User } from "../[id]/page";
 import timeSince from "@/components/Partials/TimeSince";
 import axios from "axios";
-import { Service } from "./Provider";
+import { Booking, Service } from "./Provider";
 import { getCookie } from "cookies-next";
+import { toast } from "sonner";
+import makeLogout from "@/components/Partials/Logout";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,6 +20,8 @@ const ClientSlice: React.FC<{
 }> = ({ user }) => {
   const [services, setServices] = useState<Service[]>([]);
   const [loadingServices, setLoadingServices] = useState<boolean>(true);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loadingBookings, setLoadingBookings] = useState<boolean>(true);
 
   useEffect(() => {
     // const decoded = decodeToken(getCookie("bulir_token") as string);
@@ -41,17 +45,52 @@ const ClientSlice: React.FC<{
       }
     };
 
+    const getAllBookings = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/bookings/all/` + user?.id,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("bulir_token")}`,
+            },
+          }
+        );
+        console.log("Bookings:", response.data);
+        setBookings(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (
+            error.response &&
+            error.response?.status >= 400 &&
+            error.response?.status < 500
+          ) {
+            toast.error(
+              error.response.data.error ||
+                "Erro de autenticação. Verifique suas credenciais."
+            );
+          }
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
+        }
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
+
     getAllServices();
-  }, []);
+    getAllBookings();
+  }, [user?.id]);
 
   return (
     <div
       style={{
         backgroundImage: 'url("/images/back.jpg")',
       }}
-      className="h-dvh bg-[#f5f5f5] bg-cover bg-center w-full p-5"
+      className="h-dvh bg-[#f5f5f5] bg-cover bg-center w-full pot:not-last:p-5"
     >
-      <main className="bg-white flex flex-col justify-between p-5 w-full ring-8 ring-white/50 h-full rounded-3xl shadow-2xl">
+      <main className="bg-white flex flex-col justify-between p-5 w-full ring-8 ring-white/50 h-full pot:rounded-3xl shadow-2xl">
         <header className="px-3 pb-3 border-gray-100 border-b flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href={"/"}>
@@ -90,6 +129,10 @@ const ClientSlice: React.FC<{
             <Link href={"/services"}>
               <Button variant={"link"}>Serviços</Button>
             </Link>
+
+            <Link href={"/services"}>
+              <Button variant={"link"}>Histórico</Button>
+            </Link>
           </div>
           <div className="flex items-center gap-3">
             <div
@@ -98,11 +141,13 @@ const ClientSlice: React.FC<{
               }}
               className="rounded-full bg-cover size-8"
             />
-            <Button variant={"outline"}>Sair</Button>
+            <Button onClick={makeLogout} variant={"outline"}>
+              Sair
+            </Button>
           </div>
         </header>
-        <section className="h-full p-10 grid grid-cols-3 overflow-y-auto">
-          <div className="p-5">
+        <section className="h-full lal:pt-0 pt-10 lal:p-10 grid grid-cols-1 pot:gap-0 gap-24 pot:grid-cols-3 lal:grid-cols-[30%_40%_30%] overflow-y-auto">
+          <div className="pot:p-5 p-1 pot:order-1 order-2">
             <header>
               <h3 className="text-2xl font-semibold text-primary ">
                 Serviços Pendentes
@@ -112,31 +157,43 @@ const ClientSlice: React.FC<{
                 pendentes de conclusão.
               </p>
             </header>
-            <div className="grid grid-cols-1 gap-4 mt-5">
-              <PendentCard
-                title="Desenvolvimento de Website"
-                description="Criação de um website responsivo para uma pequena empresa."
-                price={50000}
-                requestsCount={3}
-                userBalance={60000}
-              />
-              <PendentCard
-                title="Lavagem de Tapetes"
-                description="Serviço de lavagem profunda para tapetes residenciais."
-                price={2500}
-                requestsCount={1}
-                userBalance={3000}
-              />
-              <PendentCard
-                title="Reparação de Ar Condicionado"
-                description="Manutenção e reparo de sistemas de ar condicionado residenciais e comerciais."
-                price={15000}
-                requestsCount={2}
-                userBalance={8000}
-              />
-            </div>
+            {loadingBookings ? (
+              <div className="mt-5 flex items-center justify-start w-full">
+                <p className="flex animate-pulse items-center border gap-2 px-3 py-1 rounded-full bg-gray-50 text-primary">
+                  <LoaderCircleIcon
+                    className="-ms-1 animate-spin"
+                    size={16}
+                    aria-hidden="true"
+                  />
+                  Carregando...
+                </p>
+              </div>
+            ) : bookings.length === 0 ? (
+              <div>
+                <p className="text-primary mt-5">
+                  Você não tem serviços pendentes no momento.
+                </p>
+              </div>
+            ) : (
+              <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
+                {bookings.map((booking) => (
+                  <PendentCard
+                    key={booking.id}
+                    id={booking.id}
+                    description={booking.service.description}
+                    price={booking.service.price}
+                    title={booking.service.title}
+                    userBalance={user?.balance || 0}
+                    clientId={user?.id || ""}
+                    date={booking.date}
+                    isOwner={user?.role === "PROVIDER"}
+                    owner={booking.service.owner}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-          <section className="border-x">
+          <section className="pot:border-x pb-8 pot:order-2 order-1">
             <header className="flex flex-col items-center gap-5">
               <div
                 style={{
@@ -149,21 +206,27 @@ const ClientSlice: React.FC<{
                 <p className="text-zinc-600">{user?.email}</p>
               </div>
 
-              <div className="grid grid-cols-3 items-center mt-5 gap-5 flex-wrap">
+              <div className="flex justify-center items-center mt-5 gap-5 flex-wrap">
                 <div className="text-center px-4">
-                  <p className="text-gray-600 uppercase text-[15px]">Pedidos</p>
-                  <p className="text-xl font-semibold font-mono">15</p>
+                  <p className="text-gray-600 uppercase text-[15px]">
+                    Reservas
+                  </p>
+                  <p className="text-lg font-semibold font-mono">
+                    {bookings.length}
+                  </p>
                 </div>
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Saldo</p>
-                  <p className="text-xl font-semibold font-mono">
+                  <p className="text-lg font-semibold font-mono">
                     {ConvertMoneyFormat(user?.balance || 0)}
                   </p>
                 </div>
                 <div className="text-center px-4">
-                  <p className="text-gray-600 uppercase text-[15px]">Tempo</p>
-                  <p className="text-xl font-semibold font-mono">
-                    {timeSince(new Date(user?.createdAt || ""))}
+                  <p className="text-gray-600 uppercase text-[15px]">
+                    Registrado há
+                  </p>
+                  <p className=" font-semibold font-mono">
+                    {timeSince(user?.createdAt || "")}
                   </p>
                 </div>
               </div>
@@ -199,7 +262,7 @@ const ClientSlice: React.FC<{
               </footer>
             </header>
           </section>
-          <div className="p-8">
+          <div className="pot:p-8 p-1 pot:order-3 order-3">
             <header>
               <div className="flex items-center gap-4 justify-between flex-wrap">
                 <h3 className="text-2xl font-semibold text-primary ">
@@ -220,6 +283,12 @@ const ClientSlice: React.FC<{
                     Carregando...
                   </p>
                 </div>
+              ) : services.length === 0 ? (
+                <div>
+                  <p className="text-primary mt-5">
+                    Você não tem serviços pendentes no momento.
+                  </p>
+                </div>
               ) : (
                 <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
                   {services.slice(0, 5).map((service) => (
@@ -236,6 +305,7 @@ const ClientSlice: React.FC<{
                       logedUserId={user?.id}
                       userId={service.userId}
                       id={service.id}
+                      owner={service.owner}
                     />
                   ))}
                 </div>

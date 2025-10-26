@@ -173,6 +173,9 @@ const ProviderSlice: React.FC<{
             <Link href={"/services"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Serviços</Button>
             </Link>
+            <Link href={"/services"}>
+              <Button variant={"link"}>Histórico</Button>
+            </Link>
           </div>
           <div className="flex items-center gap-3">
             <div

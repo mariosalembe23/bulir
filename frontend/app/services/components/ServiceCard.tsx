@@ -35,8 +35,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
-  console.log({ owner });
-
   return (
     <div className="border flex flex-col justify-between p-5 rounded-2xl">
       <header className="flex items-center justify-between ">
@@ -80,9 +78,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       <footer className="mt-10">
         <span className="text-lg font-medium text-primary">{title}</span>
         <p className="mt-1 text-gray-600 text-[15px]">{description}</p>
-        <div>
-          <p>{owner?.name}</p>
-        </div>
+
         <button className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2">
           {!isOwner && (
             <>
@@ -103,15 +99,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         </button>
         {isOwner ? (
           <div className="flex  items-center gap-2 flex-wrap">
-            <Button className="w-full ret:w-auto text-base py-5">
+            <Button variant={"outline"} className="w-full ret:w-auto  ">
               <Settings className="size-4 " />
               Editar Serviço
             </Button>
 
-            <Button
-              variant={"destructive"}
-              className="w-full ret:w-auto text-base py-5"
-            >
+            <Button variant={"destructive"} className="w-full ret:w-auto ">
               <Trash className="size-4 " />
               Remover Serviço
             </Button>

@@ -111,16 +111,41 @@ export const updateBooking = async (req: Request, res: Response) => {
   return res.status(200).json(updatedBooking);
 };
 
-export const deleteBooking = async (req: Request, res: Response) => {
+export const deleteBooking = async (req: Request | any, res: Response) => {
   const { bookingId } = req.params;
 
   if (!validate(bookingId)) {
     return res.status(400).json({ error: "ID de reserva inválido" });
   }
 
+  const booking = await prisma.bookings.findUnique({
+    where: { id: bookingId },
+  });
+
+  if (!booking) {
+    return res.status(404).json({ error: "Reserva não encontrada" });
+  }
+
+  if (booking.status !== "PENDING") {
+    return res
+      .status(400)
+      .json({ error: "Apenas reservas pendentes podem ser deletadas" });
+  }
+
   await prisma.bookings.delete({ where: { id: bookingId } });
 
-  res.json({ error: "Reserva deletada com sucesso" });
+  const service = await prisma.services.findUnique({
+    where: { id: booking.serviceId },
+  });
+
+  if (service) {
+    await prisma.users.update({
+      where: { id: booking.clientId },
+      data: { balance: { increment: service.price } },
+    });
+  }
+  
+  res.json({ message: "Reserva deletada com sucesso" });
 };
 
 export const getBookingsByUserId = async (req: Request, res: Response) => {

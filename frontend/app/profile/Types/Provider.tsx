@@ -211,6 +211,12 @@ const ProviderSlice: React.FC<{
                   Carregando...
                 </p>
               </div>
+            ) : bookings.length === 0 ? (
+              <div>
+                <p className="text-primary mt-5">
+                  Você não tem serviços solicitados no momento.
+                </p>
+              </div>
             ) : (
               <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
                 {bookings.map((booking) => (
@@ -230,6 +236,7 @@ const ProviderSlice: React.FC<{
                     setUser={setUser}
                     setServices={setServices}
                     service={booking.service}
+                    bookings={bookings}
                   />
                 ))}
               </div>
@@ -327,6 +334,12 @@ const ProviderSlice: React.FC<{
                     Carregando...
                   </p>
                 </div>
+              ) : services.length === 0 ? (
+                <div>
+                  <p className="text-primary mt-5">
+                    Você não tem serviços cadastrados no momento.
+                  </p>
+                </div>
               ) : (
                 <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
                   {services.map((service) => (
@@ -347,6 +360,7 @@ const ProviderSlice: React.FC<{
                       date={service.createdAt}
                       setServices={setServices}
                       service={service}
+                      bookings={bookings}
                     />
                   ))}
                 </div>

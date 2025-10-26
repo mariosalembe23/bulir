@@ -1,6 +1,5 @@
 import { User } from "@/app/profile/[id]/page";
 import { Booking } from "@/app/profile/Types/Provider";
-import openConfetti from "@/components/Partials/Confetti";
 import InvisibleLoad from "@/components/Partials/InvisibleLoad";
 import {
   AlertDialog,
@@ -15,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { LoaderCircleIcon } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
@@ -101,8 +100,11 @@ export default function CreateBooking({
         }
         return prevUser;
       });
-      openConfetti();
+      
       setOpen(false);
+      setCookie("booking_created", "true");
+      window.location.href = "/profile/" + clientId;
+      
     } catch (error) {
       console.error(error);
     } finally {

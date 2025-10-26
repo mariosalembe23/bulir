@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import LoadingComponent from "@/components/Partials/LoadingComponent";
 import { getCookie, setCookie } from "cookies-next";
 import { decodeToken } from "@/components/Partials/decodeToken";
+import openConfetti from "@/components/Partials/Confetti";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -30,6 +31,14 @@ export default function ProfilePage() {
   const [user, setUser] = React.useState<User | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
   const router = useRouter();
+
+  useEffect(() => {
+    if (getCookie("booking_created")) {
+      toast.success("Reserva criada com sucesso!");
+      setCookie("booking_created", "", { maxAge: -1 });
+      openConfetti();
+    }
+  }, []);
 
   useEffect(() => {
     const decoded = decodeToken(getCookie("bulir_token") as string);

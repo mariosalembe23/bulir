@@ -249,6 +249,7 @@ export default function Home() {
                   setUser={setUser}
                   setServices={setServices}
                   service={service}
+                  bookings={bookings}
                 />
               ))}
             </div>

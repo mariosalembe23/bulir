@@ -8,8 +8,9 @@ import {
   Settings,
   ShoppingCart,
   Trash,
+  X,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import CreateBooking from "./CreateBooking";
 import { User } from "@/app/profile/[id]/page";
 import Image from "next/image";
@@ -40,6 +41,7 @@ export interface ServiceCardProps {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   setServices: React.Dispatch<React.SetStateAction<Service[]>>;
   service: Service;
+  bookings: Booking[];
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -60,13 +62,71 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   setBookings,
   setUser,
   setServices,
-  service
+  service,
+  bookings,
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [openProfile, setOpenProfile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
   const [editService, setEditService] = useState<boolean>(false);
+  const [typeDelete, setTypeDelete] = useState<"service" | "booking">(
+    "service"
+  );
+
+  const cancelBooking = async () => {
+    try {
+      setLoading(true);
+      let bookingId: string | null = null;
+      if (bookings.length > 0) {
+        const booking = bookings.find(
+          (booking) => booking.service?.id === service.id
+        );
+        if (booking) {
+          bookingId = booking.id;
+        }
+      }
+      if (!bookingId) {
+        toast.error("ID da reserva ausente.");
+        return;
+      }
+      await axios.delete(`${BASE_URL}/bookings/${bookingId}`, {
+        headers: {
+          Authorization: `Bearer ${getCookie("bulir_token")}`,
+        },
+      });
+      toast.success("Reserva cancelada com sucesso.");
+      setBookings((prevBookings) =>
+        prevBookings.filter((booking) => booking.id !== bookingId)
+      );
+      setUser((prevUser) => {
+        if (prevUser) {
+          return {
+            ...prevUser,
+            balance: (prevUser.balance || 0) + service.price,
+          };
+        }
+        return prevUser;
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response?.status >= 400 &&
+          error.response?.status < 500
+        ) {
+          toast.error(
+            error.response.data.error ||
+              "Erro de autenticação. Verifique suas credenciais."
+          );
+        }
+      } else {
+        toast.error("Ocorreu um erro. Por favor, tente novamente mais tarde.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const deleteService = async () => {
     if (!id) return;
@@ -90,11 +150,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           error.response?.status >= 400 &&
           error.response?.status < 500
         ) {
-          // if (error.response.status === 401) {
-          //   setCookie("session_expired", "true");
-          //   window.location.href = "/login";
-          //   return;
-          // }
+          
 
           toast.error(
             error.response.data.error ||
@@ -186,7 +242,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           <div className="flex  items-center gap-2 flex-wrap">
             <Button
               onClick={() => {
-               
                 setEditService(true);
               }}
               variant={"outline"}
@@ -226,11 +281,22 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           </Button>
         ) : isSubscribed ? (
           <Button
-            onClick={() => setOpenConfirm(true)}
+            onClick={() => {
+              setTypeDelete("booking");
+              setOpenConfirmDialog(true);
+            }}
             variant={"destructive"}
             className="w-full mt-3 text-base py-5"
           >
-            <ShoppingCart className="size-4 " />
+            {loading ? (
+              <LoaderCircleIcon
+                className="-ms-1 animate-spin"
+                size={16}
+                aria-hidden="true"
+              />
+            ) : (
+              <X className="size-4 " />
+            )}
             Cancelar Serviço
           </Button>
         ) : (
@@ -272,11 +338,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         userId={userId!}
       />
       <ConfirmDialog
-        title="Eliminar Serviço"
-        description="Tem certeza de que deseja eliminar este serviço?"
+        title={
+          typeDelete === "service" ? "Eliminar Serviço" : "Cancelar Serviço"
+        }
+        description={
+          typeDelete === "service"
+            ? "Tem certeza de que deseja eliminar este serviço? Esta ação não pode ser desfeita."
+            : "Tem certeza de que deseja cancelar esta reserva?"
+        }
         open={openConfirmDialog}
         setOpen={setOpenConfirmDialog}
-        functionOk={deleteService}
+        functionOk={typeDelete === "service" ? deleteService : cancelBooking}
       />
       <CreateService
         open={editService}

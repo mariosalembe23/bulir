@@ -208,6 +208,7 @@ const ClientSlice: React.FC<{
                     setUser={setUser}
                     setServices={setServices}
                     service={booking.service}
+                    bookings={bookings}
                   />
                 ))}
               </div>
@@ -332,6 +333,7 @@ const ClientSlice: React.FC<{
                       setUser={setUser}
                       setServices={setServices}
                       service={service}
+                      bookings={bookings}
                     />
                   ))}
                 </div>

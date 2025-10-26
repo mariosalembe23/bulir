@@ -28,6 +28,7 @@ export default function DemoProfile({
 }) {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [user, setUser] = React.useState<User | null>(null);
+  console.log("DemoProfile userId:", userId);
 
   useEffect(() => {
     const fetchData = async () => {

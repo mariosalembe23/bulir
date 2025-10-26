@@ -4,13 +4,17 @@ import Image from "next/image";
 import React from "react";
 import { ServiceCardProps } from "./ServiceCard";
 import { MoveRight } from "lucide-react";
+import DemoProfile from "./DemoProfile";
 
 const PendentCard: React.FC<ServiceCardProps> = ({
   title,
   description,
   price,
   date,
+  userId,
 }) => {
+  const [openProfile, setOpenProfile] = React.useState<boolean>(false);
+
   return (
     <div className="p-4 rounded-xl border border-gray-100">
       <header className="flex items-center justify-between">
@@ -47,22 +51,23 @@ const PendentCard: React.FC<ServiceCardProps> = ({
         <p className="font-medium text-primary text-lg">{title}</p>
         <p className="text-gray-700 text-[15px]">{description}</p>
 
-        <button className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2">
-          <>
-            <div className="flex px-3 py-2 items-center gap-2 bg-gray-50 rounded-full  border">
-              <Image
-                src={"https://flagcdn.com/ao.svg"}
-                alt="Angola Flag"
-                width={20}
-                height={15}
-                className="inline-block me-1"
-              />
-              <span className="pe-2 text-primary text-[15px] leading-none">
-                Perfil do Prestador
-                <MoveRight className="inline size-4 ms-2" />
-              </span>
-            </div>
-          </>
+        <button
+          onClick={() => setOpenProfile(true)}
+          className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2"
+        >
+          <div className="flex px-3 py-2 items-center gap-2 bg-gray-50 rounded-full  border">
+            <Image
+              src={"https://flagcdn.com/ao.svg"}
+              alt="Angola Flag"
+              width={20}
+              height={15}
+              className="inline-block me-1"
+            />
+            <span className="pe-2 text-primary text-[15px] leading-none">
+              Perfil do Prestador
+              <MoveRight className="inline size-4 ms-2" />
+            </span>
+          </div>
         </button>
         <p className="text-secondary font-semibold text-xl mt-2">
           {ConvertMoneyFormat(price)}
@@ -72,6 +77,11 @@ const PendentCard: React.FC<ServiceCardProps> = ({
           {date ? new Date(date).toLocaleDateString() : "Data desconhecida"}
         </p>
       </div>
+      <DemoProfile
+        open={openProfile}
+        setOpen={setOpenProfile}
+        userId={userId ?? ""}
+      />
     </div>
   );
 };

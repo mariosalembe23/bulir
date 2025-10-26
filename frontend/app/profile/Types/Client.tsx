@@ -2,7 +2,7 @@ import PendentCard from "@/app/services/components/PendentCard";
 import ServiceCard from "@/app/services/components/ServiceCard";
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Bolt, LoaderCircleIcon } from "lucide-react";
+import { Bolt, House, Layers2, List, LoaderCircleIcon, Menu } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { User } from "../[id]/page";
@@ -13,6 +13,12 @@ import { getCookie } from "cookies-next";
 import { toast } from "sonner";
 import makeLogout from "@/components/Partials/Logout";
 import AddBalance from "@/app/services/components/AddBalance";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -138,17 +144,49 @@ const ClientSlice: React.FC<{
                 />
               </svg>
             </Link>
-            <Link href={"/"}>
+            <Link href={"/"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Página Inicial</Button>
             </Link>
 
-            <Link href={"/services"}>
+            <Link href={"/services"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Serviços</Button>
             </Link>
-
-            <Link href={"/services"}>
+            <Link href={"/services"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Histórico</Button>
             </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ret:hidden inline-flex ">
+                  <Menu size={16} className="m" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() => {
+                    window.location.href = "/";
+                  }}
+                >
+                  <House size={16} className="opacity-60" aria-hidden="true" />
+                  Página Inicial
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    window.location.href = "/services";
+                  }}
+                >
+                  <Layers2
+                    size={16}
+                    className="opacity-60"
+                    aria-hidden="true"
+                  />
+                  Serviços
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <List size={16} className="opacity-60" aria-hidden="true" />
+                  Histórico
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="flex items-center gap-3">
             <div
@@ -209,6 +247,7 @@ const ClientSlice: React.FC<{
                     setServices={setServices}
                     service={booking.service}
                     bookings={bookings}
+                    userId={booking.service.userId}
                   />
                 ))}
               </div>
@@ -347,6 +386,7 @@ const ClientSlice: React.FC<{
           setUser={setUser}
           userId={user?.id || ""}
         />
+        
       </main>
     </div>
   );

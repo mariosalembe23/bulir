@@ -348,6 +348,7 @@ const ProviderSlice: React.FC<{
         <CreateService
           open={openCreateService}
           setOpen={setOpenCreateService}
+          setServices={setServices}
         />
       </main>
     </div>

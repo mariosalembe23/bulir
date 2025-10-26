@@ -14,6 +14,7 @@ import { User } from "../profile/[id]/page";
 import { toast } from "sonner";
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { useRouter } from "next/navigation";
+import CreateService from "./components/CreateService";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -26,6 +27,7 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [img, setImg] = useState<string>("/images/profile.jpeg");
   const [loadingBookings, setLoadingBookings] = useState<boolean>(true);
+  const [openCreateService, setOpenCreateService] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -133,7 +135,7 @@ export default function Home() {
     getAllBookings();
   }, [id]);
 
-  if (loading || loadingUser) return <LoadingComponent />;
+  if (loading || loadingUser || loadingBookings) return <LoadingComponent />;
 
   return (
     <div
@@ -208,7 +210,12 @@ export default function Home() {
               </p>
             </div>
             {user && user.role === "PROVIDER" && (
-              <Button variant={"outline"}>Adicionar Serviço</Button>
+              <Button
+                variant={"outline"}
+                onClick={() => setOpenCreateService(true)}
+              >
+                Adicionar Serviço
+              </Button>
             )}
           </header>
 
@@ -243,6 +250,11 @@ export default function Home() {
             </div>
           )}
         </section>
+        <CreateService
+          open={openCreateService}
+          setOpen={setOpenCreateService}
+          setServices={setServices}
+        />
       </main>
     </div>
   );

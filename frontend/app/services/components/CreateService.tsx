@@ -1,10 +1,10 @@
+import { Service } from "@/app/profile/Types/Provider";
+import openConfetti from "@/components/Partials/Confetti";
+import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -12,18 +12,97 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 import { LoaderCircleIcon } from "lucide-react";
-import Link from "next/link";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+interface CreateServiceForm {
+  title: string;
+  description: string;
+  price: number;
+}
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function CreateService({
   open,
   setOpen,
+  setServices,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setServices: React.Dispatch<React.SetStateAction<Service[]>>;
 }) {
   const [loading, setLoading] = React.useState<boolean>(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<CreateServiceForm>({
+    mode: "onChange",
+    defaultValues: {
+      title: "",
+      description: "",
+      price: 0,
+    },
+  });
+
+  const onSubmit = async (data: CreateServiceForm) => {
+    // if (data.price <= 0 || data.price > 1000000) {
+    //   toast.error("O preço deve estar entre 0 e 1.000.000.");
+    //   return;
+    // }
+
+    try {
+      setLoading(true);
+      const dataToSend = {
+        title: data.title,
+        description: data.description,
+        price: data.price,
+      };
+
+      const response = await axios.post(
+        `${BASE_URL}/services/create`,
+        dataToSend,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getCookie("bulir_token")}`,
+          },
+        }
+      );
+      toast.success("Serviço criado com sucesso!");
+      setServices((prevServices) => [response.data, ...prevServices]);
+      setOpen(false);
+      openConfetti();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response?.status >= 400 &&
+          error.response?.status < 500
+        ) {
+          toast.error(
+            error.response.data.error ||
+              "Erro de autenticação. Verifique suas credenciais."
+          );
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
+        }
+      } else {
+        toast.error("Ocorreu um erro. Por favor, tente novamente mais tarde.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -63,7 +142,10 @@ export default function CreateService({
             Preencha os campos para criar um novo serviço.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form className="mt-3 space-y-4 grid grid-cols-2 gap-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-3 space-y-4 grid grid-cols-2 gap-4"
+        >
           <div className="*:not-first:mt-2">
             <Label
               htmlFor={"title"}
@@ -73,16 +155,26 @@ export default function CreateService({
             </Label>
             <Input
               id={"title"}
-              // {...register("email", { required: "Este campo é obrigatório" })}
+              {...register("title", {
+                required: "Este campo é obrigatório",
+                minLength: {
+                  value: 3,
+                  message: "O título deve ter no mínimo 3 caracteres",
+                },
+                maxLength: {
+                  value: 100,
+                  message: "O título deve ter no máximo 100 caracteres",
+                },
+              })}
               className="py-5 focus:ring-4! text-base text-secondary focus:ring-contrast-ground! focus:border-primary/70!"
               placeholder="Título do serviço"
               type="text"
             />
-            {/* {errors.email && (
-                <p className="text-red-700 ps-3 mt-1 text-sm">
-                  {errors.email.message}
-                </p>
-              )} */}
+            {errors.title && (
+              <p className="text-red-700 ps-3 mt-1 text-sm">
+                {errors.title.message}
+              </p>
+            )}
           </div>
           <div className="*:not-first:mt-2">
             <Label
@@ -93,16 +185,31 @@ export default function CreateService({
             </Label>
             <Input
               id={"price"}
-              // {...register("email", { required: "Este campo é obrigatório" })}
+              {...register("price", {
+                required: "Este campo é obrigatório",
+                valueAsNumber: true, // 👈 converte o valor string para número
+                min: {
+                  value: 10,
+                  message: "O preço deve ser maior ou igual a 10 kzs",
+                },
+                max: {
+                  value: 1000000,
+                  message: "O preço deve ser menor ou igual a 1.000.000 kzs",
+                },
+              })}
               className="py-5 focus:ring-4! text-base text-secondary focus:ring-contrast-ground! focus:border-primary/70!"
               placeholder="Preço do serviço"
-              type="text"
+              type="number"
             />
-            {/* {errors.email && (
-                <p className="text-red-700 ps-3 mt-1 text-sm">
-                  {errors.email.message}
-                </p>
-              )} */}
+            {errors.price ? (
+              <p className="text-red-700 ps-3 mt-1 text-sm">
+                {errors.price.message}
+              </p>
+            ) : (
+              <p className="ps-3 text-sm text-primary pt-1">
+                {ConvertMoneyFormat(watch("price"))}
+              </p>
+            )}
           </div>
           <div className="*:not-first:mt-2 col-span-2">
             <Label
@@ -113,9 +220,25 @@ export default function CreateService({
             </Label>
             <Textarea
               id={"description"}
+              {...register("description", {
+                required: "Este campo é obrigatório",
+                minLength: {
+                  value: 10,
+                  message: "A descrição deve ter no mínimo 10 caracteres",
+                },
+                maxLength: {
+                  value: 250,
+                  message: "A descrição deve ter no máximo 1000 caracteres",
+                },
+              })}
               placeholder="Descrição do serviço"
               className="field-sizing-content shadow-none! py-2 focus:ring-4! text-base text-secondary focus:ring-contrast-ground! focus:border-primary/70! max-h-30.5 min-h-0 resize-none"
             />
+            {errors.description && (
+              <p className="text-red-700 ps-3 mt-1 text-sm">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <div className="grid col-span-2 grid-cols-1 ret:grid-cols-2 gap-2">

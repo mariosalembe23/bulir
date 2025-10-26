@@ -18,6 +18,18 @@ export const createService = async (
     return res.status(400).json({ error: "Todos os campos são obrigatórios" });
   }
 
+  if (title.length < 3) {
+    return res.status(400).json({ error: "O título deve ter pelo menos 3 caracteres" });
+  }
+
+  if (description.length < 10) {
+    return res.status(400).json({ error: "A descrição deve ter pelo menos 10 caracteres" });
+  }
+
+  if (price <= 0) {
+    return res.status(400).json({ error: "O preço deve ser maior que zero" });
+  }
+
   const existingService = await prisma.services.findFirst({
     where: { title, userId },
   });

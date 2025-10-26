@@ -14,6 +14,7 @@ import { User } from "@/app/profile/[id]/page";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Booking } from "@/app/profile/Types/Provider";
+import DemoProfile from "./DemoProfile";
 
 export interface ServiceCardProps {
   id?: string;
@@ -47,9 +48,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   isSubscribed,
   date,
   setBookings,
-  setUser
+  setUser,
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+  const [openProfile, setOpenProfile] = useState<boolean>(false);
 
   return (
     <div className="border flex flex-col justify-between p-5 rounded-2xl">
@@ -95,7 +97,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         <span className="text-lg font-medium text-primary">{title}</span>
         <p className="mt-1 text-gray-600 text-[15px]">{description}</p>
 
-        <button className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2">
+        <button
+          onClick={() => setOpenProfile(true)}
+          className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2"
+        >
           {!isOwner && (
             <>
               <div className="flex items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
@@ -186,7 +191,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         userBalance={userBalance}
         setBookings={setBookings}
         setUser={setUser}
-        
+      />
+      <DemoProfile
+        open={openProfile}
+        setOpen={setOpenProfile}
+        userId={userId!}
       />
     </div>
   );

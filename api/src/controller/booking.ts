@@ -11,9 +11,7 @@ const prisma = new PrismaClient();
 export const createBooking = async (req: Request, res: Response) => {
   const { clientId, serviceId, date } = req.body;
   if (!clientId || !serviceId || !date) {
-    return res
-      .status(400)
-      .json({ error: "Todos os campos são obrigatórios" });
+    return res.status(400).json({ error: "Todos os campos são obrigatórios" });
   }
 
   const existingBooking = await prisma.bookings.findFirst({
@@ -25,11 +23,9 @@ export const createBooking = async (req: Request, res: Response) => {
   });
 
   if (existingBooking) {
-    return res
-      .status(400)
-      .json({
-        error: "Você já tem uma reserva para este serviço nesta data",
-      });
+    return res.status(400).json({
+      error: "Você já tem uma reserva para este serviço nesta data",
+    });
   }
 
   const removeBalance = async () => {
@@ -42,7 +38,9 @@ export const createBooking = async (req: Request, res: Response) => {
     });
 
     if (!service || !client) {
-      return res.status(404).json({ error: "Serviço ou cliente não encontrado" });
+      return res
+        .status(404)
+        .json({ error: "Serviço ou cliente não encontrado" });
     }
 
     if (client.balance < service.price) {
@@ -58,7 +56,7 @@ export const createBooking = async (req: Request, res: Response) => {
       where: { id: service.userId || "" },
       data: { balance: { increment: service.price } },
     });
-  }
+  };
 
   await removeBalance();
 

@@ -72,6 +72,7 @@ const ClientSlice: React.FC<{
           }
         );
         setBookings(response.data);
+        console.log(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (
@@ -310,7 +311,7 @@ const ClientSlice: React.FC<{
                 </div>
               ) : (
                 <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
-                  {services.slice(0, 5).map((service) => (
+                  {services.slice(0, 3).map((service) => (
                     <ServiceCard
                       key={service.id}
                       title={service.title}

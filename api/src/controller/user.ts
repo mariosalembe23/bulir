@@ -45,10 +45,10 @@ export const registerUser = async (req : Request, res: Response) => {
     return res.status(400).json({ error: "NIF inválido" });
   }
 
-  const existingUser = await prisma.users.findFirst({ where: { email } });
+  const existingUser = await prisma.users.findFirst({ where: { OR : [{ email }, { nif }] } });
 
   if (existingUser) {
-    return res.status(409).json({ error: "Conta já existe" });
+    return res.status(409).json({ error: "Esta conta já existe, por favor utilize outro email ou NIF" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);

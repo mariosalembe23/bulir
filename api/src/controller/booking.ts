@@ -13,7 +13,7 @@ export const createBooking = async (req: Request, res: Response) => {
   if (!clientId || !serviceId || !date) {
     return res
       .status(400)
-      .json({ message: "Todos os campos são obrigatórios" });
+      .json({ error: "Todos os campos são obrigatórios" });
   }
 
   const existingBooking = await prisma.bookings.findFirst({
@@ -28,9 +28,39 @@ export const createBooking = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({
-        message: "Você já tem uma reserva para este serviço nesta data",
+        error: "Você já tem uma reserva para este serviço nesta data",
       });
   }
+
+  const removeBalance = async () => {
+    const service = await prisma.services.findUnique({
+      where: { id: serviceId },
+    });
+
+    const client = await prisma.users.findUnique({
+      where: { id: clientId },
+    });
+
+    if (!service || !client) {
+      return res.status(404).json({ error: "Serviço ou cliente não encontrado" });
+    }
+
+    if (client.balance < service.price) {
+      return res.status(400).json({ error: "Saldo insuficiente" });
+    }
+
+    await prisma.users.update({
+      where: { id: clientId },
+      data: { balance: client.balance - service.price },
+    });
+
+    await prisma.users.update({
+      where: { id: service.userId || "" },
+      data: { balance: { increment: service.price } },
+    });
+  }
+
+  await removeBalance();
 
   const newBooking = await prisma.bookings.create({
     data: {
@@ -51,7 +81,7 @@ export const getBookingById = async (req: Request, res: Response) => {
   const { bookingId } = req.params;
 
   if (!validate(bookingId)) {
-    return res.status(400).json({ message: "ID de reserva inválido" });
+    return res.status(400).json({ error: "ID de reserva inválido" });
   }
 
   const booking = await prisma.bookings.findUnique({
@@ -59,7 +89,7 @@ export const getBookingById = async (req: Request, res: Response) => {
   });
 
   if (!booking) {
-    return res.status(404).json({ message: "Reserva não encontrada" });
+    return res.status(404).json({ error: "Reserva não encontrada" });
   }
 
   res.json(booking);
@@ -70,7 +100,7 @@ export const updateBooking = async (req: Request, res: Response) => {
   const { date, status } = req.body;
 
   if (!validate(bookingId)) {
-    return res.status(400).json({ message: "ID de reserva inválido" });
+    return res.status(400).json({ error: "ID de reserva inválido" });
   }
   const updatedBooking = await prisma.bookings.update({
     where: { id: bookingId },
@@ -87,19 +117,19 @@ export const deleteBooking = async (req: Request, res: Response) => {
   const { bookingId } = req.params;
 
   if (!validate(bookingId)) {
-    return res.status(400).json({ message: "ID de reserva inválido" });
+    return res.status(400).json({ error: "ID de reserva inválido" });
   }
 
   await prisma.bookings.delete({ where: { id: bookingId } });
 
-  res.json({ message: "Reserva deletada com sucesso" });
+  res.json({ error: "Reserva deletada com sucesso" });
 };
 
 export const getBookingsByUserId = async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   if (!validate(userId)) {
-    return res.status(400).json({ message: "ID de usuário inválido" });
+    return res.status(400).json({ error: "ID de usuário inválido" });
   }
 
   const bookings = await prisma.bookings.findMany({

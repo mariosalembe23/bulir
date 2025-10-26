@@ -246,6 +246,7 @@ export default function Home() {
                     (booking) => booking.serviceId === service.id
                   )}
                   setBookings={setBookings}
+                  setUser={setUser}
                 />
               ))}
             </div>

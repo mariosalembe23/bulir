@@ -30,6 +30,7 @@ export interface ServiceCardProps {
   owner?: User;
   isSubscribed?: boolean;
   setBookings: React.Dispatch<React.SetStateAction<Booking[]>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -45,7 +46,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   owner,
   isSubscribed,
   date,
-  setBookings
+  setBookings,
+  setUser
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
@@ -183,6 +185,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         price={price}
         userBalance={userBalance}
         setBookings={setBookings}
+        setUser={setUser}
         
       />
     </div>

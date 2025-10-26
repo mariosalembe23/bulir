@@ -1,3 +1,4 @@
+import { User } from "@/app/profile/[id]/page";
 import { Booking } from "@/app/profile/Types/Provider";
 import openConfetti from "@/components/Partials/Confetti";
 import InvisibleLoad from "@/components/Partials/InvisibleLoad";
@@ -29,6 +30,7 @@ export default function CreateBooking({
   price,
   userBalance,
   setBookings,
+  setUser,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,6 +39,7 @@ export default function CreateBooking({
   price: number;
   userBalance: number;
   setBookings: React.Dispatch<React.SetStateAction<Booking[]>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }) {
   const [date, setDate] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -66,6 +69,11 @@ export default function CreateBooking({
       return;
     }
 
+    if (userBalance < price) {
+      toast.error("Saldo insuficiente para solicitar este serviço.");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.post(
@@ -84,6 +92,15 @@ export default function CreateBooking({
       );
       toast.success("Serviço solicitado com sucesso!");
       setBookings((prev) => [...prev, response.data]);
+      setUser((prevUser) => {
+        if (prevUser) {
+          return {
+            ...prevUser,
+            balance: (prevUser.balance || 0) - price,
+          };
+        }
+        return prevUser;
+      });
       openConfetti();
       setOpen(false);
     } catch (error) {

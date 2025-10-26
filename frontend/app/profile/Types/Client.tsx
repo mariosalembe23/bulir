@@ -204,6 +204,7 @@ const ClientSlice: React.FC<{
                     isOwner={user?.role === "PROVIDER"}
                     owner={booking.service.owner}
                     setBookings={setBookings}
+                    setUser={setUser}
                   />
                 ))}
               </div>
@@ -325,6 +326,7 @@ const ClientSlice: React.FC<{
                       id={service.id}
                       owner={service.owner}
                       setBookings={setBookings}
+                      setUser={setUser}
                     />
                   ))}
                 </div>

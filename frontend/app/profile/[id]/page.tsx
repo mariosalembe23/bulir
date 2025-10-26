@@ -85,6 +85,6 @@ export default function ProfilePage() {
   return type?.toLowerCase() === "client" ? (
     <ClientSlice user={user} setUser={setUser} />
   ) : (
-    <ProviderSlice user={user} />
+    <ProviderSlice user={user} setUser={setUser} />
   );
 }

@@ -47,7 +47,8 @@ export interface Booking {
 
 const ProviderSlice: React.FC<{
   user: User | null;
-}> = ({ user }) => {
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}> = ({ user, setUser }) => {
   const [services, setServices] = React.useState<Service[]>([]);
   const [loadingServices, setLoadingServices] = React.useState<boolean>(true);
   const [loadingBookings, setLoadingBookings] = React.useState<boolean>(true);
@@ -99,7 +100,6 @@ const ProviderSlice: React.FC<{
             },
           }
         );
-        console.log("Bookings:", response.data);
         setBookings(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -227,6 +227,7 @@ const ProviderSlice: React.FC<{
                     logedUserId={user?.id || ""}
                     date={booking.date}
                     setBookings={setBookings}
+                    setUser={setUser}
                   />
                 ))}
               </div>
@@ -340,6 +341,7 @@ const ProviderSlice: React.FC<{
                       id={service.id}
                       owner={service.owner}
                       setBookings={setBookings}
+                      setUser={setUser}
                     />
                   ))}
                 </div>

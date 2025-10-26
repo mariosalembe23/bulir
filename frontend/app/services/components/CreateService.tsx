@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { LoaderCircleIcon } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -31,10 +31,14 @@ export default function CreateService({
   open,
   setOpen,
   setServices,
+  mode,
+  service,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setServices: React.Dispatch<React.SetStateAction<Service[]>>;
+  mode: "create" | "edit";
+  service?: Service;
 }) {
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -43,6 +47,7 @@ export default function CreateService({
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm<CreateServiceForm>({
     mode: "onChange",
     defaultValues: {
@@ -52,11 +57,33 @@ export default function CreateService({
     },
   });
 
+  useEffect(() => {
+    if (mode === "edit" && service) {
+      reset({
+        title: service.title,
+        description: service.description,
+        price: service.price,
+      });
+    } else {
+      reset({
+        title: "",
+        description: "",
+        price: 0,
+      });
+    }
+  }, [mode, service, reset]);
+
   const onSubmit = async (data: CreateServiceForm) => {
-    // if (data.price <= 0 || data.price > 1000000) {
-    //   toast.error("O preço deve estar entre 0 e 1.000.000.");
-    //   return;
-    // }
+    if (mode === "edit") {
+      if (
+        service?.title === data.title &&
+        service?.description === data.description &&
+        service?.price === data.price
+      ) {
+        toast.error("Nenhuma alteração foi feita.");
+        return;
+      }
+    }
 
     try {
       setLoading(true);
@@ -66,18 +93,35 @@ export default function CreateService({
         price: data.price,
       };
 
-      const response = await axios.post(
-        `${BASE_URL}/services/create`,
-        dataToSend,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getCookie("bulir_token")}`,
-          },
-        }
-      );
-      toast.success("Serviço criado com sucesso!");
-      setServices((prevServices) => [response.data, ...prevServices]);
+      if (mode === "create") {
+        const response = await axios.post(
+          `${BASE_URL}/services/create`,
+          dataToSend,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getCookie("bulir_token")}`,
+            },
+          }
+        );
+        toast.success("Serviço criado com sucesso!");
+        setServices((prevServices) => [response.data, ...prevServices]);
+      } else if (mode === "edit" && service) {
+        const response = await axios.put(
+          `${BASE_URL}/services/${service.id}`,
+          dataToSend,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getCookie("bulir_token")}`,
+            },
+          }
+        );
+        toast.success("Serviço atualizado com sucesso!");
+        setServices((prevServices) =>
+          prevServices.map((s) => (s.id === service.id ? response.data : s))
+        );
+      }
       setOpen(false);
       openConfetti();
     } catch (error) {

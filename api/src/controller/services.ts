@@ -19,11 +19,15 @@ export const createService = async (
   }
 
   if (title.length < 3) {
-    return res.status(400).json({ error: "O título deve ter pelo menos 3 caracteres" });
+    return res
+      .status(400)
+      .json({ error: "O título deve ter pelo menos 3 caracteres" });
   }
 
   if (description.length < 10) {
-    return res.status(400).json({ error: "A descrição deve ter pelo menos 10 caracteres" });
+    return res
+      .status(400)
+      .json({ error: "A descrição deve ter pelo menos 10 caracteres" });
   }
 
   if (price <= 0) {
@@ -105,6 +109,23 @@ export const deleteService = async (req: Request, res: Response) => {
   if (!validate(serviceId)) {
     return res.status(400).json({ error: "Id Inválido" });
   }
+
+  const pendentBookings = await prisma.bookings.findFirst({
+    where: { serviceId: serviceId },
+  });
+
+  if (pendentBookings) {
+    return res
+      .status(400)
+      .json({
+        error:
+          "Não é possível deletar um serviço com reservas pendentes. Finalize a reserva",
+      });
+  }
+
+  await prisma.bookings.deleteMany({
+    where: { serviceId: serviceId },
+  });
 
   await prisma.services.delete({ where: { id: serviceId } });
 

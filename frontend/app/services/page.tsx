@@ -247,6 +247,8 @@ export default function Home() {
                   )}
                   setBookings={setBookings}
                   setUser={setUser}
+                  setServices={setServices}
+                  service={service}
                 />
               ))}
             </div>
@@ -256,6 +258,7 @@ export default function Home() {
           open={openCreateService}
           setOpen={setOpenCreateService}
           setServices={setServices}
+          mode="create"
         />
       </main>
     </div>

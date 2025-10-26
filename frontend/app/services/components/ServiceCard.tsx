@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   Bolt,
   Fingerprint,
+  LoaderCircleIcon,
   MoveRight,
   Settings,
   ShoppingCart,
@@ -13,11 +14,16 @@ import CreateBooking from "./CreateBooking";
 import { User } from "@/app/profile/[id]/page";
 import Image from "next/image";
 import { toast } from "sonner";
-import { Booking } from "@/app/profile/Types/Provider";
+import { Booking, Service } from "@/app/profile/Types/Provider";
 import DemoProfile from "./DemoProfile";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import InvisibleLoad from "@/components/Partials/InvisibleLoad";
+import ConfirmDialog from "./ConfirmDialog";
+import CreateService from "./CreateService";
 
 export interface ServiceCardProps {
-  id?: string;
+  id: string;
   title: string;
   description: string;
   price: number;
@@ -32,7 +38,11 @@ export interface ServiceCardProps {
   isSubscribed?: boolean;
   setBookings: React.Dispatch<React.SetStateAction<Booking[]>>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setServices: React.Dispatch<React.SetStateAction<Service[]>>;
+  service: Service;
 }
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
@@ -49,12 +59,59 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   date,
   setBookings,
   setUser,
+  setServices,
+  service
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [openProfile, setOpenProfile] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
+  const [editService, setEditService] = useState<boolean>(false);
+
+  const deleteService = async () => {
+    if (!id) return;
+    try {
+      setLoading(true);
+      await axios.delete(`${BASE_URL}/services/${id}`, {
+        headers: {
+          Authorization: `Bearer ${getCookie("bulir_token")}`,
+        },
+      });
+
+      toast.success("Serviço removido com sucesso.");
+      setOpenConfirm(false);
+      setServices((prevServices) =>
+        prevServices.filter((service) => service.id !== id)
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response?.status >= 400 &&
+          error.response?.status < 500
+        ) {
+          // if (error.response.status === 401) {
+          //   setCookie("session_expired", "true");
+          //   window.location.href = "/login";
+          //   return;
+          // }
+
+          toast.error(
+            error.response.data.error ||
+              "Erro de autenticação. Verifique suas credenciais."
+          );
+        }
+      } else {
+        toast.error("Ocorreu um erro. Por favor, tente novamente mais tarde.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="border flex flex-col justify-between p-5 rounded-2xl">
+      {loading && <InvisibleLoad />}
       <header className="flex items-center justify-between ">
         <svg
           className="size-6"
@@ -97,29 +154,27 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         <span className="text-lg font-medium text-primary">{title}</span>
         <p className="mt-1 text-gray-600 text-[15px]">{description}</p>
 
-        <button
-          onClick={() => setOpenProfile(true)}
-          className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2"
-        >
-          {!isOwner && (
-            <>
-              <div className="flex items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
-                <Image
-                  src={"https://avatar.iran.liara.run/public/1"}
-                  width={100}
-                  height={100}
-                  alt="Avatar"
-                  className="rounded-full border size-6"
-                />
-                <span className="pe-2 text-primary text-[15px] leading-none">
-                  {owner?.name || "Perfil do Prestador"}
-                  <MoveRight className="inline size-4 ms-2" />
-                </span>
-              </div>
-            </>
-          )}
-        </button>
-        <p className="text-primary text-sm py-1">
+        {!isOwner && (
+          <button
+            onClick={() => setOpenProfile(true)}
+            className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2"
+          >
+            <div className="flex items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
+              <Image
+                src={"https://avatar.iran.liara.run/public/1"}
+                width={100}
+                height={100}
+                alt="Avatar"
+                className="rounded-full border size-6"
+              />
+              <span className="pe-2 text-primary text-[15px] leading-none">
+                {owner?.name || "Perfil do Prestador"}
+                <MoveRight className="inline size-4 ms-2" />
+              </span>
+            </div>
+          </button>
+        )}
+        <p className="text-primary text-sm pt-1 pb-3">
           Postado em{" "}
           {new Date(date as string).toLocaleDateString("pt-BR", {
             day: "2-digit",
@@ -129,13 +184,32 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         </p>
         {isOwner ? (
           <div className="flex  items-center gap-2 flex-wrap">
-            <Button variant={"outline"} className="w-full ret:w-auto  ">
+            <Button
+              onClick={() => {
+               
+                setEditService(true);
+              }}
+              variant={"outline"}
+              className="w-full ret:w-auto  "
+            >
               <Settings className="size-4 " />
               Editar Serviço
             </Button>
 
-            <Button variant={"destructive"} className="w-full ret:w-auto ">
-              <Trash className="size-4 " />
+            <Button
+              onClick={() => setOpenConfirmDialog(true)}
+              variant={"destructive"}
+              className="w-full ret:w-auto "
+            >
+              {loading ? (
+                <LoaderCircleIcon
+                  className="-ms-1 animate-spin"
+                  size={16}
+                  aria-hidden="true"
+                />
+              ) : (
+                <Trash className="size-4 " />
+              )}
               Remover Serviço
             </Button>
           </div>
@@ -169,7 +243,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                   action: {
                     label: "Adicionar",
                     onClick: () => {
-                      toast.dismiss();
+                      window.location.href = "/login";
                     },
                   },
                 });
@@ -196,6 +270,20 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         open={openProfile}
         setOpen={setOpenProfile}
         userId={userId!}
+      />
+      <ConfirmDialog
+        title="Eliminar Serviço"
+        description="Tem certeza de que deseja eliminar este serviço?"
+        open={openConfirmDialog}
+        setOpen={setOpenConfirmDialog}
+        functionOk={deleteService}
+      />
+      <CreateService
+        open={editService}
+        setOpen={setEditService}
+        setServices={setServices}
+        mode="edit"
+        service={service}
       />
     </div>
   );

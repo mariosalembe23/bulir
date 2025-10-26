@@ -228,6 +228,8 @@ const ProviderSlice: React.FC<{
                     date={booking.date}
                     setBookings={setBookings}
                     setUser={setUser}
+                    setServices={setServices}
+                    service={booking.service}
                   />
                 ))}
               </div>
@@ -342,6 +344,9 @@ const ProviderSlice: React.FC<{
                       owner={service.owner}
                       setBookings={setBookings}
                       setUser={setUser}
+                      date={service.createdAt}
+                      setServices={setServices}
+                      service={service}
                     />
                   ))}
                 </div>
@@ -353,6 +358,7 @@ const ProviderSlice: React.FC<{
           open={openCreateService}
           setOpen={setOpenCreateService}
           setServices={setServices}
+          mode="create"
         />
       </main>
     </div>

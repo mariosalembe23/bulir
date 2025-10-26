@@ -1,9 +1,10 @@
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
 import { Bolt, Fingerprint, Settings, ShoppingCart, Trash } from "lucide-react";
-import Image from "next/image";
 import React, { useState } from "react";
 import CreateBooking from "./CreateBooking";
+import { User } from "@/app/profile/[id]/page";
+import Image from "next/image";
 
 export interface ServiceCardProps {
   id?: string;
@@ -17,6 +18,7 @@ export interface ServiceCardProps {
   logedUserId?: string;
   userBalance: number;
   date?: string;
+  owner?: User;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -29,8 +31,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   logedUserId,
   userBalance,
   id,
+  owner,
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+
+  console.log({ owner });
 
   return (
     <div className="border flex flex-col justify-between p-5 rounded-2xl">
@@ -74,9 +79,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 
       <footer className="mt-10">
         <span className="text-lg font-medium text-primary">{title}</span>
-        <p className="mt-2 text-gray-600 text-[15px]">{description}</p>
-
-        <div className="flex flex-wrap items-center gap-4 my-2">
+        <p className="mt-1 text-gray-600 text-[15px]">{description}</p>
+        <div>
+          <p>{owner?.name}</p>
+        </div>
+        <button className="flex hover:opacity-80 flex-wrap items-center gap-4 my-2">
           {!isOwner && (
             <>
               <div className="flex items-center gap-2 bg-gray-50 rounded-full px-1 py-1 border">
@@ -88,12 +95,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                   className="rounded-full border size-6"
                 />
                 <span className="pe-2 text-primary text-[15px] leading-none">
-                  Perfil
+                  {owner?.name}
                 </span>
               </div>
             </>
           )}
-        </div>
+        </button>
         {isOwner ? (
           <div className="flex  items-center gap-2 flex-wrap">
             <Button className="w-full ret:w-auto text-base py-5">
@@ -101,7 +108,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
               Editar Serviço
             </Button>
 
-            <Button variant={"destructive"} className="w-full ret:w-auto text-base py-5">
+            <Button
+              variant={"destructive"}
+              className="w-full ret:w-auto text-base py-5"
+            >
               <Trash className="size-4 " />
               Remover Serviço
             </Button>

@@ -83,7 +83,7 @@ export default function ProfilePage() {
   if (loading) return <LoadingComponent />;
 
   return type?.toLowerCase() === "client" ? (
-    <ClientSlice />
+    <ClientSlice user={user} />
   ) : (
     <ProviderSlice user={user} />
   );

@@ -13,8 +13,8 @@ export const createService = async (
   res: Response | any
 ) => {
   const userId = req.userId;
-  const { title, description, price, balance } = req.body;
-  if (!title || !description || !price || !balance) {
+  const { title, description, price } = req.body;
+  if (!title || !description || !price) {
     return res.status(400).json({ error: "Todos os campos são obrigatórios" });
   }
 

@@ -24,6 +24,7 @@ export interface Service {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  owner: User;
 }
 
 export type Status =
@@ -333,6 +334,7 @@ const ProviderSlice: React.FC<{
                       logedUserId={user?.id}
                       userId={service.userId}
                       id={service.id}
+                      owner={service.owner}
                     />
                   ))}
                 </div>

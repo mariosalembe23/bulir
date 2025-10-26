@@ -196,6 +196,7 @@ export default function Home() {
                   clientId={id!}
                   logedUserId={id!}
                   userBalance={user ? user.balance || 0 : 0}
+                  owner={service.owner}
                 />
               ))}
             </div>

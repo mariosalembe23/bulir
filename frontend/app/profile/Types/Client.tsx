@@ -2,10 +2,48 @@ import PendentCard from "@/app/services/components/PendentCard";
 import ServiceCard from "@/app/services/components/ServiceCard";
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Bolt } from "lucide-react";
+import { Bolt, LoaderCircleIcon } from "lucide-react";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { User } from "../[id]/page";
+import timeSince from "@/components/Partials/TimeSince";
+import axios from "axios";
+import { Service } from "./Provider";
+import { getCookie } from "cookies-next";
 
-const ClientSlice = () => {
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const ClientSlice: React.FC<{
+  user: User | null;
+}> = ({ user }) => {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loadingServices, setLoadingServices] = useState<boolean>(true);
+
+  useEffect(() => {
+    // const decoded = decodeToken(getCookie("bulir_token") as string);
+    // if (decoded && typeof decoded === "object" && "id" in decoded) {
+    //   setId(decoded.id as string);
+    // }
+
+    const getAllServices = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/services/all`, {
+          headers: {
+            Authorization: `Bearer ${getCookie("bulir_token")}`,
+          },
+        });
+        setServices(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      } finally {
+        setLoadingServices(false);
+      }
+    };
+
+    getAllServices();
+  }, []);
+
   return (
     <div
       style={{
@@ -102,13 +140,13 @@ const ClientSlice = () => {
             <header className="flex flex-col items-center gap-5">
               <div
                 style={{
-                  backgroundImage: 'url("/images/profile.jpeg")',
+                  backgroundImage: 'url("/images/user.jpeg")',
                 }}
                 className="rounded-full bg-cover size-24"
               ></div>
               <div className="text-center">
-                <p className="text-3xl">Mário Lino Salembe</p>
-                <p className="text-zinc-600">linomario199010@gmail.com</p>
+                <p className="text-3xl">{user?.name}</p>
+                <p className="text-zinc-600">{user?.email}</p>
               </div>
 
               <div className="grid grid-cols-3 items-center mt-5 gap-5 flex-wrap">
@@ -119,27 +157,37 @@ const ClientSlice = () => {
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Saldo</p>
                   <p className="text-xl font-semibold font-mono">
-                    {ConvertMoneyFormat(15000)}
+                    {ConvertMoneyFormat(user?.balance || 0)}
                   </p>
                 </div>
                 <div className="text-center px-4">
                   <p className="text-gray-600 uppercase text-[15px]">Tempo</p>
-                  <p className="text-xl font-semibold font-mono">190d</p>
+                  <p className="text-xl font-semibold font-mono">
+                    {timeSince(new Date(user?.createdAt || ""))}
+                  </p>
                 </div>
               </div>
 
               <footer className="w-full flex flex-col gap-8 px-10 mt-10">
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-600">NIF</p>
-                  <p className="font-mono font-semibold">123456789</p>
+                  <p className="font-mono font-semibold">
+                    {user?.nif || "N/A"}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-600">Registrado em</p>
-                  <p className="font-mono font-semibold">10/05/2022</p>
+                  <p className="font-mono font-semibold">
+                    {new Date(user?.createdAt || "").toLocaleDateString()}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-600">Tipo de Conta</p>
-                  <p className=" font-medium">CLIENT(Cliente)</p>
+                  <p className=" font-medium">
+                    {user?.role === "PROVIDER"
+                      ? "PROVIDER(Prestador de Serviços)"
+                      : "CLIENT(Cliente)"}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <Button variant={"outline"} className="">
@@ -153,31 +201,45 @@ const ClientSlice = () => {
           </section>
           <div className="p-8">
             <header>
-              <h3 className="text-2xl font-semibold text-primary ">
-                Serviços Recentes
-              </h3>
-              <div className="mt-5 grid grid-cols-1 gap-4">
-                <ServiceCard
-                  title="Concerto de Aparelhos domésticos"
-                  description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-                  price={23000}
-                  requestsCount={120}
-                  userBalance={50000}
-                  clientId="client123"
-                  userId="user456"
-                  logedUserId="client123"
-                />
-                <ServiceCard
-                  title="Concerto de Aparelhos domésticos"
-                  description="Reparação e manutenção de eletrodomésticos. Concertamos sua geladeira, máquina de lavar, fogão e muito mais."
-                  price={23000}
-                  requestsCount={120}
-                  userBalance={50000}
-                  clientId="client123"
-                  userId="user456"
-                  logedUserId="client123"
-                />
+              <div className="flex items-center gap-4 justify-between flex-wrap">
+                <h3 className="text-2xl font-semibold text-primary ">
+                  Serviços Recentes
+                </h3>
+                <Link href={"/services"}>
+                  <Button variant={"outline"}>Todos Serviços</Button>
+                </Link>
               </div>
+              {loadingServices ? (
+                <div className="mt-5 flex items-center justify-start w-full">
+                  <p className="flex animate-pulse items-center border gap-2 px-3 py-1 rounded-full bg-gray-50 text-primary">
+                    <LoaderCircleIcon
+                      className="-ms-1 animate-spin"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                    Carregando...
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-5 grid ret:grid-cols-2 grid-cols-1 pot:grid-cols-1 gap-4">
+                  {services.slice(0, 5).map((service) => (
+                    <ServiceCard
+                      key={service.id}
+                      title={service.title}
+                      description={service.description}
+                      price={service.price}
+                      isOwner={
+                        user?.role === "PROVIDER" && user.id === service.userId
+                      }
+                      userBalance={user?.balance || 0}
+                      clientId={user?.id || ""}
+                      logedUserId={user?.id}
+                      userId={service.userId}
+                      id={service.id}
+                    />
+                  ))}
+                </div>
+              )}
             </header>
           </div>
         </section>

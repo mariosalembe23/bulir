@@ -1,6 +1,13 @@
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Bolt, Fingerprint, Settings, ShoppingCart, Trash } from "lucide-react";
+import {
+  Bolt,
+  Fingerprint,
+  MoveRight,
+  Settings,
+  ShoppingCart,
+  Trash,
+} from "lucide-react";
 import React, { useState } from "react";
 import CreateBooking from "./CreateBooking";
 import { User } from "@/app/profile/[id]/page";
@@ -19,6 +26,7 @@ export interface ServiceCardProps {
   userBalance: number;
   date?: string;
   owner?: User;
+  isSubscribed?: boolean;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -32,6 +40,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   userBalance,
   id,
   owner,
+  isSubscribed,
+  date,
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
@@ -91,12 +101,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                   className="rounded-full border size-6"
                 />
                 <span className="pe-2 text-primary text-[15px] leading-none">
-                  {owner?.name}
+                  {owner?.name || "Perfil do Prestador"}
+                  <MoveRight className="inline size-4 ms-2" />
                 </span>
               </div>
             </>
           )}
         </button>
+        <p className="text-primary text-sm py-1">
+          Postado em{" "}
+          {new Date(date as string).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          })}
+        </p>
         {isOwner ? (
           <div className="flex  items-center gap-2 flex-wrap">
             <Button variant={"outline"} className="w-full ret:w-auto  ">
@@ -119,6 +138,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           >
             <Bolt className="size-4 " />
             Editar Serviço
+          </Button>
+        ) : isSubscribed ? (
+          <Button
+            onClick={() => setOpenConfirm(true)}
+            variant={"destructive"}
+            className="w-full mt-3 text-base py-5"
+          >
+            <ShoppingCart className="size-4 " />
+            Cancelar Serviço
           </Button>
         ) : (
           <Button

@@ -96,43 +96,38 @@ export default function Home() {
       }
     };
 
-
     const getAllBookings = async () => {
-
       if (!id) return;
 
-          try {
-            const response = await axios.get(
-              `${BASE_URL}/bookings/all/` + id,
-              {
-                headers: {
-                  Authorization: `Bearer ${getCookie("bulir_token")}`,
-                },
-              }
+      try {
+        const response = await axios.get(`${BASE_URL}/bookings/all/` + id, {
+          headers: {
+            Authorization: `Bearer ${getCookie("bulir_token")}`,
+          },
+        });
+        console.log("Bookings:", response.data);
+        setBookings(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (
+            error.response &&
+            error.response?.status >= 400 &&
+            error.response?.status < 500
+          ) {
+            toast.error(
+              error.response.data.error ||
+                "Erro de autenticação. Verifique suas credenciais."
             );
-            console.log("Bookings:", response.data);
-            setBookings(response.data);
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              if (
-                error.response &&
-                error.response?.status >= 400 &&
-                error.response?.status < 500
-              ) {
-                toast.error(
-                  error.response.data.error ||
-                    "Erro de autenticação. Verifique suas credenciais."
-                );
-              }
-            } else {
-              toast.error(
-                "Ocorreu um erro. Por favor, tente novamente mais tarde."
-              );
-            }
-          } finally {
-            setLoadingBookings(false);
           }
-        };
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
+        }
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
 
     getAllServices();
     getAllBookings();
@@ -237,8 +232,12 @@ export default function Home() {
                   userId={service.userId}
                   clientId={id!}
                   logedUserId={id!}
+                  date={new Date().toISOString()}
                   userBalance={user ? user.balance || 0 : 0}
                   owner={service.owner}
+                  isSubscribed={bookings.some(
+                    (booking) => booking.serviceId === service.id
+                  )}
                 />
               ))}
             </div>

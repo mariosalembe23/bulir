@@ -245,6 +245,7 @@ export default function Home() {
                   isSubscribed={bookings.some(
                     (booking) => booking.serviceId === service.id
                   )}
+                  setBookings={setBookings}
                 />
               ))}
             </div>

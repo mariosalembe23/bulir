@@ -12,23 +12,21 @@ import { Booking, Service } from "./Provider";
 import { getCookie } from "cookies-next";
 import { toast } from "sonner";
 import makeLogout from "@/components/Partials/Logout";
+import AddBalance from "@/app/services/components/AddBalance";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const ClientSlice: React.FC<{
   user: User | null;
-}> = ({ user }) => {
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}> = ({ user, setUser }) => {
   const [services, setServices] = useState<Service[]>([]);
   const [loadingServices, setLoadingServices] = useState<boolean>(true);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loadingBookings, setLoadingBookings] = useState<boolean>(true);
+  const [openAddBalance, setOpenAddBalance] = useState<boolean>(false);
 
   useEffect(() => {
-    // const decoded = decodeToken(getCookie("bulir_token") as string);
-    // if (decoded && typeof decoded === "object" && "id" in decoded) {
-    //   setId(decoded.id as string);
-    // }
-
     const getAllServices = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/services/all`, {
@@ -37,9 +35,27 @@ const ClientSlice: React.FC<{
           },
         });
         setServices(response.data);
-        console.log(response.data);
       } catch (error) {
-        console.error("Error fetching services:", error);
+        if (axios.isAxiosError(error)) {
+          if (
+            error.response &&
+            error.response?.status >= 400 &&
+            error.response?.status < 500
+          ) {
+            toast.error(
+              error.response.data.error ||
+                "Erro de autenticação. Verifique suas credenciais."
+            );
+          } else {
+            toast.error(
+              "Ocorreu um erro. Por favor, tente novamente mais tarde."
+            );
+          }
+        } else {
+          toast.error(
+            "Ocorreu um erro. Por favor, tente novamente mais tarde."
+          );
+        }
       } finally {
         setLoadingServices(false);
       }
@@ -55,7 +71,6 @@ const ClientSlice: React.FC<{
             },
           }
         );
-        console.log("Bookings:", response.data);
         setBookings(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -188,6 +203,7 @@ const ClientSlice: React.FC<{
                     date={booking.date}
                     isOwner={user?.role === "PROVIDER"}
                     owner={booking.service.owner}
+                    setBookings={setBookings}
                   />
                 ))}
               </div>
@@ -257,7 +273,9 @@ const ClientSlice: React.FC<{
                     <Bolt className="size-4" />
                     Editar Perfil
                   </Button>
-                  <Button>Alterar Palavra-chave</Button>
+                  <Button onClick={() => setOpenAddBalance(true)}>
+                    Adicionar Saldo
+                  </Button>
                 </div>
               </footer>
             </header>
@@ -306,6 +324,7 @@ const ClientSlice: React.FC<{
                       userId={service.userId}
                       id={service.id}
                       owner={service.owner}
+                      setBookings={setBookings}
                     />
                   ))}
                 </div>
@@ -313,6 +332,12 @@ const ClientSlice: React.FC<{
             </header>
           </div>
         </section>
+        <AddBalance
+          open={openAddBalance}
+          setOpen={setOpenAddBalance}
+          setUser={setUser}
+          userId={user?.id || ""}
+        />
       </main>
     </div>
   );

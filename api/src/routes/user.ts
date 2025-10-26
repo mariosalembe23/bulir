@@ -24,13 +24,31 @@ userRoute.get("/profile/:id", async (req: Request, res: Response) => {
   if (!validate(id))
     return res.status(404).json({ error: "Usuário não encontrado" });
 
-  const user = await prisma.users.findUnique({ where: { id: id }, omit: { password: true } });
+  const user = await prisma.users.findUnique({
+    where: { id: id },
+    omit: { password: true },
+  });
 
   if (!user) {
     return res.status(404).json({ error: "Usuário não encontrado" });
   }
 
   res.json(user);
+});
+
+userRoute.put("/update-balance/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { balance } = req.body;
+
+  if (!validate(id))
+    return res.status(404).json({ error: "Usuário não encontrado" });
+
+  const updatedUser = await prisma.users.update({
+    where: { id: id },
+    data: { balance },
+  });
+
+  res.json({ message: "Saldo atualizado com sucesso", user: updatedUser });
 });
 
 userRoute.put("/profile/:id", async (req: Request, res: Response) => {

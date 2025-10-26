@@ -12,6 +12,8 @@ import React, { useState } from "react";
 import CreateBooking from "./CreateBooking";
 import { User } from "@/app/profile/[id]/page";
 import Image from "next/image";
+import { toast } from "sonner";
+import { Booking } from "@/app/profile/Types/Provider";
 
 export interface ServiceCardProps {
   id?: string;
@@ -27,6 +29,7 @@ export interface ServiceCardProps {
   date?: string;
   owner?: User;
   isSubscribed?: boolean;
+  setBookings: React.Dispatch<React.SetStateAction<Booking[]>>;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -42,6 +45,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   owner,
   isSubscribed,
   date,
+  setBookings
 }) => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
@@ -150,7 +154,20 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           </Button>
         ) : (
           <Button
-            onClick={() => setOpenConfirm(true)}
+            onClick={() => {
+              if (userBalance >= price) {
+                setOpenConfirm(true);
+              } else {
+                toast.error("Saldo insuficiente para solicitar este serviço.", {
+                  action: {
+                    label: "Adicionar",
+                    onClick: () => {
+                      toast.dismiss();
+                    },
+                  },
+                });
+              }
+            }}
             className="w-full mt-3 text-base py-5"
           >
             <ShoppingCart className="size-4 " />
@@ -165,6 +182,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         setOpen={setOpenConfirm}
         price={price}
         userBalance={userBalance}
+        setBookings={setBookings}
+        
       />
     </div>
   );

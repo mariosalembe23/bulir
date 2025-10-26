@@ -226,6 +226,7 @@ const ProviderSlice: React.FC<{
                     userId={booking.service.userId}
                     logedUserId={user?.id || ""}
                     date={booking.date}
+                    setBookings={setBookings}
                   />
                 ))}
               </div>
@@ -338,6 +339,7 @@ const ProviderSlice: React.FC<{
                       userId={service.userId}
                       id={service.id}
                       owner={service.owner}
+                      setBookings={setBookings}
                     />
                   ))}
                 </div>

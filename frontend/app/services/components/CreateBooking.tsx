@@ -1,3 +1,4 @@
+import { Booking } from "@/app/profile/Types/Provider";
 import openConfetti from "@/components/Partials/Confetti";
 import InvisibleLoad from "@/components/Partials/InvisibleLoad";
 import {
@@ -27,6 +28,7 @@ export default function CreateBooking({
   serviceId,
   price,
   userBalance,
+  setBookings,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,6 +36,7 @@ export default function CreateBooking({
   serviceId: string;
   price: number;
   userBalance: number;
+  setBookings: React.Dispatch<React.SetStateAction<Booking[]>>;
 }) {
   const [date, setDate] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -79,8 +82,8 @@ export default function CreateBooking({
           },
         }
       );
-      console.log(response.data);
       toast.success("Serviço solicitado com sucesso!");
+      setBookings((prev) => [...prev, response.data]);
       openConfetti();
       setOpen(false);
     } catch (error) {

@@ -182,13 +182,13 @@ export default function CreateService({
             </svg>
             Novo Serviço
           </AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogDescription className="text-start">
             Preencha os campos para criar um novo serviço.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mt-3 space-y-4 grid grid-cols-2 gap-4"
+          className="mt-3 space-y-4 grid grid-cols-1 ret:grid-cols-2 gap-4"
         >
           <div className="*:not-first:mt-2">
             <Label
@@ -255,7 +255,7 @@ export default function CreateService({
               </p>
             )}
           </div>
-          <div className="*:not-first:mt-2 col-span-2">
+          <div className="*:not-first:mt-2 ret:col-span-2">
             <Label
               htmlFor={"description"}
               className="text-primary font-[450] text-[15px]"
@@ -285,7 +285,7 @@ export default function CreateService({
             )}
           </div>
 
-          <div className="grid col-span-2 grid-cols-1 ret:grid-cols-2 gap-2">
+          <div className="grid ret:col-span-2 grid-cols-1 ret:grid-cols-2 gap-2">
             <Button
               onClick={() => setOpen(false)}
               variant={"outline"}

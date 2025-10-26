@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 import Link from "next/link";
 import ServiceCard from "./components/ServiceCard";
 import { useEffect, useState } from "react";
@@ -142,9 +141,9 @@ export default function Home() {
       style={{
         backgroundImage: 'url("/images/back.jpg")',
       }}
-      className="h-dvh bg-[#f5f5f5] bg-cover bg-center w-full p-5"
+      className="h-dvh bg-[#f5f5f5] bg-cover bg-center w-full pot:p-5"
     >
-      <main className="bg-white flex flex-col justify-between p-5 w-full ring-8 ring-white/50 h-full rounded-3xl shadow-2xl">
+      <main className="bg-white flex flex-col justify-between p-5 w-full ring-8 ring-white/50 h-full pot:rounded-3xl shadow-2xl">
         <header className="px-3 pb-3 border-gray-100 border-b flex items-center justify-between">
           <div>
             <Link href={"/"}>
@@ -178,9 +177,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant={"outline"} className=" rounded-full" size={"icon"}>
-              <Search className="" />
-            </Button>
+           
             {user && (
               <>
                 <Link
@@ -201,7 +198,7 @@ export default function Home() {
           </div>
         </header>
         <section className="h-full p-5 pot:p-10 overflow-y-auto">
-          <header className="pot:pt-3 pt-10 flex items-center justify-between gap-4">
+          <header className="pot:pt-3 pt-10 flex flex-wrap items-center justify-between gap-4">
             <div className="max-w-md">
               <h1 className="text-3xl font-semibold text-primary">Serviços</h1>
               <p className="text-gray-600 mt-1">

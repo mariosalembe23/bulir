@@ -2,7 +2,14 @@ import PendentService from "@/app/services/components/PendentService";
 import ServiceCard from "@/app/services/components/ServiceCard";
 import ConvertMoneyFormat from "@/components/Partials/ConvertMoneyFormat";
 import { Button } from "@/components/ui/button";
-import { Bolt, LoaderCircleIcon } from "lucide-react";
+import {
+  Bolt,
+  House,
+  Layers2,
+  List,
+  LoaderCircleIcon,
+  Menu,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { User } from "../[id]/page";
@@ -12,6 +19,12 @@ import { toast } from "sonner";
 import timeSince from "@/components/Partials/TimeSince";
 import makeLogout from "@/components/Partials/Logout";
 import CreateService from "@/app/services/components/CreateService";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -173,9 +186,42 @@ const ProviderSlice: React.FC<{
             <Link href={"/services"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Serviços</Button>
             </Link>
-            <Link href={"/services"}>
+            <Link href={"/services"} className="ret:inline-flex hidden">
               <Button variant={"link"}>Histórico</Button>
             </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ret:hidden inline-flex ">
+                  <Menu size={16} className="m" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() => {
+                    window.location.href = "/";
+                  }}
+                >
+                  <House size={16} className="opacity-60" aria-hidden="true" />
+                  Página Inicial
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    window.location.href = "/services";
+                  }}
+                >
+                  <Layers2
+                    size={16}
+                    className="opacity-60"
+                    aria-hidden="true"
+                  />
+                  Serviços
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <List size={16} className="opacity-60" aria-hidden="true" />
+                  Histórico
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="flex items-center gap-3">
             <div

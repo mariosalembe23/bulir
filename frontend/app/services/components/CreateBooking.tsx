@@ -104,7 +104,6 @@ export default function CreateBooking({
       setOpen(false);
       setCookie("booking_created", "true");
       window.location.href = "/profile/" + clientId;
-      
     } catch (error) {
       console.error(error);
     } finally {

@@ -34,9 +34,9 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (getCookie("booking_created")) {
-      toast.success("Reserva criada com sucesso!");
       setCookie("booking_created", "", { maxAge: -1 });
       openConfetti();
+      toast.success("Reserva criada com sucesso!");
     }
   }, []);
 

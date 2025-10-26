@@ -309,8 +309,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                   action: {
                     label: "Adicionar",
                     onClick: () => {
-                      window.location.href = "/login";
-                    },
+                      window.location.href = "/profile/" + logedUserId;                },
                   },
                 });
               }
